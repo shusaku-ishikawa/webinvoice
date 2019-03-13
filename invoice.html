@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+   <style>
+        #summarytable tr th {
+            background-color: gray;
+        }
+        #summarytable tr td {
+            text-align: right;
+
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7 col-7">
+          〒<span id="zip">000-000</span><br/>
+          <span id="address1">東京都****区</span><br/>
+          <span id="address2">***町00-00-00 **ビル0F</span><br/>
+          <span id="company">****御中</span><br/>
+          <span id="department">***部</span><span id="person">***様</span>
+        </div>
+        <div class="col-md-5 col-5" style="text-align:right;">
+          発行日：<span id="date">xxxx年xx月xx日</span><br/>
+          お客様No：<span id="customerNo">cust******</span><br/>
+          請求番号：<span id="invoiceCode">***xxx*****</span></br></br>
+          <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
+          <img src="vision.jpg" style="width:10rem;height:10rem"/><img src="stamp.png" style="width:6rem;height:6rem"/></br>
+          〒101-0052<br/>
+          東京都千代田区神田小川町3-11-2<br/>
+          インペリアル御茶の水219<br/></br>
+          連絡先電話番号： 03-5283-8162<br/>
+          受付時間　9:00-18：00（土日祝日除く）<br/>
+          （平日9:00-18：00）</br>
+        </div>
+      </div>
+      <div style="margin-top:2em;"></div>
+      <hr>
+      <div class="row">
+        <div class="col-md-6 col-6">
+          <h2 style="margin-top:0;padding-left:5rem;padding-top:2rem;padding-bottom:2rem;background-color:lightblue">請求書</h2>
+          <p>平素は格別のお引き立てを賜り厚くお礼申し上げます。</br>下記の通りご請求申し上げます。</p>
+        </div>
+        <div class="col-md-6 col-6" style="text-align:right;">
+            <table id="summarytable" class="table">
+                <tr>
+                    <th>ご請求金額</th>
+                    <td align="right">0</td>
+                </tr>
+                <tr>
+                    <th>お支払い期限</th>
+                    <td align="right">0</td>
+                </tr>
+                <tr>
+                    <th>お振込み先</th>
+                    <td style="padding-bottom: 0; padding-top: 0">
+                      <div class="row" style="border-bottom: solid 1px lightgray">
+                        <div class="col-md-4 col-4" style="text-align: left">
+                          金融機関名
+                        </div>
+                        <div class="col-md-8 col-8">
+                          三井住友銀行　首都圏支店
+                        </div>
+                      </div>
+                      <div class="row" style="border-bottom: solid 1px lightgray">
+                        <div class="col-md-4 col-4" style="text-align: left">
+                          口座番号
+                        </div>
+                        <div class="col-md-8 col-8">
+                          普通　xxxxxx
+                        </div>
+                      </div>
+                      <div class="row" style="border-bottom: solid 1px lightgray;">
+                        <div class="col-md-4 col-4" style="text-align: left">
+                          口座名義
+                        </div>
+                        <div class="col-md-8 col-8">
+                          株式会社ビジョン
+                        </div>
+                      </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:4em;text-align:right;">項番</th><th>品名</th><th style="width:4em;text-align:right;">数量</th><th style="width:4em;">単位</th><th style="text-align:right;">単価</th><th style="text-align:right;">金額</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-template">
+            <td class="num" style="text-align:right;">N</td><td class="name">PRODUCT NAME</td><td class="qty" style="text-align:right;">NN</td><td class="unit">人日</td><td class="unit-price" style="text-align:right;">XX,000</td><td class="price" style="text-align:right;">XX,000</td>
+          </tr>
+          <tr>
+            <td colspan="3" rowspan="3"><div class="bank"><h4>振込先</h4>三菱東京UFJ銀行 神田支店 普通 6572036 ワルブリックス(カ<br/>又は<br/>楽天銀行　ビート支店 普通 7023499 ワルブリックス(カ </div><h4>備考</h4></td><td colspan="2">小計</td><td class="minor-total" style="text-align:right;">XX,000</td>
+          </tr>
+          <tr>
+            <td colspan="2">消費税(<span class="tax-rate">5</span>%)</td><td class="vat" style="text-align:right;">XX,000</td>
+          </tr>
+          <tr>
+            <td colspan="2">合計</td><td style="text-align:right;"><big><strong><span class="grand-total">XX,000</span></strong></big></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- <script type="text/javascript">
+      function addFigure(value) {
+        var num = new String(value).replace(/,/g, "");
+        while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
+        return num;
+      }
+      $(document).ready(function() {
+        if (data["種別"] != "請求") { $(".bank").hide(); }
+        $("<title>" + data["種別"] + data["番号"] + "</title>").prependTo("head");
+        var year = parseInt(data["番号"].substr(0,4));
+        var month = parseInt(data["番号"].substr(4,2));
+        var day = parseInt(data["番号"].substr(6,2));
+        $("span.category").text(data["種別"]);
+        $("#date").text(year+"年"+month+"月"+day+"日");
+        $("#code").text(data["番号"]);
+        $("#name").text(data["宛先"]["名称"]);
+        $("#zip").text(data["宛先"]["郵便番号"]);
+        $("#address1").text(data["宛先"]["住所1"]);
+        $("#address2").text(data["宛先"]["住所2"]);
+        $("#tel").text(data["宛先"]["TEL"]);
+        $("#fax").text(data["宛先"]["FAX"]);
+        $("#person-in-charge").text(data["担当者"]);
+        var rows = Array();
+        var total = 0;
+        $.each(data["明細"], function(i, value) {
+          var row = $("tr.row-template").clone(false);
+          row.find("td.num").text("" + (i + 1));
+          row.find("td.name").text(value["品名"]);
+          row.find("td.qty").text(value["数量"]);
+          row.find("td.unit").text(value["単位"]);
+          row.find("td.unit-price").text(addFigure(value["単価"]));
+          var price = ~~(value["数量"] * value["単価"]);
+          row.find("td.price").text(addFigure(price));
+          total += price;
+          rows.push(row);
+        });
+        $("tr.row-template").remove();
+        $("tbody").prepend(rows);
+        $("td.minor-total").text(addFigure(total));
+        var vat = ~~(total * 5 / 100);
+        $("td.vat").text(addFigure(vat));
+        $("span.grand-total").text(addFigure(total + vat));
+      });
+    </script> -->
+  </body>
+</html>
