@@ -1,13 +1,45 @@
-<!DOCTYPE html>
+<!DOCTYPE html>{% load static %}
 <html>
 <head>
-  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <style type="text/css">
+    @font-face {
+      font-family: "japanese";
+      src: r'/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/fonts/mplus-1c-light.ttf';
+    }
+    @page {
+      size: A4;
+      font-family: "japanese";
+    }
+    html, body {
+      font-family: "japanese";
+    }
+  </style>
+</head>
+<!-- <!DOCTYPE html>{% load static %}
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>invoice</title>
+  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-  <style>
+  <style type="text/css">
+      @font-face {
+        font-family: "japanese";
+        src: url("{% static 'fonts/mplus-1c-regular.ttf' %}");
+      }
+      @page {
+          size: A4;
+          margin: 1cm;
+          font-family: "japanese"
+      }
+      html, body {
+        font-family: "japanese";
+      }
       #summarytable tr th {
           background-color: gray;
       }
@@ -16,27 +48,28 @@
 
       }
   </style>
-</head>
+</head> -->
   <body>
-    <div class="container">
+    ああ
+    <!-- <div class="container">
       <div class="row">
         <div class="col-md-7 col-7">
-          〒<span id="zip">000-000</span><br/>
-          <span id="address1">東京都****区</span><br/>
-          <span id="address2">***町00-00-00 **ビル0F</span><br/>
-          <span id="company">****御中</span><br/>
-          <span id="department">***部</span><span id="person">***様</span>
+          〒<span id="zip">{{ customer.zip }}</span><br/>
+          <span id="address1">{{ customer.address }}</span><br/>
+          <!-- <span id="address2">***町00-00-00 **ビル0F</span><br/> 
+          <span id="company">{{ customer.company_name }}御中</span><br/>
+          <span id="department">{{ customer.dept_name }}</span><span id="person">{{ customer.representative }}様</span>
         </div>
         <div class="col-md-5 col-5" style="text-align:right;">
           発行日：<span id="date">xxxx年xx月xx日</span><br/>
-          お客様No：<span id="customerNo">cust******</span><br/>
+          お客様No：<span id="customerNo">{{ customer.code }}</span><br/>
           請求番号：<span id="invoiceCode">***xxx*****</span></br></br>
           <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
           <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_logo.png" style="width:10rem;height:10rem"/><img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_stamp.png" style="width:6rem;height:6rem"/></br>
-          〒101-0052<br/>
-          東京都千代田区神田小川町3-11-2<br/>
-          インペリアル御茶の水219<br/></br>
-          連絡先電話番号： 03-5283-8162<br/>
+          〒{{ ourinfo.zip }}<br/>
+          {{ ourinfo.address_1 }}<br/>
+          {{ ourinfo.address_2 }}<br/></br>
+          連絡先電話番号： {{ ourinfo.phone }}<br/>
           受付時間　9:00-18：00（土日祝日除く）<br/>
           （平日9:00-18：00）</br>
         </div>
@@ -66,7 +99,7 @@
                           金融機関名
                         </div>
                         <div class="col-md-8 col-8">
-                          三井住友銀行　首都圏支店
+                          {{ bank.bank }} {{ bank.branch }}
                         </div>
                       </div>
                       <div class="row" style="border-bottom: solid 1px lightgray">
@@ -74,7 +107,7 @@
                           口座番号
                         </div>
                         <div class="col-md-8 col-8">
-                          普通　xxxxxx
+                          {{ bank.type }}　{{ bank.number }}
                         </div>
                       </div>
                       <div class="row" style="border-bottom: solid 1px lightgray;">
@@ -82,7 +115,7 @@
                           口座名義
                         </div>
                         <div class="col-md-8 col-8">
-                          株式会社ビジョン
+                          {{ bank.meigi }}
                         </div>
                       </div>
                     </td>
@@ -107,39 +140,26 @@
             </tr>
           </thead>
           <tbody>
+            {% for invoice in data %}
             <tr>
-              <td>1</td>
-              <td>2019/3</td>
-              <td>xxxxx</td>
-              <td>AA</td>
-              <td>3</td>
-              <td>3,000</td>
-              <td>非課税</td>
-              <td>9,000</td>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ invoice.month_used }}</td>
+              <td>{{ invoice.product.code }}</td>
+              <td>{{ invoice.product.name }}</td>
+              <td>{{ invoice.amount }}</td>
+              <td>{{ invoice.product.price }}</td>
+              <td>{{ invoice.product.tax_type }}</td>
+              <td>19999</td>
               <td>0</td>
               <td>9,000</td>
-              
             </tr>
-            <tr>
-              <td>2</td>
-              <td>2019/3</td>
-              <td>xxxxx</td>
-              <td>AA</td>
-              <td>3</td>
-              <td>3,000</td>
-              <td>非課税</td>
-              <td>9,000</td>
-              <td>0</td>
-              <td>9,000</td>
-              
-            </tr>
+            {%  endfor %}
           </tbody>
         </table>
       </div>
       <div class="">
         <div class="row">
           <div class="col-md-8 col-8" style="border: solid 1px black; border-radius: 10px;">
-
           </div>
           <div class="col-md-4 col-4" style="text-align: right">
             <table class="table">
@@ -162,49 +182,6 @@
         </div>
       </div>
     </div> <!-- container -->
-    <!-- <script type="text/javascript">
-      function addFigure(value) {
-        var num = new String(value).replace(/,/g, "");
-        while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
-        return num;
-      }
-      $(document).ready(function() {
-        if (data["種別"] != "請求") { $(".bank").hide(); }
-        $("<title>" + data["種別"] + data["番号"] + "</title>").prependTo("head");
-        var year = parseInt(data["番号"].substr(0,4));
-        var month = parseInt(data["番号"].substr(4,2));
-        var day = parseInt(data["番号"].substr(6,2));
-        $("span.category").text(data["種別"]);
-        $("#date").text(year+"年"+month+"月"+day+"日");
-        $("#code").text(data["番号"]);
-        $("#name").text(data["宛先"]["名称"]);
-        $("#zip").text(data["宛先"]["郵便番号"]);
-        $("#address1").text(data["宛先"]["住所1"]);
-        $("#address2").text(data["宛先"]["住所2"]);
-        $("#tel").text(data["宛先"]["TEL"]);
-        $("#fax").text(data["宛先"]["FAX"]);
-        $("#person-in-charge").text(data["担当者"]);
-        var rows = Array();
-        var total = 0;
-        $.each(data["明細"], function(i, value) {
-          var row = $("tr.row-template").clone(false);
-          row.find("td.num").text("" + (i + 1));
-          row.find("td.name").text(value["品名"]);
-          row.find("td.qty").text(value["数量"]);
-          row.find("td.unit").text(value["単位"]);
-          row.find("td.unit-price").text(addFigure(value["単価"]));
-          var price = ~~(value["数量"] * value["単価"]);
-          row.find("td.price").text(addFigure(price));
-          total += price;
-          rows.push(row);
-        });
-        $("tr.row-template").remove();
-        $("tbody").prepend(rows);
-        $("td.minor-total").text(addFigure(total));
-        var vat = ~~(total * 5 / 100);
-        $("td.vat").text(addFigure(vat));
-        $("span.grand-total").text(addFigure(total + vat));
-      });
-    </script> -->
+     
   </body>
 </html>

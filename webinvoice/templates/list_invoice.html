@@ -38,7 +38,8 @@
         </td>
     </tr>
 </table>
-<button type="button" class="btn btn-primary">検索</button>
+<button id="id_search_button" type="button" class="btn btn-primary">検索</button>
+<button id="id_pdf_button" type="button" class="btn btn-success">PDF</button>
     
 <hr>
 
@@ -86,6 +87,7 @@
 {% block extra_js %}
     <script>
         $search_button = $('#id_search_button');
+        $pdf_button = $('#id_pdf_button');
         $search_customer = $('#id_customer');
         $search_year = $('#id_year');
         $search_month = $('#id_month');
@@ -107,26 +109,34 @@
                 }).appendTo($search_month);
             }
         }
+        function get_query_string() {
+            var customer = $search_customer.val();
+            var year = $search_year.val();
+            var month = $search_month.val();
+            var queryobj = {};
+            if (customer != '') {
+                queryobj['customer'] = customer;
+            }
+            if (month != '' && year != "") {
+                queryobj['yearmonth'] = '' + year + month;
+            }
+            var esc = encodeURIComponent;
+            return Object.keys(queryobj)
+                .map(k => esc(k) + '=' + esc(queryobj[k]))
+                .join('&');
+        }
         $(function() {
 
             $search_button
             .on('click', () => {
-                var customer = $search_customer.val();
-                var year = $search_year.val();
-                var month = $search_month.val();
-                var queryobj = {};
-                if (customer != '') {
-                    queryobj['customer'] = customer;
-                }
-                if (month != '' && year != "") {
-                    queryobj['yearmonth'] = '' + year + month;
-                }
-                var esc = encodeURIComponent;
-                var query = Object.keys(queryobj)
-                    .map(k => esc(k) + '=' + esc(queryobj[k]))
-                    .join('&');
-                window.location.href = "{% url 'web:list_invoice' %}?" + query;;
+                var query = get_query_string();
+                window.location.href = "{% url 'web:list_invoice' %}?" + query;
             });
+            $pdf_button
+            .on('click', () => {
+                var query = get_query_string();
+                window.location.href = "{% url 'web:pdf3' %}?" + query;;
+            })
 
             initialize_month();
             initialize_year();

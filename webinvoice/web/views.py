@@ -36,7 +36,12 @@ from django.http import HttpResponseRedirect
 from django.http import Http404, HttpResponseBadRequest, JsonResponse
 from datetime import datetime, timedelta
 from django.db import models
-from .models import Customer, Product, Invoice
+from django.views.generic import View
+from django.utils import timezone
+from .models import *
+from .render import Render
+from easy_pdf.views import PDFTemplateView
+
 
 # Create your views here.
 class TopPage(LoginRequiredMixin, generic.TemplateView):
@@ -119,4 +124,126 @@ class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
         context = super(ListInvoice, self).get_context_data(**kwargs)
         customer_list = Customer.objects.all()
         context['customer_list'] = customer_list
+        return context
+
+import xhtml2pdf.pisa as pisa
+from django.http import HttpResponse
+import io
+class FooPDFView(generic.ListView):
+    model = Invoice
+    template_name = 'pdf/invoice.html'
+
+    def get_queryset(self):
+        data = Invoice.objects.all()
+        yearmonth = self.request.GET.get('yearmonth')
+        customer_code = self.request.GET.get('customer')
+
+        if yearmonth != None:
+            data = data.filter(month_used = yearmonth)
+        if customer_code != None:
+            customer = Customer.objects.filter(code = customer_code)
+            data = data.filter(customer = customer[0])
+         
+        return data
+
+    def render_to_response(self, context):
+        html = get_template(self.template_name).render(self.get_context_data())
+        result = io.BytesIO()
+        pdf = pisa.pisaDocument(
+            io.BytesIO(html.encode('utf-8')),
+            result,
+            link_callback=link_callback,
+            encoding='utf-8',
+        )
+
+        if not pdf.err:
+            return HttpResponse(
+                result.getvalue(),
+                content_type='application/pdf'
+            )
+
+        return HttpResponse('<pre>%s</pre>' % escape(html))
+
+def link_callback(uri, rel):
+    sUrl = settings.STATIC_URL
+    sRoot = settings.STATIC_ROOT
+    path = os.path.join(sRoot, uri.replace(sUrl, ""))
+
+    if not os.path.isfile(path):
+        raise Exception(
+            '%s must start with %s' % \
+            (uri, sUrl)
+        )
+
+    return path
+
+
+class Pdf(View):
+    def get(self, request):
+        data = Invoice.objects.all()
+        yearmonth = self.request.GET.get('yearmonth')
+        customer_code = self.request.GET.get('customer')
+
+        ourinfo = {
+            'zip': '111-1111',
+            'address_1': 'xxxxx',
+            'address_2': 'yyyyy',
+            'phone': 'eeeeee'
+        }
+        bank_info = {
+            'bank': '三井住友',
+            'branch': '立川支店',
+            'type': '普通',
+            'number': '111111',
+            'meigi': '株式会社ビジョン'
+        }
+
+        if yearmonth != None:
+            data = data.filter(month_used = yearmonth)
+        if customer_code != None:
+            customer = Customer.objects.filter(code = customer_code)
+            data = data.filter(customer = customer[0])
+
+        params = {
+            'invoices': data,
+            'ourinfo': ourinfo,
+            'bank': bank_info,
+            'customer': customer
+        }
+
+        return Render.render('pdf/invoice.html', params)
+
+class InvoicePDFView(PDFTemplateView):
+    template_name = 'pdf/invoice.html'
+    def get_context_data(self, **kwargs):
+        context = super(InvoicePDFView, self).get_context_data(**kwargs)
+
+        data = Invoice.objects.all()
+        yearmonth = self.request.GET.get('yearmonth')
+        customer_code = self.request.GET.get('customer')
+
+        ourinfo = {
+            'zip': '111-1111',
+            'address_1': 'xxxxx',
+            'address_2': 'yyyyy',
+            'phone': 'eeeeee'
+        }
+        bank_info = {
+            'bank': '三井住友',
+            'branch': '立川支店',
+            'type': '普通',
+            'number': '111111',
+            'meigi': '株式会社ビジョン'
+        }
+
+        if yearmonth != None:
+            data = data.filter(month_used = yearmonth)
+        if customer_code != None:
+            customer = Customer.objects.filter(code = customer_code)
+            data = data.filter(customer = customer[0])
+
+        context['invoices'] = data
+        context['ourinfo'] = ourinfo
+        context['bank'] = bank_info
+        context['customer'] = customer
         return context

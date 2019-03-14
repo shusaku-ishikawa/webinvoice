@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'web',
-    'bootstrap_datepicker_plus',
+    'easy_pdf',
 ]
 
 

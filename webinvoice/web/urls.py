@@ -21,6 +21,10 @@ urlpatterns = [
     path('update_product/<int:pk>', views.UpdateProduct.as_view(), name='update_product'),
     path('list_product/', views.ListProduct.as_view(), name='list_product'),
     path('list_invoice/', views.ListInvoice.as_view(), name='list_invoice'),
+    path('pdf/', views.Pdf.as_view(), name='pdf'),
+    path('pdf2/', views.InvoicePDFView.as_view(), name='pdf2'),
+    path('pdf3/', views.FooPDFView.as_view(), name='pdf3'),
+    
     
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT) 
