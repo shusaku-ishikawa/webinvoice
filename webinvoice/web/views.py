@@ -101,3 +101,22 @@ class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
     model = Invoice
     template_name = 'list_invoice.html'
     paginate_by = 100
+
+    def get_queryset(self):
+        data = Invoice.objects.all()
+        yearmonth = self.request.GET.get('yearmonth')
+        customer_code = self.request.GET.get('customer')
+
+        if yearmonth != None:
+            data = data.filter(month_used = yearmonth)
+        if customer_code != None:
+            customer = Customer.objects.filter(code = customer_code)
+            data = data.filter(customer = customer[0])
+         
+        return data
+
+    def get_context_data(self, **kwargs):
+        context = super(ListInvoice, self).get_context_data(**kwargs)
+        customer_list = Customer.objects.all()
+        context['customer_list'] = customer_list
+        return context

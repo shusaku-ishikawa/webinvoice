@@ -7,13 +7,39 @@
     </div>
 </div>
 <hr>
-<hr>
-    <div class="d-flex justify-content-center h-100">
-        <div class="searchbar">
-        <input id="id_search_word" class="search_input" type="text" name="" placeholder="名前で検索">
-        <a href="#" id="id_search_patient"  class="search_icon"><i class="fas fa-search"></i></a>
-        </div>
-    </div>
+<table class="table table-bordered" style="width:50%">
+    <tr>
+        <th>
+            お客様
+        </th>
+        <td>
+            <select class="form-control" id="id_customer">
+            {% for customer in customer_list %}
+                <option value="{{ customer.code }}">{{ customer.company_name }}</option>
+            {% endfor %}
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <th>
+            利用月
+        </th>
+        <td>
+            <div class="row">
+                <div class="col-md-8 col-8">
+                    <select class="form-control" id="id_year">
+                    </select>
+                </div>
+                <div class="col-md-4 col-4">
+                    <select class="form-control" id="id_month">
+                    </select>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+<button type="button" class="btn btn-primary">検索</button>
+    
 <hr>
 
 <ul class="messages">
@@ -37,7 +63,7 @@
     <tbody>
         {% for object in object_list %}
         <tr>
-            <td>{{ object.code }}</td>
+            <td>{{ object.code | default_if_none:"-"}}</td>
             <td>{{ object.customer.company_name }}</td>
             <td>{{ object.product.name }}</td>
             <td>{{ object.product.price }}</td>
@@ -59,6 +85,52 @@
 {% endblock %}
 {% block extra_js %}
     <script>
+        $search_button = $('#id_search_button');
+        $search_customer = $('#id_customer');
+        $search_year = $('#id_year');
+        $search_month = $('#id_month');
+
+        function initialize_year() {
+            var currentyear = 2019;
+            for (let offset = 0; offset < 10; offset ++) {
+                $('<option>', {
+                    value: '' + (currentyear + offset),
+                    text: '' + (currentyear + offset)
+                }).appendTo($search_year);
+            }
+        }
+        function initialize_month() {
+            for (let i = 1;i < 13; i ++) {
+                $('<option>', {
+                    value: (i < 10) ? '0' + i : '' + i,
+                    text: (i < 10) ? '0' + i : '' + i
+                }).appendTo($search_month);
+            }
+        }
+        $(function() {
+
+            $search_button
+            .on('click', () => {
+                var customer = $search_customer.val();
+                var year = $search_year.val();
+                var month = $search_month.val();
+                var queryobj = {};
+                if (customer != '') {
+                    queryobj['customer'] = customer;
+                }
+                if (month != '' && year != "") {
+                    queryobj['yearmonth'] = '' + year + month;
+                }
+                var esc = encodeURIComponent;
+                var query = Object.keys(queryobj)
+                    .map(k => esc(k) + '=' + esc(queryobj[k]))
+                    .join('&');
+                window.location.href = "{% url 'web:list_invoice' %}?" + query;;
+            });
+
+            initialize_month();
+            initialize_year();
+        })
        
     </script>
 {% endblock %}

@@ -71,7 +71,7 @@ class Product(models.Model):
 
 class Customer(models.Model):
     def __str__(self):
-        return self.cumpany_name
+        return self.company_name
 
     class Meta:
         verbose_name = '顧客'
@@ -137,7 +137,10 @@ class Customer(models.Model):
 
 class Invoice(models.Model):
     def __str__(self):
-        return self.code
+        if self.code:
+            return self.code
+        else:
+            return '未請求'
 
     class Meta:
         verbose_name = '請求明細'
