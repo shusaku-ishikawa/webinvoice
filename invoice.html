@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-   <style>
-        #summarytable tr th {
-            background-color: gray;
-        }
-        #summarytable tr td {
-            text-align: right;
+<head>
+  <meta charset="UTF-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 
-        }
-    </style>
-  </head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <style>
+      #summarytable tr th {
+          background-color: gray;
+      }
+      #summarytable tr td {
+          text-align: right;
+
+      }
+  </style>
+</head>
   <body>
     <div class="container">
       <div class="row">
@@ -32,7 +32,7 @@
           お客様No：<span id="customerNo">cust******</span><br/>
           請求番号：<span id="invoiceCode">***xxx*****</span></br></br>
           <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
-          <img src="vision.jpg" style="width:10rem;height:10rem"/><img src="stamp.png" style="width:6rem;height:6rem"/></br>
+          <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_logo.png" style="width:10rem;height:10rem"/><img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_stamp.png" style="width:6rem;height:6rem"/></br>
           〒101-0052<br/>
           東京都千代田区神田小川町3-11-2<br/>
           インペリアル御茶の水219<br/></br>
@@ -89,30 +89,79 @@
                 </tr>
             </table>
         </div>
-    </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th>No.</th>
+              <th>ご利用月</th>
+              <th>商材</th>
+              <th>商品名またはサービス</th>
+              <th>数量</th>
+              <th>単価</th>
+              <th>税区分</th>
+              <th>税抜金額</th>
+              <th>税額</th>
+              <th>税込金額</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>2019/3</td>
+              <td>xxxxx</td>
+              <td>AA</td>
+              <td>3</td>
+              <td>3,000</td>
+              <td>非課税</td>
+              <td>9,000</td>
+              <td>0</td>
+              <td>9,000</td>
+              
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>2019/3</td>
+              <td>xxxxx</td>
+              <td>AA</td>
+              <td>3</td>
+              <td>3,000</td>
+              <td>非課税</td>
+              <td>9,000</td>
+              <td>0</td>
+              <td>9,000</td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="">
+        <div class="row">
+          <div class="col-md-8 col-8" style="border: solid 1px black; border-radius: 10px;">
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th style="width:4em;text-align:right;">項番</th><th>品名</th><th style="width:4em;text-align:right;">数量</th><th style="width:4em;">単位</th><th style="text-align:right;">単価</th><th style="text-align:right;">金額</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="row-template">
-            <td class="num" style="text-align:right;">N</td><td class="name">PRODUCT NAME</td><td class="qty" style="text-align:right;">NN</td><td class="unit">人日</td><td class="unit-price" style="text-align:right;">XX,000</td><td class="price" style="text-align:right;">XX,000</td>
-          </tr>
-          <tr>
-            <td colspan="3" rowspan="3"><div class="bank"><h4>振込先</h4>三菱東京UFJ銀行 神田支店 普通 6572036 ワルブリックス(カ<br/>又は<br/>楽天銀行　ビート支店 普通 7023499 ワルブリックス(カ </div><h4>備考</h4></td><td colspan="2">小計</td><td class="minor-total" style="text-align:right;">XX,000</td>
-          </tr>
-          <tr>
-            <td colspan="2">消費税(<span class="tax-rate">5</span>%)</td><td class="vat" style="text-align:right;">XX,000</td>
-          </tr>
-          <tr>
-            <td colspan="2">合計</td><td style="text-align:right;"><big><strong><span class="grand-total">XX,000</span></strong></big></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+          </div>
+          <div class="col-md-4 col-4" style="text-align: right">
+            <table class="table">
+              <tr>
+                <th>税抜金額合計</th>
+                <td>0</td>
+              </tr>
+              <tr>
+                <th>税額合計</th>
+                <td>0</td>
+              </tr>
+              <tr>
+                <th>税込金額合計</th>
+                <td>0</td>
+              </tr>
+              
+            </table>
+            <p style="margin:0">送付枚数 1 / 1</p>
+          </div>
+        </div>
+      </div>
+    </div> <!-- container -->
     <!-- <script type="text/javascript">
       function addFigure(value) {
         var num = new String(value).replace(/,/g, "");
