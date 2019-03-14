@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<hr>
+<div class="row">
+    <div class="col-md-12 col-12">
+        <h3 class="text-center">請求一覧ページ</h3>
+    </div>
+</div>
+<hr>
+<hr>
+    <div class="d-flex justify-content-center h-100">
+        <div class="searchbar">
+        <input id="id_search_word" class="search_input" type="text" name="" placeholder="名前で検索">
+        <a href="#" id="id_search_patient"  class="search_icon"><i class="fas fa-search"></i></a>
+        </div>
+    </div>
+<hr>
+
+<ul class="messages">
+    {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% if object_list %}
+<div class="table-responsive">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>請求番号</th>
+            <th>顧客会社名</th>
+            <th>商品名</th>
+            <th>単価</th>
+            <th>数量</th>
+            <th>ご利用月</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in object_list %}
+        <tr>
+            <td>{{ object.code }}</td>
+            <td>{{ object.customer.company_name }}</td>
+            <td>{{ object.product.name }}</td>
+            <td>{{ object.product.price }}</td>
+            <td>{{ object.amount }}</td>
+            <td>{{ object.month_used }}</td>
+        </tr> 
+        {% endfor %}  
+    </tbody>
+</table>
+</div>
+    {% if is_paginated %}
+    {% include "include/pagination.html" %}
+    {% endif %}
+
+{% else %}
+    <p>商品が登録されていません</p>
+{% endif %}
+
+{% endblock %}
+{% block extra_js %}
+    <script>
+       
+    </script>
+{% endblock %}

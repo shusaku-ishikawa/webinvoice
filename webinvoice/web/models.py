@@ -19,7 +19,7 @@ def validate_postcode(value):
         raise ValidationError(u'%s 郵便番号のフォーマットが正しくありません' % value)
 
 def validate_phonenumber(value):
-    reg = re.compile('^[0-9]+$')
+    reg = re.compile('^[0-9]*$')
     if not reg.match(value):
         raise ValidationError(u'%s 電話番号のフォーマットが正しくありません' % value)
 
@@ -28,6 +28,46 @@ def validate_month(value):
     if not reg.match(value):
         raise ValidationError(u'%s 年月のフォーマットが正しくありません' % value)
 
+class Product(models.Model):
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = '商材'
+        verbose_name_plural = '商材'
+    
+    tax_type_choice = (
+        ('課税', '課税'),
+        ('非課税', '非課税')
+    )
+    code = models.CharField(
+        verbose_name = '商品コード',
+        null = False,
+        blank = False,
+        unique = True,
+        max_length = 50,
+        validators = [
+            alphanumeric
+        ]
+    )
+    name = models.CharField(
+        verbose_name = '商品・サービス名',
+        max_length = 100,
+        blank = False,
+        null = False
+    )
+    price = models.IntegerField(
+        verbose_name='単価',
+        null = False,
+        blank = False
+    )
+    tax_type = models.CharField(
+        verbose_name = '税区分',
+        max_length = 10,
+        null = False,
+        blank = False,
+        choices = tax_type_choice
+    )
 
 class Customer(models.Model):
     def __str__(self):
@@ -42,6 +82,7 @@ class Customer(models.Model):
         max_length = 50,
         null = False,
         blank = False,
+        unique = True,
         validators = [
             alphanumeric
         ]
@@ -79,11 +120,16 @@ class Customer(models.Model):
         null = False,
         blank = False
     )
+    email = models.EmailField(
+        verbose_name = 'メールアドレス',
+        null = True,
+        blank = True,
+    )
     phone = models.CharField(
         verbose_name = _('電話番号'), 
         max_length = 20,
-        null = False,
-        blank = False,
+        null = True,
+        blank = True,
         validators = [
             validate_phonenumber,
         ]
@@ -97,10 +143,26 @@ class Invoice(models.Model):
         verbose_name = '請求明細'
         verbose_name_plural = '請求明細'
     
+    code = models.CharField(
+        verbose_name = '請求番号',
+        null = True,
+        blank = True,
+        max_length = 100
+    )
     customer = models.ForeignKey(
         Customer,
         verbose_name = '顧客',
         on_delete = models.CASCADE
+    )
+    product = models.ForeignKey(
+        Product,
+        verbose_name = '商品',
+        on_delete = models.CASCADE
+    )
+    amount = models.IntegerField(
+        verbose_name='数量',
+        null = False,
+        blank=False
     )
     month_used = models.CharField(
         verbose_name = 'ご利用月',
