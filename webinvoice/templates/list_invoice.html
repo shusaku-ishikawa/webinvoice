@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% load humanize %}
 <hr>
 <div class="row">
     <div class="col-md-12 col-12">
@@ -38,9 +39,9 @@
         </td>
     </tr>
 </table>
-<button id="id_search_button" type="button" class="btn btn-default">検索</button>
-<a href="{% url 'web:create_invoice' %}" class="btn btn-primary">新規作成</a>
-<button id="id_pdf_button" type="button" class="btn btn-success">PDF</button>
+<button id="id_search_button" type="button" class="btn btn-outline-secondary">検索</button>
+<a href="{% url 'web:create_invoice' %}" class="btn btn-outline-primary">新規作成</a>
+<button id="id_pdf_button" type="button" class="btn btn-outline-success">PDF</button>
 
      
 <hr>
@@ -61,6 +62,9 @@
             <th>商品名</th>
             <th>単価</th>
             <th>数量</th>
+            <th>税抜額</th>
+            <th>税</th>
+            <th>小計</th>
             <th>ご利用月</th>
         </tr>
     </thead>
@@ -71,8 +75,11 @@
             <td>{{ object.code | default_if_none:"-"}}</td>
             <td>{{ object.customer.company_name }}</td>
             <td>{{ object.product.name }}</td>
-            <td>{{ object.product.price }}</td>
+            <td>{{ object.product.price | intcomma  }}</td>
             <td>{{ object.amount }}</td>
+            <td>{{ object.subtotal | intcomma  }}</td>
+            <td>{{ object.tax|intcomma  }}</td>
+            <td>{{ object.subtotal|add:object.tax |intcomma }}</td>
             <td>{{ object.month_used }}</td>
         </tr> 
         {% endfor %}  
@@ -90,29 +97,50 @@
 {% endblock %}
 {% block extra_js %}
     <script>
+        previous_yearmonth = "{{ yearmonth }}";
+        previous_customer = "{{ customer }}";
         $search_button = $('#id_search_button');
         $pdf_button = $('#id_pdf_button');
         $gotocreate_button = $('#id_go_to_create_button');
         $search_customer = $('#id_customer');
         $search_year = $('#id_year');
         $search_month = $('#id_month');
-
+        function initialize_customer() {
+            $('<option>', {
+                value: '',
+                text: '-----'
+            }).appendTo($search_customer);
+            $search_customer.val((previous_customer == 'None') ? '' : previous_customer);
+        }
         function initialize_year() {
             var currentyear = 2019;
+            $('<option>', {
+                value: '',
+                text: '----'
+            }).appendTo($search_year);
+
             for (let offset = 0; offset < 10; offset ++) {
                 $('<option>', {
                     value: '' + (currentyear + offset),
                     text: '' + (currentyear + offset)
                 }).appendTo($search_year);
             }
+            $search_year.val((previous_yearmonth == 'None') ? '' : previous_yearmonth.substr(0, 4));
+            
         }
         function initialize_month() {
+            $('<option>', {
+                value: '',
+                text: '----',
+            }).appendTo($search_month);
+
             for (let i = 1;i < 13; i ++) {
                 $('<option>', {
                     value: (i < 10) ? '0' + i : '' + i,
                     text: (i < 10) ? '0' + i : '' + i
                 }).appendTo($search_month);
             }
+            $search_month.val((previous_yearmonth == 'None') ? '' : previous_yearmonth.substr(4, 2));
         }
         function get_query_string() {
             var customer = $search_customer.val();
@@ -131,18 +159,22 @@
                 .join('&');
         }
         $(function() {
-
             $search_button
             .on('click', () => {
+                
                 var query = get_query_string();
                 window.location.href = "{% url 'web:list_invoice' %}?" + query;
             });
             $pdf_button
             .on('click', () => {
+                if ($search_customer.val() == '' || $search_year.val() == '' || $search_month.val() == '') {
+                    alert('対象年月を選択してください')
+                    return;
+                }
                 var query = get_query_string();
                 window.location.href = "{% url 'web:pdf4' %}?" + query;;
             });
-
+            initialize_customer();
             initialize_month();
             initialize_year();
         })

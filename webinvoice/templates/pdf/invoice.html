@@ -6,9 +6,13 @@
 
   <script src="{% static 'js/bootstrap.js' %}"></script>
  <!-- <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css">-->
-  <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/cssbootstrap-grid.css">
- <!-- <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css"> -->
-  <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/cssbootstrap-grid.css"> -->
+  <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/cssbootstrap-grid.css">
+ 
+  <!-- <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css"> -->
+  <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css">
+  
   <style>
     #summarytable tr th {
     background-color: gray;
@@ -49,11 +53,11 @@
     <div class="row">
       <div style="margin-top:2em;"></div>
       <hr>
-      <div class="col-md-5 col-5">
+      <div class="col-md-6 col-6">
         <h2 style="margin-top:0;padding-left:5rem;padding-top:2rem;padding-bottom:2rem;background-color:lightblue">請求書</h2>
         <p>平素は格別のお引き立てを賜り厚くお礼申し上げます。</br>下記の通りご請求申し上げます。</p>
       </div>
-      <div class="col-md-7 col-7">
+      <div class="col-md-6 col-6">
         <table id="summarytable" class="table">
           <tr>
               <th style="width: 30%">ご請求金額</th>
@@ -67,10 +71,10 @@
               <th style="width: 30%">お振込み先</th>
               <td style="padding-bottom: 0; padding-top: 0">
                 <div class="row" style="border-bottom: solid 1px lightgray">
-                  <div class="col-md-4 col-4" style="text-align: left">
+                  <div class="col-md-5 col-5" style="text-align: left">
                     金融機関名
                   </div>
-                  <div class="col-md-8 col-8">
+                  <div class="col-md-7 col-7">
                     {{ bank.bank }} {{ bank.branch }}
                   </div>
                 </div>

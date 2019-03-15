@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% load humanize %}
 <hr>
 <div class="row">
     <div class="col-md-12 col-12">
@@ -7,17 +8,10 @@
     </div>
 </div>
 <hr>
-<!-- <hr>
-    <div class="d-flex justify-content-center h-100">
-        <div class="searchbar">
-        <input id="id_search_word" class="search_input" type="text" name="" placeholder="名前で検索">
-        <a href="#" id="id_search_patient"  class="search_icon"><i class="fas fa-search"></i></a>
-        </div>
-    </div>
-<hr> -->
+
 <div class="row">
     <div class="col-md-6 col-6">
-        <a href="{% url 'web:create_product' %}" class="btn btn-primary">新規登録</a>
+        <a href="{% url 'web:create_product' %}" class="btn btn-outline-primary">新規登録</a>
     </div>
 </div>
 <ul class="messages">
@@ -41,7 +35,7 @@
         <tr>
             <td><a href="{% url 'web:update_product' object.pk %}">{{ object.code }}</a></td>
             <td>{{ object.name }}</td>
-            <td>{{ object.price }}</td>
+            <td>{{ object.price | intcomma }}</td>
             <td>{{ object.tax_type }}</td>
         </tr> 
         {% endfor %}  

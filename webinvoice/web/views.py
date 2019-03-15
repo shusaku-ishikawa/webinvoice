@@ -140,10 +140,11 @@ class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
         context = super(ListInvoice, self).get_context_data(**kwargs)
         customer_list = Customer.objects.all()
         context['customer_list'] = customer_list
+        context['yearmonth'] = self.request.GET.get('yearmonth')
+        context['customer'] = self.request.GET.get('customer')
+        
         return context
 
-
-from django.db.models import F
 def pdf(request):
     data = Invoice.objects.all()
     yearmonth = request.GET.get('yearmonth')

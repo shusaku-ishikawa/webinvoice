@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'web',
     'easy_pdf',
 ]
@@ -95,7 +96,7 @@ DATABASES = {
         },
     }
 }
-
+NUMBER_GROUPING = 3
 # Logging
 ADMINS = [('shusaku ishikawa', 'ishikawasyuusaku@gmail.com')]
 
