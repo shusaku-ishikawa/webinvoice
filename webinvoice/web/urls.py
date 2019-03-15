@@ -3,6 +3,7 @@ from . import views
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django_pdfkit import PDFView
 
 app_name = 'web'
 admin.site.site_title = 'web invoice' 
@@ -20,11 +21,12 @@ urlpatterns = [
     path('create_product/', views.CreateProduct.as_view(), name='create_product'),
     path('update_product/<int:pk>', views.UpdateProduct.as_view(), name='update_product'),
     path('list_product/', views.ListProduct.as_view(), name='list_product'),
+    path('create_invoice/', views.CreateInvoice.as_view(), name='create_invoice'),
+    path('update_invoice/<int:pk>', views.UpdateInvoice.as_view(), name='update_invoice'),
+
     path('list_invoice/', views.ListInvoice.as_view(), name='list_invoice'),
-    path('pdf/', views.Pdf.as_view(), name='pdf'),
-    path('pdf2/', views.InvoicePDFView.as_view(), name='pdf2'),
-    path('pdf3/', views.FooPDFView.as_view(), name='pdf3'),
-    
+    path('my-pdf/', views.pdf, name='pdf4'),
+
     
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT) 

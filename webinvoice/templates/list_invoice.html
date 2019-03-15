@@ -38,9 +38,11 @@
         </td>
     </tr>
 </table>
-<button id="id_search_button" type="button" class="btn btn-primary">検索</button>
+<button id="id_search_button" type="button" class="btn btn-default">検索</button>
+<a href="{% url 'web:create_invoice' %}" class="btn btn-primary">新規作成</a>
 <button id="id_pdf_button" type="button" class="btn btn-success">PDF</button>
-    
+
+     
 <hr>
 
 <ul class="messages">
@@ -53,6 +55,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <th>ID</th>
             <th>請求番号</th>
             <th>顧客会社名</th>
             <th>商品名</th>
@@ -64,6 +67,7 @@
     <tbody>
         {% for object in object_list %}
         <tr>
+            <td><a href="{% url 'web:update_invoice' object.pk %}">{{ object.pk }}</a></td>
             <td>{{ object.code | default_if_none:"-"}}</td>
             <td>{{ object.customer.company_name }}</td>
             <td>{{ object.product.name }}</td>
@@ -88,6 +92,7 @@
     <script>
         $search_button = $('#id_search_button');
         $pdf_button = $('#id_pdf_button');
+        $gotocreate_button = $('#id_go_to_create_button');
         $search_customer = $('#id_customer');
         $search_year = $('#id_year');
         $search_month = $('#id_month');
@@ -135,8 +140,8 @@
             $pdf_button
             .on('click', () => {
                 var query = get_query_string();
-                window.location.href = "{% url 'web:pdf3' %}?" + query;;
-            })
+                window.location.href = "{% url 'web:pdf4' %}?" + query;;
+            });
 
             initialize_month();
             initialize_year();

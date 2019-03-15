@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import (AuthenticationForm, PasswordChangeForm,
                                        PasswordResetForm, SetPasswordForm,
                                        UserCreationForm)
-from .models import Customer, Product
+from .models import Customer, Product, Invoice
 from django.core.exceptions import ValidationError
 Clinic = get_user_model()
 
@@ -33,6 +33,16 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ('code', 'name', 'price', 'tax_type')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+
+class InvoiceForm(forms.ModelForm):
+    class Meta:
+        model = Invoice
+        fields = ('code', 'customer', 'product', 'amount', 'subtotal', 'tax', 'month_used')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

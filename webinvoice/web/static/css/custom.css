@@ -1,0 +1,15 @@
+@page {
+    size: A4;
+    margin: 1cm;
+
+}
+
+.header_row {
+    display: grid;
+    grid-template-columns: 500px 300px 500px;
+}
+.middle_row {
+    display: grid;
+    grid-template-columns: 700px 700px;
+}
+

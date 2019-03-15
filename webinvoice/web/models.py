@@ -167,6 +167,18 @@ class Invoice(models.Model):
         null = False,
         blank=False
     )
+    subtotal = models.IntegerField(
+        verbose_name = '小計',
+        null = False,
+        blank = False,
+        default = 0
+    )
+    tax = models.IntegerField(
+        verbose_name = '税',
+        null  =False,
+        blank = False,
+        default = 0
+    )
     month_used = models.CharField(
         verbose_name = 'ご利用月',
         max_length = 6,

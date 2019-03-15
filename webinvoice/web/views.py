@@ -14,19 +14,19 @@ from django.contrib.auth.views import (LoginView, LogoutView,
                                        PasswordResetConfirmView,
                                        PasswordResetDoneView,
                                        PasswordResetView)
-from .forms import LoginForm, CustomerForm, ProductForm
+from .forms import LoginForm, CustomerForm, ProductForm, InvoiceForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import serializers
 from django.core.signing import BadSignature, SignatureExpired, dumps, loads
 from django.forms.utils import ErrorList
 from django.shortcuts import redirect, resolve_url
-from django.template.loader import get_template
+from django.template.loader import get_template, render_to_string
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.views import generic
 from django.contrib.auth import authenticate
 from django.conf import settings
-from django.http import HttpResponseBadRequest,JsonResponse
+from django.http import HttpResponseBadRequest,JsonResponse, HttpResponse
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.views.generic.list import MultipleObjectMixin
@@ -41,7 +41,7 @@ from django.utils import timezone
 from .models import *
 from .render import Render
 from easy_pdf.views import PDFTemplateView
-
+import pdfkit
 
 # Create your views here.
 class TopPage(LoginRequiredMixin, generic.TemplateView):
@@ -102,6 +102,22 @@ class ListProduct(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
     template_name = 'list_product.html'
     paginate_by = 10  #and that's it !!
 
+class CreateInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
+    template_name = "create_invoice.html"
+    form_class = InvoiceForm
+    success_message = '登録情報を更新しました'
+    def get_success_url(self):
+        return reverse('web:list_invoice')
+
+
+class UpdateInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
+    model = Invoice
+    form_class = InvoiceForm
+    template_name = 'update_invoice.html'
+    success_message = '登録情報を更新しました'
+
+    def get_success_url(self):
+        return reverse('web:list_invoice')
 class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
     model = Invoice
     template_name = 'list_invoice.html'
@@ -126,124 +142,54 @@ class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
         context['customer_list'] = customer_list
         return context
 
-import xhtml2pdf.pisa as pisa
-from django.http import HttpResponse
-import io
-class FooPDFView(generic.ListView):
-    model = Invoice
-    template_name = 'pdf/invoice.html'
 
-    def get_queryset(self):
-        data = Invoice.objects.all()
-        yearmonth = self.request.GET.get('yearmonth')
-        customer_code = self.request.GET.get('customer')
+from django.db.models import F
+def pdf(request):
+    data = Invoice.objects.all()
+    yearmonth = request.GET.get('yearmonth')
+    total_wo_tax = data.aggregate(total_wo_tax = models.Sum('subtotal'))['total_wo_tax']
+    total_tax = data.aggregate(total_tax = models.Sum('tax'))['total_tax']
 
-        if yearmonth != None:
-            data = data.filter(month_used = yearmonth)
-        if customer_code != None:
-            customer = Customer.objects.filter(code = customer_code)
-            data = data.filter(customer = customer[0])
-         
-        return data
+    customer_code = request.GET.get('customer')
 
-    def render_to_response(self, context):
-        html = get_template(self.template_name).render(self.get_context_data())
-        result = io.BytesIO()
-        pdf = pisa.pisaDocument(
-            io.BytesIO(html.encode('utf-8')),
-            result,
-            link_callback=link_callback,
-            encoding='utf-8',
-        )
+    ourinfo = {
+        'zip': '111-1111',
+        'address_1': 'xxxxx',
+        'address_2': 'yyyyy',
+        'phone': 'eeeeee'
+    }
+    bank_info = {
+        'bank': '三井住友',
+        'branch': '立川支店',
+        'type': '普通',
+        'number': '111111',
+        'meigi': '株式会社ビジョン'
+    }
 
-        if not pdf.err:
-            return HttpResponse(
-                result.getvalue(),
-                content_type='application/pdf'
-            )
+    if yearmonth != None:
+        data = data.filter(month_used = yearmonth)
+    if customer_code != None:
+        customer = Customer.objects.filter(code = customer_code)
+        data = data.filter(customer = customer[0])
 
-        return HttpResponse('<pre>%s</pre>' % escape(html))
+    context = {
+        'data': data,
+        'total_wo_tax': total_wo_tax,
+        'total_tax': total_tax,
+        'total': total_wo_tax + total_tax,
+        'bank': bank_info,
+        'ourinfo': ourinfo,
+        'customer': customer[0],
 
-def link_callback(uri, rel):
-    sUrl = settings.STATIC_URL
-    sRoot = settings.STATIC_ROOT
-    path = os.path.join(sRoot, uri.replace(sUrl, ""))
+    }
+    html_template = render_to_string('pdf/invoice.html', context)
 
-    if not os.path.isfile(path):
-        raise Exception(
-            '%s must start with %s' % \
-            (uri, sUrl)
-        )
+    options = {
+        'page-size': 'Letter',
+        'encoding': "UTF-8",
+    }
+    pdf = pdfkit.from_string(html_template, False, options)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    return response
 
-    return path
-
-
-class Pdf(View):
-    def get(self, request):
-        data = Invoice.objects.all()
-        yearmonth = self.request.GET.get('yearmonth')
-        customer_code = self.request.GET.get('customer')
-
-        ourinfo = {
-            'zip': '111-1111',
-            'address_1': 'xxxxx',
-            'address_2': 'yyyyy',
-            'phone': 'eeeeee'
-        }
-        bank_info = {
-            'bank': '三井住友',
-            'branch': '立川支店',
-            'type': '普通',
-            'number': '111111',
-            'meigi': '株式会社ビジョン'
-        }
-
-        if yearmonth != None:
-            data = data.filter(month_used = yearmonth)
-        if customer_code != None:
-            customer = Customer.objects.filter(code = customer_code)
-            data = data.filter(customer = customer[0])
-
-        params = {
-            'invoices': data,
-            'ourinfo': ourinfo,
-            'bank': bank_info,
-            'customer': customer
-        }
-
-        return Render.render('pdf/invoice.html', params)
-
-class InvoicePDFView(PDFTemplateView):
-    template_name = 'pdf/invoice.html'
-    def get_context_data(self, **kwargs):
-        context = super(InvoicePDFView, self).get_context_data(**kwargs)
-
-        data = Invoice.objects.all()
-        yearmonth = self.request.GET.get('yearmonth')
-        customer_code = self.request.GET.get('customer')
-
-        ourinfo = {
-            'zip': '111-1111',
-            'address_1': 'xxxxx',
-            'address_2': 'yyyyy',
-            'phone': 'eeeeee'
-        }
-        bank_info = {
-            'bank': '三井住友',
-            'branch': '立川支店',
-            'type': '普通',
-            'number': '111111',
-            'meigi': '株式会社ビジョン'
-        }
-
-        if yearmonth != None:
-            data = data.filter(month_used = yearmonth)
-        if customer_code != None:
-            customer = Customer.objects.filter(code = customer_code)
-            data = data.filter(customer = customer[0])
-
-        context['invoices'] = data
-        context['ourinfo'] = ourinfo
-        context['bank'] = bank_info
-        context['customer'] = customer
-        return context
+  
