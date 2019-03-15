@@ -1,4 +1,4 @@
-<!DOCTYPE html>{% load static %}
+<!DOCTYPE html>{% load static %}{% load humanize %}
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -11,7 +11,7 @@
  
   <!-- <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css"> -->
   <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css"> 
-  <!-- <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css">-->
+  <!-- <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css"> -->
   
   <style>
     #summarytable tr th {
@@ -40,8 +40,13 @@
           お客様No：<span id="customerNo">{{ customer.code }}</span><br/>
           請求番号：<span id="invoiceCode">***xxx*****</span></br></br>
           <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
-          <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_logo.png" style="width:6rem;height:6rem;"/>
-          <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_stamp.png" style="width:4rem;height:4rem"/></br>
+          <!-- <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_logo.png" style="width:6rem;height:6rem;"/> -->
+          <!-- <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/> -->
+          <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/>
+          <!-- <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_stamp.png" style="width:4rem;height:4rem"/></br> -->
+          <!-- <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:4rem;height:4rem;"/><br/> -->
+          <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:4rem;height:4rem"/></br>
+          
           〒{{ ourinfo.zip }}<br/>
           {{ ourinfo.address_1 }}<br/>
           {{ ourinfo.address_2 }}<br/></br>
@@ -50,9 +55,10 @@
           （平日9:00-18：00）</br>
         </div> <!-- col -->
       </div> <!-- row -->
-    <div class="row">
+      <hr style="border-color:black">
+      <div class="row">
       <div style="margin-top:2em;"></div>
-      <hr>
+      
       <div class="col-md-6 col-6">
         <h2 style="margin-top:0;padding-left:5rem;padding-top:2rem;padding-bottom:2rem;background-color:lightblue">請求書</h2>
         <p>平素は格別のお引き立てを賜り厚くお礼申し上げます。</br>下記の通りご請求申し上げます。</p>
@@ -61,11 +67,11 @@
         <table id="summarytable" class="table">
           <tr>
               <th style="width: 30%">ご請求金額</th>
-              <td align="right">0</td>
+              <td align="right">{{ total | intcomma }}</td>
           </tr>
           <tr>
               <th style="width: 30%">お支払い期限</th>
-              <td align="right">0</td>
+              <td align="right">2019/4/1</td>
           </tr>
           <tr>
               <th style="width: 30%">お振込み先</th>
@@ -124,11 +130,11 @@
             <td>{{ invoice.product.code }}</td>
             <td>{{ invoice.product.name }}</td>
             <td>{{ invoice.amount }}</td>
-            <td>{{ invoice.product.price }}</td>
+            <td>{{ invoice.product.price | intcomma }}</td>
             <td>{{ invoice.product.tax_type }}</td>
-            <td>{{ invoice.subtotal }}</td>
-            <td>{{ invoice.tax }}</td>
-            <td>{{ invoice.subtotal|add:invoice.tax }}</td>
+            <td>{{ invoice.subtotal | intcomma }}</td>
+            <td>{{ invoice.tax | intcomma }}</td>
+            <td>{{ invoice.subtotal|add:invoice.tax | intcomma }}</td>
           </tr>
           {%  endfor %}
         </tbody>
@@ -141,15 +147,15 @@
         <table class="table">
           <tr>
             <th style="width: 40%">税抜金額合計</th>
-            <td>{{ total_wo_tax }}</td>
+            <td>{{ total_wo_tax | intcomma }}</td>
           </tr>
           <tr>
             <th style="width: 40%">税額合計</th>
-            <td>{{ total_tax }}</td>
+            <td>{{ total_tax | intcomma }}</td>
           </tr>
           <tr>
             <th  style="width:40%">税込金額合計</th>
-            <td>{{ total }}</td>
+            <td>{{ total | intcomma }}</td>
           </tr>
           
         </table>
