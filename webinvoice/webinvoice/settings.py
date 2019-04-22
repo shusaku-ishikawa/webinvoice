@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'web',
-    'easy_pdf',
 ]
 
 
@@ -194,7 +193,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'web/static'),
 ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'uploaded_files')
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

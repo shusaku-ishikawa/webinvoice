@@ -1,12 +1,14 @@
 from django import forms
-from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.models import User,PermissionsMixin
 from django.core.mail import send_mail
 from django.core.validators import MaxValueValidator, MinValueValidator,  RegexValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
+from django.conf import settings
+from datetime import datetime, date, timedelta
+from django.db.models import Q
 
 import re
 
@@ -28,57 +30,17 @@ def validate_month(value):
     if not reg.match(value):
         raise ValidationError(u'%s 年月のフォーマットが正しくありません' % value)
 
-class Product(models.Model):
+class Company(models.Model):
     def __str__(self):
-        return self.name
+        return self.kanji_name
 
     class Meta:
-        verbose_name = '商材'
-        verbose_name_plural = '商材'
-    
-    tax_type_choice = (
-        ('課税', '課税'),
-        ('非課税', '非課税')
-    )
-    code = models.CharField(
-        verbose_name = '商品コード',
-        null = False,
-        blank = False,
-        unique = True,
-        max_length = 50,
-        validators = [
-            alphanumeric
-        ]
-    )
-    name = models.CharField(
-        verbose_name = '商品・サービス名',
-        max_length = 100,
-        blank = False,
-        null = False
-    )
-    price = models.IntegerField(
-        verbose_name='単価',
-        null = False,
-        blank = False
-    )
-    tax_type = models.CharField(
-        verbose_name = '税区分',
-        max_length = 10,
-        null = False,
-        blank = False,
-        choices = tax_type_choice
-    )
+        verbose_name = '会社'
+        verbose_name_plural = '会社'
 
-class Customer(models.Model):
-    def __str__(self):
-        return self.company_name
-
-    class Meta:
-        verbose_name = '顧客'
-        verbose_name_plural = '顧客'
-
-    code = models.CharField(
-        verbose_name = _('お客様No'), 
+    # 企業ID
+    company_id = models.CharField(
+        verbose_name = _('会社ID'), 
         max_length = 50,
         null = False,
         blank = False,
@@ -87,26 +49,34 @@ class Customer(models.Model):
             alphanumeric
         ]
     )
-    company_name = models.CharField(
-        verbose_name = "会社名",
+    # 法人番号
+    corporate_number = models.CharField(
+        verbose_name = _('法人番号'),
+        max_length = 50,
+        null = False,
+        blank = False,
+        unique = True,
+        validators = [
+            alphanumeric
+        ]
+    )
+    # 契約者名カナ
+    kana_name = models.CharField(
+        verbose_name = "契約者名カナ",
         max_length = 50,
         null = False,
         blank = False
     )
-    dept_name = models.CharField(
-        verbose_name = "部署名",
+    # 契約者名漢字
+    kanji_name = models.CharField(
+        verbose_name = "契約者名漢字",
         max_length = 50,
         null = False,
         blank = False
     )
-    representative = models.CharField(
-        verbose_name = "担当者名",
-        max_length = 50,
-        null = False,
-        blank = False
-    )
+    # 郵便番号
     zip = models.CharField(
-        verbose_name = _('送付先郵便番号'), 
+        verbose_name = _('契約者郵便番号'), 
         max_length = 10,
         null = False,
         blank = False,
@@ -114,19 +84,34 @@ class Customer(models.Model):
             validate_postcode,
         ]
     )
-    address = models.CharField(
-        verbose_name = "請求書送付先住所",
-        max_length = 100,
+
+    address_pref = models.CharField(
+        verbose_name = "契約者都道府県",
+        max_length = 10,
         null = False,
         blank = False
     )
-    email = models.EmailField(
-        verbose_name = 'メールアドレス',
-        null = True,
-        blank = True,
+    address_city = models.CharField(
+        verbose_name = "契約者市区町村",
+        max_length = 30,
+        null = False,
+        blank = False
     )
-    phone = models.CharField(
-        verbose_name = _('電話番号'), 
+    address_street = models.CharField(
+        verbose_name = "契約者住所番地以降",
+        max_length = 50,
+        null = False,
+        blank = False
+    )
+    address_bld = models.CharField(
+        verbose_name = "契約者住所建物名",
+        max_length = 50,
+        null = False,
+        blank = False
+    )
+
+    telephone_1 = models.CharField(
+        verbose_name = _('連絡先電話番号1'), 
         max_length = 20,
         null = True,
         blank = True,
@@ -134,55 +119,295 @@ class Customer(models.Model):
             validate_phonenumber,
         ]
     )
-
-class Invoice(models.Model):
-    def __str__(self):
-        if self.code:
-            return self.code
-        else:
-            return '未請求'
-
-    class Meta:
-        verbose_name = '請求明細'
-        verbose_name_plural = '請求明細'
-    
-    code = models.CharField(
-        verbose_name = '請求番号',
+    telephone_2 = models.CharField(
+        verbose_name = _('連絡先電話番号2'), 
+        max_length = 20,
         null = True,
         blank = True,
-        max_length = 100
-    )
-    customer = models.ForeignKey(
-        Customer,
-        verbose_name = '顧客',
-        on_delete = models.CASCADE
-    )
-    product = models.ForeignKey(
-        Product,
-        verbose_name = '商品',
-        on_delete = models.CASCADE
-    )
-    amount = models.IntegerField(
-        verbose_name='数量',
-        null = False,
-        blank=False
-    )
-    subtotal = models.IntegerField(
-        verbose_name = '小計',
-        null = False,
-        blank = False,
-        default = 0
-    )
-    tax = models.IntegerField(
-        verbose_name = '税',
-        null  =False,
-        blank = False,
-        default = 0
-    )
-    month_used = models.CharField(
-        verbose_name = 'ご利用月',
-        max_length = 6,
         validators = [
-            validate_month,
+            validate_phonenumber,
         ]
     )
+    fax = models.CharField(
+        verbose_name = _('FAX番号'), 
+        max_length = 20,
+        null = True,
+        blank = True,
+        validators = [
+            validate_phonenumber,
+        ]
+    )
+    hp_url = models.CharField(
+        verbose_name = _('URL'), 
+        max_length = 20,
+        null = True,
+        blank = True
+    )
+    owner_name = models.CharField(
+        verbose_name = "代表者名",
+        max_length = 50,
+        null = False,
+        blank = False
+    )
+    representative_name = models.CharField(
+        verbose_name = "担当者名",
+        max_length = 50,
+        null = False,
+        blank = False
+    )
+    email = models.EmailField(
+        verbose_name = _('メール'),
+        blank = True,
+        null = True
+    )
+    note = models.TextField(
+        null = True,
+        blank = True
+    )
+    registered_at = models.DateTimeField(
+        verbose_name = '登録日',
+        auto_now_add = True
+    )
+    registered_by = models.ForeignKey(
+        to = User,
+        null = True,
+        verbose_name = '登録者',
+        on_delete = models.SET_NULL,
+        related_name = 'company_registered'
+    )
+    updated_at = models.DateTimeField(
+        verbose_name = '更新日',
+        auto_now = True
+    )   
+    updated_by = models.ForeignKey(
+        to = User,
+        null = True,
+        verbose_name = '更新者',
+        on_delete = models.SET_NULL,
+        related_name = 'company_updated'
+    )
+
+
+class InvoiceEntity(models.Model):
+    def __str__(self):
+        return self.code
+
+    class Meta:
+        verbose_name = '請求管理簿'
+        verbose_name_plural = '請求管理簿'
+    
+    company = models.ForeignKey(
+        Company,
+        verbose_name = '会社',
+        on_delete = models.CASCADE
+    )
+
+    invoice_zip = models.CharField(
+        verbose_name = _('請求郵便番号'), 
+        max_length = 10,
+        null = False,
+        blank = False,
+        validators = [
+            validate_postcode,
+        ]
+    )
+
+    invoice_address_pref = models.CharField(
+        verbose_name = "請求都道府県",
+        max_length = 10,
+        null = False,
+        blank = False
+    )
+    invoice_address_city = models.CharField(
+        verbose_name = "請求市区町村",
+        max_length = 30,
+        null = False,
+        blank = False
+    )
+    invoice_address_street = models.CharField(
+        verbose_name = '請求住所番地以降',
+        max_length = 50,
+        null = False,
+        blank = False
+    )
+    invoice_address_bld = models.CharField(
+        verbose_name = "請求住所建物名",
+        max_length = 50,
+        null = False,
+        blank = False
+    )
+    invoice_company_name = models.CharField(
+        verbose_name = '請求会社名',
+        max_length = 100,
+        null = True,
+        blank = True
+    )
+    inovoice_dept = models.CharField(
+        verbose_name = '請求部署',
+        max_length = 100,
+        null = True,
+        blank = True
+    )
+    invoice_person = models.CharField(
+        verbose_name = '請求宛名',
+        max_length = 50,
+        null = True,
+        blank = True
+    )
+    invoice_project_1 = models.CharField(
+        verbose_name = '請求宛名1',
+        max_length = 50,
+        null = True,
+        blank = True
+    )
+    invoice_project_2 = models.CharField(
+        verbose_name = '請求宛名2',
+        max_length = 50,
+        null = True,
+        blank = True
+    )
+    
+    invoice_project_3 = models.CharField(
+        verbose_name = '請求宛名3',
+        max_length = 50,
+        null = True,
+        blank = True
+    )
+    payment_method_choice = (
+        ('クレカ', 'クレカ'),
+        ('引落', '引落'),
+        ('振込', '振込')
+    )
+
+    closing_dates = (
+        ('末日', '末日'),
+        ('20日', '20日'),
+    )
+    
+    inovoice_sent_dates = (
+        ('末日', '末日'),
+        ('20日', '20日'),
+    )
+
+    urikake_or_advance = (
+        ('売掛', '売掛'),
+        ('前入金', '前入金'),
+    )
+    invoice_periods = (
+        ('毎月', '毎月'),
+        ('6ヶ月', '6ヶ月'),
+    )
+    
+
+    payment_method = models.CharField(
+        verbose_name = '支払い方法',
+        max_length = 20,
+        choices = payment_method_choice,
+        default = '振込'
+    )
+
+    invoice_closed_at = models.CharField(
+        verbose_name = '締め日',
+        max_length = 20,
+        choices = closing_dates
+    )
+    
+    payment_due_to = models.CharField(
+        verbose_name = '支払い期日',
+        max_length = 20,
+        choices = closing_dates
+    )
+    
+    invoice_sent_at = models.CharField(
+        verbose_name = '支払い期日',
+        max_length = 20,
+        choices = inovoice_sent_dates
+    )
+    invoice_timing = models.CharField(
+        verbose_name = '請求タイミング',
+        max_length = 20,
+        choices = urikake_or_advance
+    )
+    invoice_period = models.CharField(
+        verbose_name = '請求周期',
+        max_length = 20,
+        choices = invoice_periods
+    )
+    
+    bank_name = models.CharField(
+        verbose_name = '振込銀行名',
+        max_length = 20
+    )
+    bank_branch_name = models.CharField(
+        verbose_name = '振込視点名',
+        max_length = 20
+    )
+
+    bank_account_type = models.CharField(
+        verbose_name = '口座種類',
+        max_length = 20
+    )
+
+    bank_account_number = models.CharField(
+        verbose_name = '口座番号',
+        max_length = 20
+    )
+    credit_card_settlement_company = models.CharField(
+        verbose_name = 'クレカ決済会社',
+        max_length = 20
+    )
+    credit_card_code = models.CharField(
+        verbose_name = 'クレカコード',
+        max_length = 20
+    )
+    credit_card_id = models.CharField(
+        verbose_name = 'クレカID',
+        max_length = 20
+    )
+    settlement_company = models.CharField(
+        verbose_name = '決済会社',
+        max_length = 20
+    )
+    settlement_code = models.CharField(
+        verbose_name = '決済コード',
+        max_length = 20
+    )
+    settlement_id = models.CharField(
+        verbose_name = '決済ID',
+        max_length = 20
+    )
+    note = models.CharField(
+        verbose_name = '決済ID',
+        max_length = 20
+    )
+    
+    note = models.TextField(
+        null = True,
+        blank = True
+    )
+    registered_at = models.DateTimeField(
+        verbose_name = '登録日',
+        auto_now_add = True
+    )
+    registered_by = models.ForeignKey(
+        User,
+        null = True,
+        verbose_name = '登録者',
+        on_delete = models.SET_NULL,
+        related_name = 'entity_registered'
+    )
+    updated_at = models.DateTimeField(
+        verbose_name = '更新日',
+        auto_now = True
+    )   
+    updated_by = models.ForeignKey(
+        to = User,
+        null = True,
+        verbose_name = '更新者',
+        on_delete = models.SET_NULL,
+        related_name = 'entity_updated'
+    )
+
+
+
+    

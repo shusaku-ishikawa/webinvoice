@@ -1,17 +1,12 @@
-<!DOCTYPE html>{% load static %}{% load humanize %}
+<!DOCTYPE html>{% load static %}{% load humanize %}{% load extra %}
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>invoice</title>
 
-  <script src="{% static 'js/bootstrap.js' %}"></script>
- <!-- <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css">-->
-  <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/cssbootstrap-grid.css">
-  <!-- <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/cssbootstrap-grid.css"> -->
- 
   <!-- <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css"> -->
-  <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css"> 
-  <!-- <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css">  -->
+  <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css">
   
   <style>
     #summarytable tr th {
@@ -36,16 +31,16 @@
         </div>
 
         <div class="col-md-6 col-6" style="text-align: right">
-          発行日：<span id="date">xxxx年xx月xx日</span><br/>
+          発行日：<span id="date">{% now 'Y/n/j' %}</span><br/>
           お客様No：<span id="customerNo">{{ customer.code }}</span><br/>
           請求番号：<span id="invoiceCode">***xxx*****</span></br></br>
           <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
           <!-- <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_logo.png" style="width:6rem;height:6rem;"/> -->
-          <!-- <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/> -->
-          <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/>
+          <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/>
+          <!-- <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/> -->
           <!-- <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_stamp.png" style="width:4rem;height:4rem"/></br> -->
-          <!-- <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:4rem;height:4rem;"/><br/> -->
-          <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:4rem;height:4rem"/></br>
+          <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:4rem;height:4rem;"/><br/>
+          <!-- <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:4rem;height:4rem"/></br> -->
           
           〒{{ ourinfo.zip }}<br/>
           {{ ourinfo.address_1 }}<br/>
@@ -123,18 +118,18 @@
           </tr>
         </thead>
         <tbody>
-          {% for invoice in data %}
+          {% for obj in data %}
           <tr>
             <td>{{ forloop.counter }}</td>
-            <td>{{ invoice.month_used }}</td>
-            <td>{{ invoice.product.code }}</td>
-            <td>{{ invoice.product.name }}</td>
-            <td>{{ invoice.amount }}</td>
-            <td>{{ invoice.product.price | intcomma }}</td>
-            <td>{{ invoice.product.tax_type }}</td>
-            <td>{{ invoice.subtotal | intcomma }}</td>
-            <td>{{ invoice.tax | intcomma }}</td>
-            <td>{{ invoice.subtotal|add:invoice.tax | intcomma }}</td>
+            <td>{{ obj.month_used }}</td>
+            <td>{{ obj.product_info.code }}</td>
+            <td>{{ obj.product_info.name }}</td>
+            <td align="right">{{ obj.count_per_product.amount }}</td>
+            <td align="right">{{ obj.product_info.price | intcomma }}</td>
+            <td>{{ obj.product_info.tax_type }}</td>
+            <td align="right">{{ obj.total_per_product | intcomma }}</td>
+            <td align="right">{{ obj.tax | intcomma | default_if_none:"-" }}</td>
+            <td align="right">{{ obj.total_per_product|add:obj.tax | intcomma }}</td>
           </tr>
           {%  endfor %}
         </tbody>

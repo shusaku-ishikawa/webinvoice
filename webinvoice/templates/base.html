@@ -1,5 +1,4 @@
 {% load static %}
-{% load humanize %}
 <!doctype html>
 <html lang="ja">
 <head>
@@ -36,17 +35,9 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'web:top' %}">ホーム</a>
+                        <a class="nav-link" href="{% url 'web:create_company' %}">顧客</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'web:list_customer' %}">顧客</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'web:list_product' %}">商品</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'web:list_invoice' %}">請求</a>
-                    </li>
+                   
                 </ul>
             </div>
         </div>

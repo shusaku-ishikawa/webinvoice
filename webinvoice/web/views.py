@@ -14,7 +14,7 @@ from django.contrib.auth.views import (LoginView, LogoutView,
                                        PasswordResetConfirmView,
                                        PasswordResetDoneView,
                                        PasswordResetView)
-from .forms import LoginForm, CustomerForm, ProductForm, InvoiceForm
+from .forms import *
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import serializers
 from django.core.signing import BadSignature, SignatureExpired, dumps, loads
@@ -39,9 +39,11 @@ from django.db import models
 from django.views.generic import View
 from django.utils import timezone
 from .models import *
-from .render import Render
-from easy_pdf.views import PDFTemplateView
 import pdfkit
+from django.core.files.base import ContentFile
+import csv
+from io import TextIOWrapper, StringIO
+from django.db.models import *
 
 # Create your views here.
 class TopPage(LoginRequiredMixin, generic.TemplateView):
@@ -57,140 +59,197 @@ class Logout(LoginRequiredMixin, LogoutView):
     template_name = 'top.html'
 
 
-class CreateCustomer(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
-    template_name = "create_customer.html"
-    form_class = CustomerForm
+class CreateCompany(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
+    template_name = "create_company.html"
+    form_class = CompanyForm
     success_message = '登録情報を更新しました'
     def get_success_url(self):
-        return reverse('web:list_customer')
+        return reverse('web:list_company')
 
-
-class UpdateCustomer(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
-    model = Customer
-    form_class = CustomerForm
-    template_name = 'update_customer.html'
-    success_message = '登録情報を更新しました'
-
-    def get_success_url(self):
-        return reverse('web:list_customer')
-
-class ListCustomer(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
-    model = Customer
-    template_name = 'list_customer.html'
+class ListCompany(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
+    model = Company
+    template_name = 'list_company.html'
     paginate_by = 10  #and that's it !!
 
 
-class CreateProduct(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
-    template_name = "create_product.html"
-    form_class = ProductForm
-    success_message = '登録情報を更新しました'
-    def get_success_url(self):
-        return reverse('web:list_product')
+# class UpdateCustomer(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
+#     model = Customer
+#     form_class = CustomerForm
+#     template_name = 'update_customer.html'
+#     success_message = '登録情報を更新しました'
+
+#     def get_success_url(self):
+#         return reverse('web:list_customer')
 
 
-class UpdateProduct(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
-    model = Product
-    form_class = ProductForm
-    template_name = 'update_product.html'
-    success_message = '登録情報を更新しました'
 
-    def get_success_url(self):
-        return reverse('web:list_product')
-
-class ListProduct(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
-    model = Product
-    template_name = 'list_product.html'
-    paginate_by = 10  #and that's it !!
-
-class CreateInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
-    template_name = "create_invoice.html"
-    form_class = InvoiceForm
-    success_message = '登録情報を更新しました'
-    def get_success_url(self):
-        return reverse('web:list_invoice')
+# class CreateProduct(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
+#     template_name = "create_product.html"
+#     form_class = ProductForm
+#     success_message = '登録情報を更新しました'
+#     def get_success_url(self):
+#         return reverse('web:list_product')
 
 
-class UpdateInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
-    model = Invoice
-    form_class = InvoiceForm
-    template_name = 'update_invoice.html'
-    success_message = '登録情報を更新しました'
+# class UpdateProduct(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
+#     model = Product
+#     form_class = ProductForm
+#     template_name = 'update_product.html'
+#     success_message = '登録情報を更新しました'
 
-    def get_success_url(self):
-        return reverse('web:list_invoice')
-class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
-    model = Invoice
-    template_name = 'list_invoice.html'
-    paginate_by = 100
+#     def get_success_url(self):
+#         return reverse('web:list_product')
 
-    def get_queryset(self):
-        data = Invoice.objects.all()
-        yearmonth = self.request.GET.get('yearmonth')
-        customer_code = self.request.GET.get('customer')
+# class ListProduct(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
+#     model = Product
+#     template_name = 'list_product.html'
+#     paginate_by = 10  #and that's it !!
 
-        if yearmonth != None:
-            data = data.filter(month_used = yearmonth)
-        if customer_code != None:
-            customer = Customer.objects.filter(code = customer_code)
-            data = data.filter(customer = customer[0])
+# class CreateOrder(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
+#     template_name = "create_order.html"
+#     form_class = OrderForm
+#     success_message = '登録情報を更新しました'
+#     def get_success_url(self):
+#         return reverse('web:list_order')
+
+
+# class UpdateOrder(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
+#     model = Order
+#     form_class = OrderForm
+#     template_name = 'update_order.html'
+#     success_message = '登録情報を更新しました'
+
+#     def get_success_url(self):
+#         return reverse('web:list_order')
+
+# class ListOrder(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
+#     model = Order
+#     template_name = 'list_order.html'
+#     paginate_by = 100
+
+#     def get_queryset(self):
+#         data = Order.objects.all()
+#         yearmonth = self.request.GET.get('yearmonth')
+#         customer_code = self.request.GET.get('customer')
+
+#         if yearmonth != None:
+#             data = data.filter(month_used = yearmonth)
+#         if customer_code != None:
+#             customer = Customer.objects.filter(code = customer_code)
+#             data = data.filter(customer = customer[0])
          
-        return data
+#         return data
 
-    def get_context_data(self, **kwargs):
-        context = super(ListInvoice, self).get_context_data(**kwargs)
-        customer_list = Customer.objects.all()
-        context['customer_list'] = customer_list
-        context['yearmonth'] = self.request.GET.get('yearmonth')
-        context['customer'] = self.request.GET.get('customer')
+#     def get_context_data(self, **kwargs):
+#         context = super(ListOrder, self).get_context_data(**kwargs)
+#         customer_list = Customer.objects.all()
+#         context['customer_list'] = customer_list
+#         context['yearmonth'] = self.request.GET.get('yearmonth')
+#         context['customer'] = self.request.GET.get('customer')
         
-        return context
+#         return context
 
-def pdf(request):
-    data = Invoice.objects.all()
-    yearmonth = request.GET.get('yearmonth')
-    total_wo_tax = data.aggregate(total_wo_tax = models.Sum('subtotal'))['total_wo_tax']
-    total_tax = data.aggregate(total_tax = models.Sum('tax'))['total_tax']
+# class UploadOrderCsv(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
+#     form_class = UploadCsvForm
+#     template_name = 'import_order_csv.html'
 
-    customer_code = request.GET.get('customer')
+#     def form_valid(self, form):
+#         file_name = form.save()
 
-    ourinfo = {
-        'zip': '111-1111',
-        'address_1': 'xxxxx',
-        'address_2': 'yyyyy',
-        'phone': 'eeeeee'
-    }
-    bank_info = {
-        'bank': '三井住友',
-        'branch': '立川支店',
-        'type': '普通',
-        'number': '111111',
-        'meigi': '株式会社ビジョン'
-    }
+#         with open('media/' + file_name, 'r') as f:
+#             reader = csv.reader(f)
+#             for row in reader:
+#                 print(len(row))
+#                 print(row[1])
+#                 print(row[2])
+#                 print(row[3])
+                
+        
+#         context = {
+#             'file_name': file_name,
+#             'form': form,
+            
+#         }
+#         return self.render_to_response(context)
 
-    if yearmonth != None:
-        data = data.filter(month_used = yearmonth)
-    if customer_code != None:
-        customer = Customer.objects.filter(code = customer_code)
-        data = data.filter(customer = customer[0])
+# class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
+#     model = Invoice
+#     template_name = 'list_invoice.html'
+#     paginate_by = 10
 
-    context = {
-        'data': data,
-        'total_wo_tax': total_wo_tax,
-        'total_tax': total_tax,
-        'total': total_wo_tax + total_tax,
-        'bank': bank_info,
-        'ourinfo': ourinfo,
-        'customer': customer[0],
 
-    }
-    html_template = render_to_string('pdf/invoice.html', context)
+# def pdf(request):
+#     data = Order.objects.all()
+#     customer_code = request.GET.get('customer')
+#     yearmonth = request.GET.get('yearmonth')
+#     total_wo_tax = 0
+#     total_tax = 0
 
-    options = {
-        'page-size': 'Letter',
-        'encoding': "UTF-8",
-    }
-    pdf = pdfkit.from_string(html_template, False, options)
-    response = HttpResponse(pdf, content_type='application/pdf')
-    return response
+#     for order in data:
+#         total_wo_tax += order.product.price * order.amount
+#         if order.product.tax_type == '課税':
+#             total_tax += order.product.price * settings.TAX_RATE * order.amount
+    
+    
+#     ourinfo = {
+#         'zip': '111-1111',
+#         'address_1': 'xxxxx',
+#         'address_2': 'yyyyy',
+#         'phone': 'eeeeee'
+#     }
+#     bank_info = {
+#         'bank': '三井住友',
+#         'branch': '立川支店',
+#         'type': '普通',
+#         'number': '111111',
+#         'meigi': '株式会社ビジョン'
+#     }
+
+#     if yearmonth != None:
+#         data = data.filter(month_used = yearmonth)
+#     if customer_code != None:
+#         customer = Customer.objects.filter(code = customer_code)[0]
+#         data = data.filter(customer = customer)
+
+#     total_per_product = data.values('product', 'month_used').annotate(count_per_product = Sum('amount'), total_per_product = Sum(F('product__price') * F('amount'), output_field=models.FloatField()))
+#     tax_per_product = data.filter(product__tax_type = '課税').values('product', 'month_used').annotate(tax_per_product = Sum(F('tax_rate__rate') * F('product__price') * F('amount'), output_field=models.FloatField()))
+#     for obj in total_per_product:
+#         obj['product_info'] = Product.objects.get(pk = obj['product'])
+#         for tax_obj in tax_per_product:
+#             if tax_obj['product'] == obj['product']:
+#                 obj['tax'] = tax_obj['tax_per_product']
+#         if not 'tax' in obj.keys():
+#             obj['tax'] = 0
+        
+
+#     print(total_per_product)
+#     context = {
+#         'data': total_per_product,
+#         'total_wo_tax': total_wo_tax,
+#         'total_tax': int(total_tax),
+#         'total': total_wo_tax + int(total_tax),
+#         'bank': bank_info,
+#         'ourinfo': ourinfo,
+#         'customer': customer,
+#     }
+#     html_template = render_to_string('pdf/invoice.html', context)
+
+#     options = {
+#         'page-size': 'Letter',
+#         'encoding': "UTF-8",
+#     }
+
+#     pdf = pdfkit.from_string(html_template, False, options)
+
+#     invoice_code = customer.code + '_' + datetime.today().strftime('%Y%m%d%H%M')
+#     invoice = Invoice()
+#     invoice.customer = customer
+#     invoice.code = invoice_code
+#     invoice.file.save(invoice_code + '.pdf', ContentFile(pdf))
+#     invoice.save()
+#     data.update(invoice = invoice)
+
+#     response = HttpResponse(pdf, content_type='application/pdf')
+#     return response
 
   

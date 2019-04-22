@@ -3,7 +3,6 @@ from . import views
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from django_pdfkit import PDFView
 
 app_name = 'web'
 admin.site.site_title = 'web invoice' 
@@ -14,18 +13,19 @@ urlpatterns = [
     path('', views.Login.as_view(), name=''),
     path('top/', views.TopPage.as_view(), name='top'),
     path('login/', views.Login.as_view(), name='login'),
-    path('logout/', views.Logout.as_view(), name='logout'),
-    path('create_customer/', views.CreateCustomer.as_view(), name='create_customer'),
-    path('update_customer/<int:pk>', views.UpdateCustomer.as_view(), name='update_customer'),
-    path('list_customer/', views.ListCustomer.as_view(), name='list_customer'),
-    path('create_product/', views.CreateProduct.as_view(), name='create_product'),
-    path('update_product/<int:pk>', views.UpdateProduct.as_view(), name='update_product'),
-    path('list_product/', views.ListProduct.as_view(), name='list_product'),
-    path('create_invoice/', views.CreateInvoice.as_view(), name='create_invoice'),
-    path('update_invoice/<int:pk>', views.UpdateInvoice.as_view(), name='update_invoice'),
-
-    path('list_invoice/', views.ListInvoice.as_view(), name='list_invoice'),
-    path('my-pdf/', views.pdf, name='pdf4'),
+    # path('logout/', views.Logout.as_view(), name='logout'),
+    path('create_customer/', views.CreateCompany.as_view(), name='create_company'),
+    # path('update_customer/<int:pk>', views.UpdateCustomer.as_view(), name='update_customer'),
+    # path('list_customer/', views.ListCustomer.as_view(), name='list_customer'),
+    # path('create_product/', views.CreateProduct.as_view(), name='create_product'),
+    # path('update_product/<int:pk>', views.UpdateProduct.as_view(), name='update_product'),
+    # path('list_product/', views.ListProduct.as_view(), name='list_product'),
+    # path('create_order/', views.CreateOrder.as_view(), name='create_order'),
+    # path('update_order/<int:pk>', views.UpdateOrder.as_view(), name='update_order'),
+    # path('list_order/', views.ListOrder.as_view(), name='list_order'),
+    # path('list_invoice/', views.ListInvoice.as_view(), name='list_invoice'),
+    # path('upload_csv/', views.UploadOrderCsv.as_view(), name='upload_csv'),
+    # path('my-pdf/', views.pdf, name='pdf4'),
 
     
     
