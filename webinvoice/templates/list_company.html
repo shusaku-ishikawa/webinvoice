@@ -4,21 +4,14 @@
 <hr>
 <div class="row">
     <div class="col-md-12 col-12">
-        <h3 class="text-center">顧客一覧ページ</h3>
+        <h3 class="text-center">会社情報ページ</h3>
     </div>
 </div>
 <hr>
-<!-- <hr>
-    <div class="d-flex justify-content-center h-100">
-        <div class="searchbar">
-        <input id="id_search_word" class="search_input" type="text" name="" placeholder="名前で検索">
-        <a href="#" id="id_search_patient"  class="search_icon"><i class="fas fa-search"></i></a>
-        </div>
-    </div>
-<hr> -->
+
 <div class="row">
     <div class="col-md-6 col-6">
-        <a href="{% url 'web:create_customer' %}" class="btn btn-outline-primary">新規登録</a>
+        <a href="{% url 'web:create_company' %}" class="btn btn-primary"><i class="fas fa-user-plus"></i> 新規登録</a>
     </div>
 </div>
 <ul class="messages">
@@ -28,8 +21,8 @@
 </ul>
 {% if object_list %}
 <div class="table-responsive">
-<table class="table table-striped">
-    <thead>
+<table class="table table-bordered">
+    <thead class="thead-dark">
         <tr>
             <th>会社ID.</th>
             <th>法人番号</th>
@@ -37,32 +30,63 @@
             <th>契約者漢字</th>
             <th>郵便番号</th>
             <th>契約者都道府県</th>
-            <th>契約者</th>
-            <th>電話番号</th>
-        </tr>
+            <th>契約者市区町村</th>
+            <th>契約者住所番地以降</th>
+            <th>契約者住所建物名</th>
+            <th>連絡先電話番号1</th>
+            <th>連絡先電話番号2</th>
+            <th>FAX番号</th>
+            <th>URL</th>
+            <th>代表者名</th>
+            <th>担当者名</th>
+            <th>メール</th>
+            <th>特記事項</th>
+            <th>登録日</th>
+            <th>登録者</th>
+            <th>更新日</th>
+            <th>更新者</th>
+            <th>更新</th>
+            <th>削除</th>
+            
+       </tr>
     </thead>
     <tbody>
         {% for object in object_list %}
         <tr>
-            <td><a href="{% url 'web:update_customer' object.pk %}">{{ object.code }}</a></td>
-            <td>{{ object.company_name }}</td>
-            <td>{{ object.dept_name }}</td>
-            <td>{{ object.representative }}</td>
+            <td>{{ object.pk }}</td>
+            <td>{{ object.corporate_number }}</td>
+            <td>{{ object.kana_name }}</td>
+            <td>{{ object.kanji_name }}</td>
             <td>{{ object.zip }}</td>
-            <td>{{ object.address }}</td>
-            <td>{{ object.email | default_if_none:"-" }}</td>
-            <td>{{ object.phone | default_if_none:"-" }}</td>
+            <td>{{ object.address_pref }}</td>
+            <td>{{ object.address_city }}</td>
+            <td>{{ object.address_street }}</td>
+            <td>{{ object.address_bld }}</td>
+            <td>{{ object.telephone_1 }}</td>
+            <td>{{ object.telephone_2 }}</td>
+            <td>{{ object.fax }}</td>
+            <td>{{ object.hp_url }}</td>
+            <td>{{ object.owner_name }}</td>
+            <td>{{ object.representative_name }}</td>
+            <td>{{ object.email }}</td>
+            <td>{{ object.note }}</td>
+            <td>{{ object.registered_at|date:"Y/m/d f" }}</td>
+            <td>{{ object.registered_by }}</td>
+            <td>{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
+            <td>{{ object.updated_by| default_if_none:"-" }}</td>
+            <td><a href="{% url 'web:update_company' object.pk %}"><i class="far fa-edit"></i></a></td>
+            <td><a href="{% url 'web:delete_company' object.pk %}"><i class="fa fa-trash"></i></a></td>
         </tr> 
         {% endfor %}  
     </tbody>
-</table>
+</table>    
 </div>
     {% if is_paginated %}
     {% include "include/pagination.html" %}
     {% endif %}
 
 {% else %}
-    <p>お客様が登録されていません</p>
+    <p>企業情報が登録されていません</p>
 {% endif %}
 
 {% endblock %}

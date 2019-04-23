@@ -13,3 +13,7 @@
     grid-template-columns: 700px 700px;
 }
 
+table.table {
+    font-size: 5px!important;
+}
+

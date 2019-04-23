@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from django.conf import settings
 from datetime import datetime, date, timedelta
 from django.db.models import Q
+from django.core.validators import FileExtensionValidator
 
 import re
 
@@ -30,6 +31,11 @@ def validate_month(value):
     if not reg.match(value):
         raise ValidationError(u'%s 年月のフォーマットが正しくありません' % value)
 
+pref_options = (
+    ('東京都', '東京都'),
+    ('北海道', '北海道'),
+    ('秋田県', '秋田県') 
+)
 class Company(models.Model):
     def __str__(self):
         return self.kanji_name
@@ -37,18 +43,8 @@ class Company(models.Model):
     class Meta:
         verbose_name = '会社'
         verbose_name_plural = '会社'
+        ordering = ['pk']
 
-    # 企業ID
-    company_id = models.CharField(
-        verbose_name = _('会社ID'), 
-        max_length = 50,
-        null = False,
-        blank = False,
-        unique = True,
-        validators = [
-            alphanumeric
-        ]
-    )
     # 法人番号
     corporate_number = models.CharField(
         verbose_name = _('法人番号'),
@@ -89,7 +85,8 @@ class Company(models.Model):
         verbose_name = "契約者都道府県",
         max_length = 10,
         null = False,
-        blank = False
+        blank = False,
+        choices = pref_options
     )
     address_city = models.CharField(
         verbose_name = "契約者市区町村",
@@ -186,16 +183,22 @@ class Company(models.Model):
         on_delete = models.SET_NULL,
         related_name = 'company_updated'
     )
-
+    deleted = models.BooleanField(
+        verbose_name = '削除フラグ',
+        default = False
+    )
+    def soft_delete(self):
+        self.deleted = True
+        self.save()
 
 class InvoiceEntity(models.Model):
     def __str__(self):
-        return self.code
+        return self.invoice_company_name
 
     class Meta:
         verbose_name = '請求管理簿'
         verbose_name_plural = '請求管理簿'
-    
+        ordering = ['pk']
     company = models.ForeignKey(
         Company,
         verbose_name = '会社',
@@ -216,7 +219,8 @@ class InvoiceEntity(models.Model):
         verbose_name = "請求都道府県",
         max_length = 10,
         null = False,
-        blank = False
+        blank = False,
+        choices = pref_options
     )
     invoice_address_city = models.CharField(
         verbose_name = "請求市区町村",
@@ -225,7 +229,7 @@ class InvoiceEntity(models.Model):
         blank = False
     )
     invoice_address_street = models.CharField(
-        verbose_name = '請求住所番地以降',
+        verbose_name = '請求住所番地以降',
         max_length = 50,
         null = False,
         blank = False
@@ -273,65 +277,59 @@ class InvoiceEntity(models.Model):
         null = True,
         blank = True
     )
-    payment_method_choice = (
-        ('クレカ', 'クレカ'),
-        ('引落', '引落'),
-        ('振込', '振込')
-    )
-
-    closing_dates = (
-        ('末日', '末日'),
-        ('20日', '20日'),
-    )
-    
-    inovoice_sent_dates = (
-        ('末日', '末日'),
-        ('20日', '20日'),
-    )
-
-    urikake_or_advance = (
-        ('売掛', '売掛'),
-        ('前入金', '前入金'),
-    )
-    invoice_periods = (
-        ('毎月', '毎月'),
-        ('6ヶ月', '6ヶ月'),
-    )
-    
-
+ 
     payment_method = models.CharField(
         verbose_name = '支払い方法',
         max_length = 20,
-        choices = payment_method_choice,
+        choices = (
+            ('クレカ', 'クレカ'),
+            ('引落', '引落'),
+            ('振込', '振込')
+        ),
         default = '振込'
     )
 
     invoice_closed_at = models.CharField(
         verbose_name = '締め日',
         max_length = 20,
-        choices = closing_dates
+        choices = (
+            ('末日', '末日'),
+            ('20日', '20日'),
+        )
     )
     
     payment_due_to = models.CharField(
         verbose_name = '支払い期日',
         max_length = 20,
-        choices = closing_dates
+        choices = (
+            ('末日', '末日'),
+            ('20日', '20日'),
+        )
     )
     
     invoice_sent_at = models.CharField(
-        verbose_name = '支払い期日',
+        verbose_name = '請求書送付時期',
         max_length = 20,
-        choices = inovoice_sent_dates
+        choices =  (
+            ('末日', '末日'),
+            ('20日', '20日'),
+        )
     )
     invoice_timing = models.CharField(
         verbose_name = '請求タイミング',
         max_length = 20,
-        choices = urikake_or_advance
+        choices = (
+            ('売掛', '売掛'),
+            ('前入金', '前入金'),
+        )
     )
     invoice_period = models.CharField(
         verbose_name = '請求周期',
         max_length = 20,
-        choices = invoice_periods
+        choices = (
+            ('毎月', '毎月'),
+            ('6ヶ月', '6ヶ月'),
+        )
     )
     
     bank_name = models.CharField(
@@ -339,13 +337,17 @@ class InvoiceEntity(models.Model):
         max_length = 20
     )
     bank_branch_name = models.CharField(
-        verbose_name = '振込視点名',
+        verbose_name = '振込支店名',
         max_length = 20
     )
 
     bank_account_type = models.CharField(
         verbose_name = '口座種類',
-        max_length = 20
+        max_length = 20,
+        choices = (
+            ('普通', '普通'),
+            ('当座', '当座')
+        )
     )
 
     bank_account_number = models.CharField(
@@ -376,12 +378,9 @@ class InvoiceEntity(models.Model):
         verbose_name = '決済ID',
         max_length = 20
     )
-    note = models.CharField(
-        verbose_name = '決済ID',
-        max_length = 20
-    )
-    
+  
     note = models.TextField(
+        verbose_name = '特記事項',
         null = True,
         blank = True
     )
@@ -407,6 +406,220 @@ class InvoiceEntity(models.Model):
         on_delete = models.SET_NULL,
         related_name = 'entity_updated'
     )
+    deleted = models.BooleanField(
+        verbose_name = '削除フラグ',
+        default = False
+    )
+    def soft_delete(self):
+        self.deleted = True
+        self.save()
+
+class Invoice(models.Model):
+    def __str__(self):
+        return self.pk
+
+    class Meta:
+        verbose_name = '請求書'
+        verbose_name_plural = '請求書'
+        ordering = ['pk']
+    invoice_printed_at = models.DateField(
+        verbose_name = '発行日',
+        auto_now_add = True
+    )
+    registered_at = models.DateTimeField(
+        verbose_name = '登録日',
+        auto_now_add = True
+    )
+    registered_by = models.ForeignKey(
+        User,
+        null = True,
+        verbose_name = '登録者',
+        on_delete = models.SET_NULL,
+        related_name = 'invoice_registered'
+    )
+    updated_at = models.DateTimeField(
+        verbose_name = '更新日',
+        auto_now = True
+    )   
+    updated_by = models.ForeignKey(
+        to = User,
+        null = True,
+        verbose_name = '更新者',
+        on_delete = models.SET_NULL,
+        related_name = 'invoice_updated'
+    )
+    deleted = models.BooleanField(
+        verbose_name = '削除フラグ',
+        default = False
+    )
+    def soft_delete(self):
+        self.deleted = True
+        self.save()
+
+    @property
+    def yearmonth(self):
+        children = self.details.all()
+        if len(children) > 0:
+            return children[0].yearmonth
+        else:
+            return None
+
+class InvoiceDetail(models.Model):
+    def __str__(self):
+        return self.order_number
+
+    class Meta:
+        verbose_name = '請求明細'
+        verbose_name_plural = '請求明細'
+        ordering = ['pk']
+
+    invoice_entity = models.ForeignKey(
+        to = InvoiceEntity,
+        related_name = 'my_invoice_details',
+        verbose_name = '請求管理簿',
+        on_delete = models.CASCADE
+    )
+    product_category_1 = models.CharField(
+        verbose_name = '商材大区分',
+        max_length = 50
+    )
+    product_category_2 = models.CharField(
+        verbose_name = '商材小区分',
+        max_length = 50
+    )
+    yearmonth = models.CharField(
+        verbose_name = '請求月',
+        max_length = 6
+    )
+    seq_number = models.CharField(
+        verbose_name = 'SEQNO',
+        max_length = 50
+    )
+    order_number = models.CharField(
+        verbose_name = '申込管理番号',
+        max_length = 50
+    )
+    invoice = models.ForeignKey(
+        to = Invoice,
+        related_name = "details",
+        verbose_name = '請求書',
+        null = True,
+        blank = True,
+        on_delete = models.SET_NULL
+    )
+    service_start_date = models.DateField(
+        verbose_name = 'サービス開始日'
+    )
+    service_name = models.CharField(
+        verbose_name = '請求明細内容',
+        max_length = 50
+    )
+    invoice_amount_wo_tax = models.IntegerField(
+        verbose_name = '請求金額(税抜)',
+    )
+    tax_type = models.CharField(
+        verbose_name = '税区分',
+        max_length = 10,
+        choices = (
+            ('課税','課税'),
+            ('非課税', '非課税')
+        )
+    )
+    tax_rate_perc = models.IntegerField(
+        verbose_name = '税率'
+    )
+    tax_amount = models.IntegerField(
+        verbose_name = '請求金額(税額)'
+    )
+    invoice_amount_w_tax = models.IntegerField(
+        verbose_name = '請求金額(税込)'
+    )
+    note = models.TextField(
+        verbose_name = '備考',
+        null = True,
+        blank = True,
+    )
+    registered_at = models.DateTimeField(
+        verbose_name = '登録日',
+        auto_now_add = True
+    )
+    registered_by = models.ForeignKey(
+        User,
+        null = True,
+        verbose_name = '登録者',
+        on_delete = models.SET_NULL,
+        related_name = 'detail_registered'
+    )
+    updated_at = models.DateTimeField(
+        verbose_name = '更新日',
+        auto_now = True
+    )   
+    updated_by = models.ForeignKey(
+        to = User,
+        null = True,
+        verbose_name = '更新者',
+        on_delete = models.SET_NULL,
+        related_name = 'detail_updated'
+    )
+    deleted = models.BooleanField(
+        verbose_name = '削除フラグ',
+        default = False
+    )
+    def soft_delete(self):
+        self.deleted = True
+        self.save()
+
+
+class UploadedFile(models.Model):
+    def __str__(self):
+        return self.order_number
+
+    class Meta:
+        verbose_name = 'アップロード'
+        verbose_name_plural = 'アップロードファイル'
+        ordering = ['pk']
+    
+    TYPE_COMPANY = 1
+    TYPE_ENTITY = 2
+    TYPE_DETAIL = 3
+
+    type = models.CharField(
+        verbose_name = 'ファイル種類',
+        max_length = 10,
+        choices = (
+            (TYPE_COMPANY, '会社情報'),
+            (TYPE_ENTITY, '請求管理簿'),
+            (TYPE_DETAIL, '請求明細')
+        )
+    )
+    csv_file = models.FileField(
+        upload_to = 'company_csv',
+        verbose_name = 'アップロードファイル',
+        validators = [FileExtensionValidator(['csv', ])],
+    )
+
+    processed_at = models.DateTimeField(
+        verbose_name = '処理日',
+        auto_now_add = True
+    )
+
+    uploaded_by = models.ForeignKey(
+        to = User,
+        null = True,
+        verbose_name = '実行ユーザ',
+        on_delete = models.SET_NULL
+    )
+
+    record_count = models.IntegerField(
+        verbose_name = '件数',
+    )
+
+    error_count = models.IntegerField(
+        verbose_name = 'エラー件数'
+    )
+
+
+    
 
 
 

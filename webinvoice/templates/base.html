@@ -34,8 +34,19 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <ul class="navbar-nav mr-auto">
+                    
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'web:create_company' %}">顧客</a>
+                        <a class="nav-link" href="{% url 'web:top' %}">トップ</a>
+                    </li>
+                            
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'web:list_company' %}">会社情報</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'web:list_invoice_entity' %}">請求管理簿</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'web:list_invoice_detail' %}">請求明細</a>
                     </li>
                    
                 </ul>

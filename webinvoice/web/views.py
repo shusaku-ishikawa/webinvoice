@@ -33,7 +33,7 @@ from django.views.generic.list import MultipleObjectMixin
 from django.contrib.auth.hashers import check_password
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
-from django.http import Http404, HttpResponseBadRequest, JsonResponse
+from django.http import Http404, HttpResponseBadRequest, JsonResponse, HttpResponseRedirect
 from datetime import datetime, timedelta
 from django.db import models
 from django.views.generic import View
@@ -44,6 +44,7 @@ from django.core.files.base import ContentFile
 import csv
 from io import TextIOWrapper, StringIO
 from django.db.models import *
+
 
 # Create your views here.
 class TopPage(LoginRequiredMixin, generic.TemplateView):
@@ -65,117 +66,223 @@ class CreateCompany(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView)
     success_message = '登録情報を更新しました'
     def get_success_url(self):
         return reverse('web:list_company')
+    def form_valid(self, form):
+        instance = form.save()
+        if instance.registered_by == None:
+            instance.registered_by = self.request.user
+        instance.updated_by = self.request.user 
+        instance.save()
+        self.object = instance
+
+        # do somet  hing with self.object
+        # remember the import: from django.http import HttpResponseRedirect
+        return HttpResponseRedirect(self.get_success_url())
 
 class ListCompany(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
     model = Company
     template_name = 'list_company.html'
     paginate_by = 10  #and that's it !!
+    def get_queryset(self):
+        data = Company.objects.filter(deleted = False)
+        key_corporate_number = "corporate_number"
+        key_company_name = "company_name"
+        key_phone_number = "phone_number"
+        key_invoice_number = "invoice_number"
 
-
-# class UpdateCustomer(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
-#     model = Customer
-#     form_class = CustomerForm
-#     template_name = 'update_customer.html'
-#     success_message = '登録情報を更新しました'
-
-#     def get_success_url(self):
-#         return reverse('web:list_customer')
-
-
-
-# class CreateProduct(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
-#     template_name = "create_product.html"
-#     form_class = ProductForm
-#     success_message = '登録情報を更新しました'
-#     def get_success_url(self):
-#         return reverse('web:list_product')
-
-
-# class UpdateProduct(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
-#     model = Product
-#     form_class = ProductForm
-#     template_name = 'update_product.html'
-#     success_message = '登録情報を更新しました'
-
-#     def get_success_url(self):
-#         return reverse('web:list_product')
-
-# class ListProduct(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
-#     model = Product
-#     template_name = 'list_product.html'
-#     paginate_by = 10  #and that's it !!
-
-# class CreateOrder(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
-#     template_name = "create_order.html"
-#     form_class = OrderForm
-#     success_message = '登録情報を更新しました'
-#     def get_success_url(self):
-#         return reverse('web:list_order')
-
-
-# class UpdateOrder(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
-#     model = Order
-#     form_class = OrderForm
-#     template_name = 'update_order.html'
-#     success_message = '登録情報を更新しました'
-
-#     def get_success_url(self):
-#         return reverse('web:list_order')
-
-# class ListOrder(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
-#     model = Order
-#     template_name = 'list_order.html'
-#     paginate_by = 100
-
-#     def get_queryset(self):
-#         data = Order.objects.all()
-#         yearmonth = self.request.GET.get('yearmonth')
-#         customer_code = self.request.GET.get('customer')
-
-#         if yearmonth != None:
-#             data = data.filter(month_used = yearmonth)
-#         if customer_code != None:
-#             customer = Customer.objects.filter(code = customer_code)
-#             data = data.filter(customer = customer[0])
-         
-#         return data
-
-#     def get_context_data(self, **kwargs):
-#         context = super(ListOrder, self).get_context_data(**kwargs)
-#         customer_list = Customer.objects.all()
-#         context['customer_list'] = customer_list
-#         context['yearmonth'] = self.request.GET.get('yearmonth')
-#         context['customer'] = self.request.GET.get('customer')
+        if key_corporate_number in self.request.GET and self.request.GET.get(key_corporate_number) != None:
+            q = self.request.GET.get(key_corporate_number)
+            data = data.filter(corporate_number__icontains = q)
         
-#         return context
+        if key_company_name in self.request.GET and self.request.GET.get(key_company_name) != None:
+            q = self.request.GET.get(key_company_name)
+            data = data.filter(kanji_name__icontains = q)
 
-# class UploadOrderCsv(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
-#     form_class = UploadCsvForm
-#     template_name = 'import_order_csv.html'
+        if key_phone_number in self.request.GET and self.request.GET.get(key_phone_number) != None:
+            q = self.request.GET.get(key_phone_number)
+            data = data.filter(Q(telephone_1__icontains = q) | Q(telephone_2__icontains = q))
+    
+        return data
 
-#     def form_valid(self, form):
-#         file_name = form.save()
+class UpdateCompany(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
+    model = Company
+    form_class = CompanyForm
+    template_name = 'update_company.html'
+    success_message = '登録情報を更新しました'
 
-#         with open('media/' + file_name, 'r') as f:
-#             reader = csv.reader(f)
-#             for row in reader:
-#                 print(len(row))
-#                 print(row[1])
-#                 print(row[2])
-#                 print(row[3])
+    def get_success_url(self):
+        return reverse('web:list_company')
+
+class DeleteCompany(SuccessMessageMixin, LoginRequiredMixin, generic.DeleteView):
+    model = Company
+    form_class = CompanyForm
+    template_name = 'delete_company.html'
+    success_url = reverse_lazy('web:list_company')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.soft_delete()
+        messages.success(
+            self.request, '「{}」を削除しました'.format(self.object))
+        return HttpResponseRedirect(self.get_success_url())
+
+class CreateInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
+    template_name = "create_invoice_entity.html"
+    form_class = InvoiceEntityForm
+    success_message = '登録情報を更新しました'
+    def get_success_url(self):
+        return reverse('web:list_invoice_entity')
+    def form_valid(self, form):
+        instance = form.save()
+        if instance.registered_by == None:
+            instance.registered_by = self.request.user
+        instance.updated_by = self.request.user 
+        instance.save()
+        self.object = instance
+
+        # do somet  hing with self.object
+        # remember the import: from django.http import HttpResponseRedirect
+        return HttpResponseRedirect(self.get_success_url())
+
+class ListInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
+    model = InvoiceEntity
+    template_name = 'list_invoice_entity.html'
+    paginate_by = 10  #and that's it !!
+    def get_queryset(self):
+        data = InvoiceEntity.objects.filter(deleted = False)
+        key_corporate_number = "corporate_number"
+        key_company_name = "company_name"
+        key_phone_number = "phone_number"
+        key_invoice_number = "invoice_number"
+
+        if key_corporate_number in self.request.GET and self.request.GET.get(key_corporate_number) != None:
+            q = self.request.GET.get(key_corporate_number)
+            data = data.filter(company__corporate_number__icontains = q)
+        
+        if key_company_name in self.request.GET and self.request.GET.get(key_company_name) != None:
+            q = self.request.GET.get(key_company_name)
+            data = data.filter(Q(invoice_company_name__icontains = q) | Q(company__kanji_name__icontains = q))
+
+        if key_phone_number in self.request.GET and self.request.GET.get(key_phone_number) != None:
+            q = self.request.GET.get(key_phone_number)
+            data = data.filter(Q(company__telephone_1__icontains = q) | Q(company__telephone_2__icontains = q))
+    
+        return data
+
+class UpdateInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
+    model = InvoiceEntity
+    form_class = InvoiceEntityForm
+    template_name = 'update_invoice_entity.html'
+    success_message = '登録情報を更新しました'
+
+    def get_success_url(self):
+        return reverse('web:list_invoice_entity')
+
+class DeleteInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.DeleteView):
+    model = InvoiceEntity
+    form_class = InvoiceEntityForm
+    template_name = 'delete_invoice_entity.html'
+    success_url = reverse_lazy('web:list_invoice_entity')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.soft_delete()
+        messages.success(
+            self.request, '「{}」を削除しました'.format(self.object))
+        return HttpResponseRedirect(self.get_success_url())
+
+class CreateInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
+    template_name = "create_invoice_detail.html"
+    form_class = InvoiceDetailForm
+    success_message = '登録情報を更新しました'
+    def get_success_url(self):
+        return reverse('web:list_invoice_detail')
+    def form_valid(self, form):
+        instance = form.save()
+        if instance.registered_by == None:
+            instance.registered_by = self.request.user
+        instance.updated_by = self.request.user 
+        instance.save()
+        self.object = instance
+
+        # do somet  hing with self.object
+        # remember the import: from django.http import HttpResponseRedirect
+        return HttpResponseRedirect(self.get_success_url())
+
+class ListInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
+    model = InvoiceDetail
+    template_name = 'list_invoice_detail.html'
+    paginate_by = 10  #and that's it !!
+    def get_queryset(self):
+        data = InvoiceDetail.objects.filter(deleted = False)
+
+        key_corporate_number = "corporate_number"
+        key_company_name = "company_name"
+        key_phone_number = "phone_number"
+        key_invoice_number = "invoice_number"
+
+        if key_corporate_number in self.request.GET and self.request.GET.get(key_corporate_number) != None:
+            q = self.request.GET.get(key_corporate_number)
+            data = data.filter(invoice_entity__company__corporate_number__icontains = q)
+        
+        if key_company_name in self.request.GET and self.request.GET.get(key_company_name) != None:
+            q = self.request.GET.get(key_company_name)
+            data = data.filter(Q(invoice_entity__invoice_company_name__icontains = q) | Q(invoice_entity__company__kanji_name__icontains = q))
+
+        if key_phone_number in self.request.GET and self.request.GET.get(key_phone_number) != None:
+            q = self.request.GET.get(key_phone_number)
+            data = data.filter(Q(invoice_entity__company__telephone_1__icontains = q) | Q(invoice_entity__company__telephone_2__icontains = q))
+    
+        return data
+
+class UpdateInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
+    model = InvoiceDetail
+    form_class = InvoiceDetailForm
+    template_name = 'update_invoice_detail.html'
+    success_message = '登録情報を更新しました'
+
+    def get_success_url(self):
+        return reverse('web:list_invoice_detail')
+
+class DeleteInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.DeleteView):
+    model = InvoiceDetail
+    form_class = InvoiceDetailForm
+    template_name = 'delete_invoice_detail.html'
+    success_url = reverse_lazy('web:list_invoice_detail')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.soft_delete()
+        messages.success(
+            self.request, '「{}」を削除しました'.format(self.object))
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class Search(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'search_form.html'
+
+
+class UploadFile(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
+    form_class = FileUploadForm
+    template_name = 'import_csv.html'
+
+    def form_valid(self, form):
+        file_name = form.save()
+
+        with open('media/' + file_name, 'r') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                print(len(row))
+                print(row[1])
+                print(row[2])
+                print(row[3])
                 
         
-#         context = {
-#             'file_name': file_name,
-#             'form': form,
+        context = {
+            'file_name': file_name,
+            'form': form,
             
-#         }
-#         return self.render_to_response(context)
-
-# class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
-#     model = Invoice
-#     template_name = 'list_invoice.html'
-#     paginate_by = 10
+        }
+        return self.render_to_response(context)
 
 
 # def pdf(request):

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <p>この請求管理簿を削除しますか?</p>
+    <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>会社情報</th>
+                        <th>請求郵便番号</th>
+                        <th>請求都道府県</th>
+                        <th>請求市区町村</th>
+                        <th>請求住所番地以降</th>
+                        <th>請求住所建物名</th>
+                        <th>請求会社名</th>
+                        <th>請求部署</th>
+                        <th>請求宛名</th>
+                        <th>請求宛名1</th>
+                        <th>請求宛名2</th>
+                        <th>請求宛名3</th>
+                        <th>支払い方法</th>
+                        <th>締め日</th>
+                        <th>支払い期日</th>
+                        <th>請求書送付時期</th>
+                        <th>請求タイミング</th>
+                        <th>請求周期</th>
+                        <th>振込銀行名</th>
+                        <th>振込支店名</th>
+                        <th>口座種類</th>
+                        <th>口座番号</th>
+                        <th>クレカ決済会社</th>
+                        <th>クレカコード</th>
+                        <th>クレカID</th>
+                        <th>決済会社</th>
+                        <th>決済コード</th>
+                        <th>決済ID</th>
+                        <th>特記事項</th>
+                        <th>登録日</th>
+                        <th>登録者</th>
+                        <th>更新日</th>
+                        <th>更新者</th>
+                        <th>修正</th>
+                        <th>削除</th> 
+                   </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ object.pk }}</td>
+                        <td>{{ object.company }}</td>
+                        <td>{{ object.invoice_zip }}</td>
+                        <td>{{ object.invoice_address_pref }}</td>
+                        <td>{{ object.invoice_address_city }}</td>
+                        <td>{{ object.invoice_address_street }}</td>
+                        <td>{{ object.invoice_address_bld }}</td>
+                        <td>{{ object.invoice_company_name }}</td>
+                        <td>{{ object.inovoice_dept }}</td>
+                        <td>{{ object.invoice_person }}</td>
+                        <td>{{ object.invoice_project_1 }}</td>
+                        <td>{{ object.invoice_project_2 }}</td>
+                        <td>{{ object.invoice_project_3 }}</td>
+                        <td>{{ object.payment_method }}</td>
+                        <td>{{ object.invoice_closed_at }}</td>
+                        <td>{{ object.payment_due_to }}</td>
+                        <td>{{ object.invoice_sent_at }}</td>
+                        <td>{{ object.invoice_timing }}</td>
+                        <td>{{ object.invoice_period }}</td>
+                        <td>{{ object.bank_name }}</td>
+                        <td>{{ object.bank_branch_name }}</td>
+                        <td>{{ object.bank_account_type }}</td>
+                        <td>{{ object.bank_account_number }}</td>
+                        <td>{{ object.credit_card_settlement_company }}</td>
+                        <td>{{ object.credit_card_code }}</td>
+                        <td>{{ object.credit_card_id }}</td>
+                        <td>{{ object.settlement_company }}</td>
+                        <td>{{ object.settlement_code }}</td>
+                        <td>{{ object.settlement_id }}</td>
+                        <td>{{ object.note }}</td>
+                        <td>{{ object.registered_at|date:"Y/m/d f" }}</td>
+                        <td>{{ object.registered_by }}</td>
+                        <td>{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
+                        <td>{{ object.updated_by| default_if_none:"-" }}</td>
+                        <td><a href="{% url 'web:update_invoice_entity' object.pk %}"><i class="far fa-edit"></i></a></td>
+                        <td><a href="{% url 'web:delete_invoice_entity' object.pk %}"><i class="fa fa-trash"></i></a></td>
+                    </tr>  
+                </tbody>
+            </table>    
+            </div>
+    <input class="btn btn-danger" type="submit" value="削除する">
+</form>
+{% endblock %}
