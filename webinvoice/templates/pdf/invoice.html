@@ -7,8 +7,7 @@
   <!-- <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css"> -->
   <!-- <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css">  -->
   <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css">
-  <script type="text/javascript" src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/js/jquery.js"></script>
-  
+ 
   <style>
     #invoice_table thead tr th,
     #summarytable tr th {
@@ -192,32 +191,5 @@
   </body>
 </html>
 <script>
-
-  $invoice_tbody = $('#invoice_table tbody');
-  invoice_table_row_count = $('#invoice_table tr').length;
-  row_count_to_be = 14;
-
-  function get_empty_row(i) {
-    var $row = $('<tr></tr>');
-    $('<td></td>').text(i).appendTo($row);
-    $('<td></td>').appendTo($row);
-    $('<td></td>').appendTo($row);
-    $('<td></td>').appendTo($row);
-    $('<td></td>').appendTo($row);
-    $('<td></td>').appendTo($row);
-    $('<td></td>').appendTo($row);
-    $('<td></td>').appendTo($row);
-    $('<td></td>').appendTo($row);
-    $('<td></td>').appendTo($row);
-    return $row;      
-  }
-  $(function() {
-    console.log('here');
-    for (i = invoice_table_row_count + 1; i <= row_count_to_be; i ++ ) {
-      $row = get_empty_row(i);
-      $row.appendTo($invoice_tbody);
-    }
-  });
-
 
 </script>
