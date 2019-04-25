@@ -7,15 +7,30 @@
   <!-- <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css"> -->
   <!-- <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css">  -->
   <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css">
+  <script type="text/javascript" src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/js/jquery.js"></script>
   
   <style>
+    #invoice_table thead tr th,
     #summarytable tr th {
-    background-color: gray;
+      background-color: gray!important;
+      font-weight: normal!important
     }
     #summarytable tr td {
         text-align: right;
 
     }
+
+
+    #invoice_table tbody tr td,
+    #invoice_table tbody tr th,
+    #summary_table tr th,
+    #summary_table tr td {
+      height: 5px!important;
+      font-size: 15px !important;
+      padding: 1px!important;
+      margin: 1px!important;  
+    }
+
   
   </style>
 </head>
@@ -23,17 +38,21 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-6">
-          〒<span id="zip">{{ customer.zip }}</span><br/>
-          <span id="address1">{{ customer.address }}</span><br/>
-          <span id="address2">***町00-00-00 **ビル0F</span><br/> 
-          <span id="company">{{ customer.company_name }}　御中</span><br/>
-          <span id="department">{{ customer.dept_name }}</span>　<span id="person">{{ customer.representative }}　様</span>
+          〒<span id="zip">{{ object.invoice_entity.invoice_zip }}</span><br/>
+          <span id="address1">{{ object.invoice_entity.invoice_address_pref }}{{ object.invoice_entity.invoice_address_city }}</span><br/>
+          <span id="address2">{{ object.invoice_entity.invoice_address_street }}{{ object.invoice_entity.invoice_address_bld }}</span><br/> 
+          <span id="company">{{ object.invoice_entity.invoice_company_name }}　御中</span><br/>
+          <span id="department">{{ object.invoice_entity.invoice_dept }}</span><span id="person">{{ object.invoice_entity.invoice_person }}　様</span><br/>
+          <span id="project1">{{ object.invoice_entity.invoice_project_1| default_if_none:'' }}</span><br/>
+          <span id="project2">{{ object.invoice_entity.invoice_project_2| default_if_none:'' }}</span><br/>
+          <span id="project3">{{ object.invoice_entity.invoice_project_3| default_if_none:'' }}</span>
+          
         </div>
 
         <div class="col-md-6 col-6" style="text-align: right">
           発行日：<span id="date">{% now 'Y/n/j' %}</span><br/>
-          お客様No：<span id="customerNo">{{ customer.code }}</span><br/>
-          請求番号：<span id="invoiceCode">***xxx*****</span></br></br>
+          お客様No：<span id="customerNo">{{ object.invoice_entity.pk }}</span><br/>
+          請求番号：<span id="invoiceCode">{{ object.pk }}</span></br></br>
           <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
           <!-- <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_logo.png" style="width:6rem;height:6rem;"/> -->
           <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/>
@@ -62,7 +81,7 @@
         <table id="summarytable" class="table">
           <tr>
               <th style="width: 30%">ご請求金額</th>
-              <td align="right">{{ total | intcomma }}</td>
+              <td align="right">{{ object.total_wo_tax | intcomma }}</td>
           </tr>
           <tr>
               <th style="width: 30%">お支払い期限</th>
@@ -101,8 +120,7 @@
       </div> <!-- col -->
     </div> <!-- row -->
     <hr>
-    <div class="table-responsive">
-      <table class="table">
+      <table id="invoice_table" class="table table-bordered table-striped table-condensed">
         <thead>
           <tr>
             <th>No.</th>
@@ -118,39 +136,52 @@
           </tr>
         </thead>
         <tbody>
-          {% for obj in data %}
+          {% for obj in object.details.all %}
           <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ obj.month_used }}</td>
-            <td>{{ obj.product_info.code }}</td>
-            <td>{{ obj.product_info.name }}</td>
-            <td align="right">{{ obj.count_per_product.amount }}</td>
-            <td align="right">{{ obj.product_info.price | intcomma }}</td>
-            <td>{{ obj.product_info.tax_type }}</td>
-            <td align="right">{{ obj.total_per_product | intcomma }}</td>
-            <td align="right">{{ obj.tax | intcomma | default_if_none:"-" }}</td>
-            <td align="right">{{ obj.total_per_product|add:obj.tax | intcomma }}</td>
+            <td align="center">{{ forloop.counter }}</td>
+            <td align="center">{{ obj.yearmonth }}</td>
+            <td align="center">{{ obj.product_category_1 }}</td>
+            <td align="center">{{ obj.service_name }}</td>
+            <td align="right">1</td>
+            <td align="right">{{ obj.invoice_amount_wo_tax | intcomma }}</td>
+            <td align="center">{{ obj.tax_type }}</td>
+            <td align="right">{{ obj.invoice_amount_wo_tax | intcomma }}</td>
+            <td align="right">{{ obj.tax_amount | intcomma | default_if_none:"-" }}</td>
+            <td align="right">{{ obj.invoice_amount_w_tax | intcomma }}</td>
           </tr>
           {%  endfor %}
+          {% for i in pad_range %}
+            <tr>
+            <td align="center">{{ forloop.counter|add:details_count }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          {% endfor %}
         </tbody>
       </table>
-    </div> <!-- table responsive -->
     <div class="row">
       <div class="col-md-7 col-7" style="border: solid 1px black; border-radius: 10px;">
       </div>
       <div class="col-md-5 col-5" style="text-align: right">
-        <table class="table">
+        <table id="summary_table" class="table">
           <tr>
             <th style="width: 40%">税抜金額合計</th>
-            <td>{{ total_wo_tax | intcomma }}</td>
+            <td>{{ object.total_wo_tax | intcomma }}</td>
           </tr>
           <tr>
             <th style="width: 40%">税額合計</th>
-            <td>{{ total_tax | intcomma }}</td>
+            <td>{{ object.total_tax | intcomma }}</td>
           </tr>
           <tr>
             <th  style="width:40%">税込金額合計</th>
-            <td>{{ total | intcomma }}</td>
+            <td>{{ object.total_w_tax | intcomma }}</td>
           </tr>
           
         </table>
@@ -160,3 +191,33 @@
     </div> <!-- container -->
   </body>
 </html>
+<script>
+
+  $invoice_tbody = $('#invoice_table tbody');
+  invoice_table_row_count = $('#invoice_table tr').length;
+  row_count_to_be = 14;
+
+  function get_empty_row(i) {
+    var $row = $('<tr></tr>');
+    $('<td></td>').text(i).appendTo($row);
+    $('<td></td>').appendTo($row);
+    $('<td></td>').appendTo($row);
+    $('<td></td>').appendTo($row);
+    $('<td></td>').appendTo($row);
+    $('<td></td>').appendTo($row);
+    $('<td></td>').appendTo($row);
+    $('<td></td>').appendTo($row);
+    $('<td></td>').appendTo($row);
+    $('<td></td>').appendTo($row);
+    return $row;      
+  }
+  $(function() {
+    console.log('here');
+    for (i = invoice_table_row_count + 1; i <= row_count_to_be; i ++ ) {
+      $row = get_empty_row(i);
+      $row.appendTo($invoice_tbody);
+    }
+  });
+
+
+</script>

@@ -12,7 +12,7 @@
         <input id="c_name" type="text" class="form-control" name="company_name" placeholder="企業名" style="margin-bottom: 10px">
         <input id="p_num" type="text" class="form-control" name="phone_number" placeholder="連絡先" style="margin-bottom: 10px">
         <input id="ym" type="text" class="form-control" name="year_month" placeholder="請求月" style="margin-bottom: 10px">
-        <input id="i_num" type="text" class="form-control" name="invoice_number" placeholder="請求書番号">
+        <input id="i_num" type="text" class="form-control" name="invoice_id" placeholder="請求書番号">
     </div>
     <div class="col-md-4 col-4">
         <button id="search_company" type="button" class="btn btn-primary btn-block"><i class="fas fa-search"></i> 企業情報検索</button>
@@ -27,13 +27,14 @@
         url_company = "{% url 'web:list_company' %}";
         url_entity = "{% url 'web:list_invoice_entity' %}";
         url_detail = "{% url 'web:list_invoice_detail' %}";
+        url_invoice = "{% url 'web:list_invoice' %}";
        
         
         $input_corporate_number = $('#c_num');
         $input_company_name = $('#c_name');
         $input_phone_number = $('#p_num');
         $input_year_month = $('#ym');
-        $input_invoice_number = $('#i_num');
+        $input_invoice_id = $('#i_num');
 
         $btn_company = $('#search_company');
         $btn_entity = $('#search_entity');
@@ -46,7 +47,7 @@
                 'corporate_number': $input_corporate_number.val(),
                 'company_name': $input_company_name.val(),
                 'phone_number': $input_phone_number.val(),
-                'invoice_number': $input_invoice_number.val()
+                'invoice_id': $input_invoice_id.val()
             }
             return $.param(obj);
         }
@@ -66,7 +67,10 @@
                 var param = get_querystring();
                 window.location.href = url_detail + '?' + param;
             });
-           
+            $btn_invoice.on('click', function() {
+                var param = get_querystring();
+                window.location.href = url_invoice + '?' + param;
+            });
         });
     </script>
 {% endblock %}

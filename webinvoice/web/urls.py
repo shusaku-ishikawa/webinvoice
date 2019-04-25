@@ -28,17 +28,10 @@ urlpatterns = [
     path('detail_li/', views.ListInvoiceDetail.as_view(), name='list_invoice_detail'),
     path('search/', views.Search.as_view(), name='search'),
     path('upload_csv/', views.UploadFile.as_view(), name='file_upload'),
+    path('invoice_li/', views.ListInvoice.as_view(), name='list_invoice'),
+    path('add_to_invoice/', views.add_to_invoice, name='add_to_invoice'),
+    path('pdf/<int:pk>', views.pdf, name='pdf_invoice'),
     
-    # path('create_product/', views.CreateProduct.as_view(), name='create_product'),
-    # path('update_product/<int:pk>', views.UpdateProduct.as_view(), name='update_product'),
-    # path('list_product/', views.ListProduct.as_view(), name='list_product'),
-    # path('create_order/', views.CreateOrder.as_view(), name='create_order'),
-    # path('update_order/<int:pk>', views.UpdateOrder.as_view(), name='update_order'),
-    # path('list_order/', views.ListOrder.as_view(), name='list_order'),
-    # path('list_invoice/', views.ListInvoice.as_view(), name='list_invoice'),
-    
-    # path('my-pdf/', views.pdf, name='pdf4'),
-
     
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT) 

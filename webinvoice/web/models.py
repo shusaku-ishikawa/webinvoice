@@ -8,8 +8,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from datetime import datetime, date, timedelta
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.core.validators import FileExtensionValidator
+from datetime import datetime
 
 import re
 
@@ -416,12 +417,25 @@ class InvoiceEntity(models.Model):
 
 class Invoice(models.Model):
     def __str__(self):
-        return self.pk
+        return str(self.pk)
 
     class Meta:
         verbose_name = '請求書'
         verbose_name_plural = '請求書'
         ordering = ['pk']
+    
+    invoice_id = models.CharField(
+        verbose_name = '請求書ID',
+        max_length = 50,
+        primary_key = True
+    )
+
+    pdf = models.FileField(
+        verbose_name = '出力PDF',
+        null = True,
+        upload_to = 'invoice_pdf',
+    )
+
     invoice_printed_at = models.DateField(
         verbose_name = '発行日',
         auto_now_add = True
@@ -457,13 +471,36 @@ class Invoice(models.Model):
         self.save()
 
     @property
-    def yearmonth(self):
-        children = self.details.all()
-        if len(children) > 0:
-            return children[0].yearmonth
-        else:
-            return None
+    def total_wo_tax(self):
+        details = self.details.all()
+        return details.aggregate(total = Sum('invoice_amount_wo_tax'))['total']
 
+    @property
+    def total_tax(self):
+        details = self.details.all()
+        return details.aggregate(total = Sum('tax_amount'))['total']
+
+    @property
+    def total_w_tax(self):
+        details = self.details.all()
+        return details.aggregate(total = Sum('invoice_amount_wo_tax'))['total']
+
+    @property
+    def details(self):
+        details = InvoiceDetail.objects.filter(invoice_id = self.invoice_id)
+        return details
+
+    @property
+    def invoice_entity(self):
+        if len(self.details) > 0:
+            return self.details[0].invoice_entity
+        return None
+    @property
+    def yearmonth(self):
+        if len(self.details) > 0:
+            return self.details[0].yearmonth
+        return None
+        
 class InvoiceDetail(models.Model):
     def __str__(self):
         return self.order_number
@@ -499,13 +536,9 @@ class InvoiceDetail(models.Model):
         verbose_name = '申込管理番号',
         max_length = 50
     )
-    invoice = models.ForeignKey(
-        to = Invoice,
-        related_name = "details",
-        verbose_name = '請求書',
-        null = True,
-        blank = True,
-        on_delete = models.SET_NULL
+    invoice_id = models.CharField(
+        verbose_name = '請求書ID',
+        max_length = 50
     )
     service_start_date = models.DateField(
         verbose_name = 'サービス開始日'
@@ -531,9 +564,7 @@ class InvoiceDetail(models.Model):
     tax_amount = models.IntegerField(
         verbose_name = '請求金額(税額)'
     )
-    invoice_amount_w_tax = models.IntegerField(
-        verbose_name = '請求金額(税込)'
-    )
+ 
     note = models.TextField(
         verbose_name = '備考',
         null = True,
@@ -568,8 +599,12 @@ class InvoiceDetail(models.Model):
     def soft_delete(self):
         self.deleted = True
         self.save()
-
-
+    @property
+    def invoice_amount_w_tax(self):
+        return int(self.invoice_amount_wo_tax) + int(self.tax_amount)
+    @property
+    def is_invoiced(self):
+        return len(Invoice.objects.filter(invoice_id = self.invoice_id)) > 0
 class UploadedFile(models.Model):
     def __str__(self):
         return self.order_number
@@ -618,8 +653,62 @@ class UploadedFile(models.Model):
         verbose_name = 'エラー件数'
     )
 
-
+class BankInfo(models.Model):
+    def __str__(self):
+        return '口座情報'
+    class Meta:
+        verbose_name = "口座情報"
+        verbose_name_plural = "口座情報"
     
+    types = [
+        ('普通', '普通'),
+        ('当座', '当座')
+    ]
+    bank = models.CharField(
+        verbose_name = '金融機関名',
+        max_length = 20,
+        default = 'xxx銀行',
+        blank = False,
+        null = False
+    )
+    branch = models.CharField(
+        verbose_name = '支店名',
+        max_length = 20,
+        default = 'xxx支店',
+        blank = False,
+        null = False
+    )
+    type = models.CharField(
+        verbose_name = '口座種別',
+        max_length = 20,
+        choices = types,
+        default = '普通'
+    )
+    number = models.CharField(
+        verbose_name = '口座番号',
+        max_length = 20,
+        default = '00000',
+        null = False,
+        blank = False
+    )
+    meigi= models.CharField(
+        verbose_name = '名義',
+        max_length = 50,
+    )
+
+    @staticmethod
+    def get_bank_info():
+        qs = BankInfo.objects.all()
+        if len(qs) == 0:
+            instance = BankInfo()
+            instance.bank = 'no data'
+            instance.branch = 'no data'
+            instance.type = '普通'
+            instance.number = 'no data'
+            instance.meigi = 'no data'
+            instance.save()
+            return instance
+        return qs[0]
 
 
 

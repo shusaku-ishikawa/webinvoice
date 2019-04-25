@@ -14,7 +14,7 @@ class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['class'] = 'form-control input-sm'
             field.widget.attrs['placeholder'] = field.label  # placeholderにフィールドのラベルを入れる
 
 class CompanyForm(forms.ModelForm):
@@ -25,7 +25,7 @@ class CompanyForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['class'] = 'form-control input-sm'
 
 class InvoiceEntityForm(forms.ModelForm):
     """ 請求管理簿登録フォーム """   
@@ -35,7 +35,7 @@ class InvoiceEntityForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['class'] = 'form-control input-sm'
 
 class InvoiceDetailForm(forms.ModelForm):
     """ 請求明細登録フォーム """   
@@ -45,7 +45,7 @@ class InvoiceDetailForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['class'] = 'form-control input-sm'
 
 class FileUploadForm(forms.ModelForm):
     """ ファイルアップロードフォーム """   
@@ -55,5 +55,5 @@ class FileUploadForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['class'] = 'form-control input-sm'
 

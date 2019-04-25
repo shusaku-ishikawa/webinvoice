@@ -1,53 +1,10 @@
 {% extends "base.html" %}
-{% block content %}
+
 {% load humanize %}
-{% load extra %}
-
-<hr>
-<div class="row">
-    <div class="col-md-12 col-12">
-        <h3 class="text-center">請求書一覧ページ</h3>
-    </div>
-</div>
-<hr>
-<!-- <table class="table table-bordered" style="width:50%">
-    <tr>
-        <th>
-            お客様
-        </th>
-        <td>
-            <select class="form-control" id="id_customer">
-            {% for customer in customer_list %}
-                <option value="{{ customer.code }}">{{ customer.company_name }}</option>
-            {% endfor %}
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <th>
-            利用月
-        </th>
-        <td>
-            <div class="row">
-                <div class="col-md-8 col-8">
-                    <select class="form-control" id="id_year">
-                    </select>
-                </div>
-                <div class="col-md-4 col-4">
-                    <select class="form-control" id="id_month">
-                    </select>
-                </div>
-            </div>
-        </td>
-    </tr>
-</table> -->
-<!-- <button id="id_search_button" type="button" class="btn btn-outline-secondary">検索</button>
-<a href="{% url 'web:create_order' %}" class="btn btn-outline-primary">新規作成</a>
-<button id="id_pdf_button" type="button" class="btn btn-outline-success">PDF</button> -->
-
-     
-<hr>
-
+{% block header %}
+請求書一覧
+{% endblock %}
+{% block content %}
 <ul class="messages">
     {% for message in messages %}
         <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
@@ -55,122 +12,58 @@
 </ul>
 {% if object_list %}
 <div class="table-responsive">
-<table class="table table-striped">
-    <thead>
+<table class="table table-bordered">
+    <thead class="thead-dark">
         <tr>
-
-            <th>請求書番号</th>
-            <th>お客様</th>
-            <th>出力日</th>
-            <th>ファイル</th>
-            <th>振込期限</th>
-        </tr>
+            <th class="text-nowrap">請求書ID</th>
+            <th class="text-nowrap">請求管理簿</th>
+            <th class="text-nowrap">年月</th>
+            <th class="text-nowrap">合計金額(税抜)</th>
+            <th class="text-nowrap">合計税額</th>
+            <th class="text-nowrap">合計金額(税込)</th>
+            <th class="text-nowrap">備考</th>
+            <th class="text-nowrap">登録日</th>
+            <th class="text-nowrap">登録者</th>
+            <th class="text-nowrap">更新日</th>
+            <th class="text-nowrap">更新者</th>
+            <th class="text-nowrap">参照</th>
+            <th class="text-nowrap">PDF</th>
+            
+       </tr>
     </thead>
     <tbody>
         {% for object in object_list %}
         <tr>
-            <td>{{ object.code }}</td>
-            <td>{{ object.customer.company_name }}</td>
-            <td>{{ object.date_created |date:"Y/m/d" }}</td>
-            <td><a href="{{ object.file.url }}">{{ object.file.name}}</a></td>
-            <td>{{ object.due_date |date:"Y/m/d" }}</td>
+            <td class="text-nowrap">{{ object.invoice_id }}</td>
+            <td class="text-nowrap">{{ object.invoice_entity }}</td>
+            <td class="text-nowrap">{{ object.yearmonth }}</td>
+            <td class="text-nowrap">{{ object.total_wo_tax| intcomma }}</td>
+            <td class="text-nowrap">{{ object.total_tax| intcomma }}</td>
+            <td class="text-nowrap">{{ object.total_w_tax| intcomma }}</td>
+            <td class="text-nowrap">{{ object.note }}</td>
+            <td class="text-nowrap">{{ object.registered_at|date:"Y/m/d f" }}</td>
+            <td class="text-nowrap">{{ object.registered_by }}</td>
+            <td class="text-nowrap">{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
+            <td class="text-nowrap">{{ object.updated_by| default_if_none:"-" }}</td>
+            <td class="text-nowrap"><a href="{% url 'web:list_invoice_detail' %}?invoice_id={{ object.invoice_id }}"><i class="fas fa-search"></i></a></td>
+            <td class="text-nowrap"><a href="{% url 'web:pdf_invoice' object.pk %}"><i class="fas fa-file-pdf"></i></a></td>
+            
         </tr> 
-        {% endfor %}
+        {% endfor %}  
     </tbody>
-</table>
+</table>    
 </div>
     {% if is_paginated %}
     {% include "include/pagination.html" %}
     {% endif %}
 
 {% else %}
-    <p>出力済みの請求書はありません。</p>
+    <p>請求書が登録されていません</p>
 {% endif %}
 
 {% endblock %}
 {% block extra_js %}
     <script>
-        // previous_yearmonth = "{{ yearmonth }}";
-        // previous_customer = "{{ customer }}";
-        // $search_button = $('#id_search_button');
-        // $pdf_button = $('#id_pdf_button');
-        // $gotocreate_button = $('#id_go_to_create_button');
-        // $search_customer = $('#id_customer');
-        // $search_year = $('#id_year');
-        // $search_month = $('#id_month');
-        // function initialize_customer() {
-        //     $('<option>', {
-        //         value: '',
-        //         text: '-----'
-        //     }).appendTo($search_customer);
-        //     $search_customer.val((previous_customer == 'None') ? '' : previous_customer);
-        // }
-        // function initialize_year() {
-        //     var currentyear = 2019;
-        //     $('<option>', {
-        //         value: '',
-        //         text: '----'
-        //     }).appendTo($search_year);
-
-        //     for (let offset = 0; offset < 10; offset ++) {
-        //         $('<option>', {
-        //             value: '' + (currentyear + offset),
-        //             text: '' + (currentyear + offset)
-        //         }).appendTo($search_year);
-        //     }
-        //     $search_year.val((previous_yearmonth == 'None') ? '' : previous_yearmonth.substr(0, 4));
-            
-        // }
-        // function initialize_month() {
-        //     $('<option>', {
-        //         value: '',
-        //         text: '----',
-        //     }).appendTo($search_month);
-
-        //     for (let i = 1;i < 13; i ++) {
-        //         $('<option>', {
-        //             value: (i < 10) ? '0' + i : '' + i,
-        //             text: (i < 10) ? '0' + i : '' + i
-        //         }).appendTo($search_month);
-        //     }
-        //     $search_month.val((previous_yearmonth == 'None') ? '' : previous_yearmonth.substr(4, 2));
-        // }
-        // function get_query_string() {
-        //     var customer = $search_customer.val();
-        //     var year = $search_year.val();
-        //     var month = $search_month.val();
-        //     var queryobj = {};
-        //     if (customer != '') {
-        //         queryobj['customer'] = customer;
-        //     }
-        //     if (month != '' && year != "") {
-        //         queryobj['yearmonth'] = '' + year + month;
-        //     }
-        //     var esc = encodeURIComponent;
-        //     return Object.keys(queryobj)
-        //         .map(k => esc(k) + '=' + esc(queryobj[k]))
-        //         .join('&');
-        // }
-        // $(function() {
-        //     $search_button
-        //     .on('click', () => {
-                
-        //         var query = get_query_string();
-        //         window.location.href = "{% url 'web:list_order' %}?" + query;
-        //     });
-        //     $pdf_button
-        //     .on('click', () => {
-        //         if ($search_customer.val() == '' || $search_year.val() == '' || $search_month.val() == '') {
-        //             alert('対象年月を選択してください')
-        //             return;
-        //         }
-        //         var query = get_query_string();
-        //         window.location.href = "{% url 'web:pdf4' %}?" + query;;
-        //     });
-        //     initialize_customer();
-        //     initialize_month();
-        //     initialize_year();
-        // })
        
     </script>
 {% endblock %}

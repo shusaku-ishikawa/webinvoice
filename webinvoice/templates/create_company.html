@@ -1,24 +1,20 @@
 {% extends "base.html" %}
+{% block header %}
+会社情報登録
+{% endblock %}
 {% block content %}
-<hr>
 <div class="row">
-    <div class="col-md-12 col-12">
-        <h3 class="text-center">新規顧客追加</h3>
-    </div>
-</div>
-<hr>
-<div class="row">
-    <div class="col-md-8 offset-md-2 col-12">
+    <div class="col-md-6 offset-md-3 col-12">
         <form action="" method="POST">
             {% csrf_token %}
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-condensed">
                     {{ form.as_table }}
                 </table>
             </div>
             <div class="row">
                 <div class="col-md-6 col-6">
-                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-user-plus"></i> 登録</button>
+                    <button type="submit" class="btn btn-success btn-block"><i class="fa fa-plus" aria-hidden="true"></i> 登録</button>
                 </div>
             </div>
            

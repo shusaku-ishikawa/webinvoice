@@ -15,7 +15,7 @@
                     <th>請求月</th>
                     <th>SEQNO</th>
                     <th>申込管理番号</th>
-                    <th>請求書</th>
+                    <th>請求書ID</th>
                     <th>サービス開始日</th>
                     <th>請求明細内容</th>
                     <th>請求金額(税抜)</th>
@@ -40,7 +40,7 @@
                     <td>{{ object.yearmonth }}</td>
                     <td>{{ object.seq_number }}</td>
                     <td>{{ object.order_number }}</td>
-                    <td>{{ object.invoice |default_if_none:"-" }}</td>
+                    <td>{{ object.invoice_id }}</td>
                     <td>{{ object.service_start_date| date:"Y/m/d"|default_if_none:"-" }}</td>
                     <td>{{ object.service_name }}</td>
                     <td class="text-right">{{ object.invoice_amount_wo_tax| intcomma }}</td>

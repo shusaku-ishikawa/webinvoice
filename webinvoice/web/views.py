@@ -87,7 +87,7 @@ class ListCompany(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
         key_corporate_number = "corporate_number"
         key_company_name = "company_name"
         key_phone_number = "phone_number"
-        key_invoice_number = "invoice_number"
+        key_invoice_id = "invoice_id"
 
         if key_corporate_number in self.request.GET and self.request.GET.get(key_corporate_number) != None:
             q = self.request.GET.get(key_corporate_number)
@@ -152,7 +152,7 @@ class ListInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.ListVie
         key_corporate_number = "corporate_number"
         key_company_name = "company_name"
         key_phone_number = "phone_number"
-        key_invoice_number = "invoice_number"
+        key_invoice_id = "invoice_id"
 
         if key_corporate_number in self.request.GET and self.request.GET.get(key_corporate_number) != None:
             q = self.request.GET.get(key_corporate_number)
@@ -218,20 +218,25 @@ class ListInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.ListVie
         key_corporate_number = "corporate_number"
         key_company_name = "company_name"
         key_phone_number = "phone_number"
-        key_invoice_number = "invoice_number"
+        key_invoice_id = "invoice_id"
 
-        if key_corporate_number in self.request.GET and self.request.GET.get(key_corporate_number) != None:
+        if key_corporate_number in self.request.GET and self.request.GET.get(key_corporate_number) != "":
             q = self.request.GET.get(key_corporate_number)
             data = data.filter(invoice_entity__company__corporate_number__icontains = q)
         
-        if key_company_name in self.request.GET and self.request.GET.get(key_company_name) != None:
+        if key_company_name in self.request.GET and self.request.GET.get(key_company_name) != "":
             q = self.request.GET.get(key_company_name)
             data = data.filter(Q(invoice_entity__invoice_company_name__icontains = q) | Q(invoice_entity__company__kanji_name__icontains = q))
 
-        if key_phone_number in self.request.GET and self.request.GET.get(key_phone_number) != None:
+        if key_phone_number in self.request.GET and self.request.GET.get(key_phone_number) != "":
             q = self.request.GET.get(key_phone_number)
             data = data.filter(Q(invoice_entity__company__telephone_1__icontains = q) | Q(invoice_entity__company__telephone_2__icontains = q))
-    
+
+        if key_invoice_id in self.request.GET and self.request.GET.get(key_invoice_id) != "":
+            q = self.request.GET.get(key_invoice_id)
+            data = data.filter(invoice_id__icontains = q)
+
+        
         return data
 
 class UpdateInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
@@ -256,10 +261,53 @@ class DeleteInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.Delet
             self.request, '「{}」を削除しました'.format(self.object))
         return HttpResponseRedirect(self.get_success_url())
 
+class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
+    model = Invoice
+    template_name = 'list_invoice.html'
+    paginate_by = 10  #and that's it !!
+    def get_queryset(self):
+        data = Invoice.objects.filter(deleted = False)
+        key_corporate_number = "corporate_number"
+        key_company_name = "company_name"
+        key_phone_number = "phone_number"
+        key_invoice_id = "invoice_id"
+
+        if key_corporate_number in self.request.GET and self.request.GET.get(key_corporate_number) != "":
+            q = self.request.GET.get(key_corporate_number)
+            data = data.filter(invoice_entity__company__corporate_number__icontains = q)
+        
+        if key_company_name in self.request.GET and self.request.GET.get(key_company_name) != "":
+            q = self.request.GET.get(key_company_name)
+            data = data.filter(Q(invoice_entity__invoice_company_name__icontains = q) | Q(invoice_entity__company__kanji_name__icontains = q))
+
+        if key_phone_number in self.request.GET and self.request.GET.get(key_phone_number) != "":
+            q = self.request.GET.get(key_phone_number)
+            data = data.filter(Q(invoice_entity__company__telephone_1__icontains = q) | Q(invoice_entity__company__telephone_2__icontains = q))
+
+        if key_invoice_id in self.request.GET and self.request.GET.get(key_invoice_id) != "":
+            q = self.request.GET.get(key_invoice_id)
+            data = data.filter(invoice_id__icontains = q)
+
+        return data
+
+def add_to_invoice(request):
+    if request.method == 'POST':
+        if 'pk' in request.POST and request.POST.get('pk') != None:
+            
+            detail = InvoiceDetail.objects.get(pk = request.POST.get('pk'))
+            
+            exist = Invoice.objects.filter(invoice_id = detail.invoice_id)
+            if len(exist) == 0:
+                new = Invoice(invoice_id = detail.invoice_id)
+                new.registered_by = request.user
+                new.updated_by = request.user
+                new.save()
+            return JsonResponse({'success': True})
+
+            
 
 class Search(LoginRequiredMixin, generic.TemplateView):
     template_name = 'search_form.html'
-
 
 class UploadFile(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
     form_class = FileUploadForm
@@ -285,78 +333,47 @@ class UploadFile(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
         return self.render_to_response(context)
 
 
-# def pdf(request):
-#     data = Order.objects.all()
-#     customer_code = request.GET.get('customer')
-#     yearmonth = request.GET.get('yearmonth')
-#     total_wo_tax = 0
-#     total_tax = 0
 
-#     for order in data:
-#         total_wo_tax += order.product.price * order.amount
-#         if order.product.tax_type == '課税':
-#             total_tax += order.product.price * settings.TAX_RATE * order.amount
+def pdf(request, pk):
+    instance = Invoice.objects.get(pk = pk)
+    bank = BankInfo.get_bank_info()
+
+    ourinfo = {
+        'zip': '111-1111',
+        'address_1': 'xxxxx',
+        'address_2': 'yyyyy',
+        'phone': 'eeeeee'
+    }
+
+    bank_info = {
+        'bank': bank.bank,
+        'branch': bank.branch,
+        'type': bank.type,
+        'number': bank.number,
+        'meigi': bank.meigi
+    }
+
+    context = {
+        'object': instance,
+        'bank': bank_info,
+        'ourinfo': ourinfo,
+        'pad_range': range(14 - len(instance.details.all())),
+        'details_count': len(instance.details.all())
+    }
+    html_template = render_to_string('pdf/invoice.html', context)
+
+    options = {
+        'page-size': 'Letter',
+        'encoding': "UTF-8",
+        'javascript-delay':'1000'
+    }
+
+    pdf = pdfkit.from_string(html_template, False, options)
+
+    instance.pdf.save(str(instance.pk) + '.pdf', ContentFile(pdf))
+    instance.save()
     
-    
-#     ourinfo = {
-#         'zip': '111-1111',
-#         'address_1': 'xxxxx',
-#         'address_2': 'yyyyy',
-#         'phone': 'eeeeee'
-#     }
-#     bank_info = {
-#         'bank': '三井住友',
-#         'branch': '立川支店',
-#         'type': '普通',
-#         'number': '111111',
-#         'meigi': '株式会社ビジョン'
-#     }
-
-#     if yearmonth != None:
-#         data = data.filter(month_used = yearmonth)
-#     if customer_code != None:
-#         customer = Customer.objects.filter(code = customer_code)[0]
-#         data = data.filter(customer = customer)
-
-#     total_per_product = data.values('product', 'month_used').annotate(count_per_product = Sum('amount'), total_per_product = Sum(F('product__price') * F('amount'), output_field=models.FloatField()))
-#     tax_per_product = data.filter(product__tax_type = '課税').values('product', 'month_used').annotate(tax_per_product = Sum(F('tax_rate__rate') * F('product__price') * F('amount'), output_field=models.FloatField()))
-#     for obj in total_per_product:
-#         obj['product_info'] = Product.objects.get(pk = obj['product'])
-#         for tax_obj in tax_per_product:
-#             if tax_obj['product'] == obj['product']:
-#                 obj['tax'] = tax_obj['tax_per_product']
-#         if not 'tax' in obj.keys():
-#             obj['tax'] = 0
-        
-
-#     print(total_per_product)
-#     context = {
-#         'data': total_per_product,
-#         'total_wo_tax': total_wo_tax,
-#         'total_tax': int(total_tax),
-#         'total': total_wo_tax + int(total_tax),
-#         'bank': bank_info,
-#         'ourinfo': ourinfo,
-#         'customer': customer,
-#     }
-#     html_template = render_to_string('pdf/invoice.html', context)
-
-#     options = {
-#         'page-size': 'Letter',
-#         'encoding': "UTF-8",
-#     }
-
-#     pdf = pdfkit.from_string(html_template, False, options)
-
-#     invoice_code = customer.code + '_' + datetime.today().strftime('%Y%m%d%H%M')
-#     invoice = Invoice()
-#     invoice.customer = customer
-#     invoice.code = invoice_code
-#     invoice.file.save(invoice_code + '.pdf', ContentFile(pdf))
-#     invoice.save()
-#     data.update(invoice = invoice)
-
-#     response = HttpResponse(pdf, content_type='application/pdf')
-#     return response
+    response = HttpResponse(pdf, content_type='application/pdf')
+    return response
 
   
