@@ -7,53 +7,56 @@
         <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>
-                    <th>会社ID.</th>
-                    <th>法人番号</th>
-                    <th>契約者カナ</th>
-                    <th>契約者漢字</th>
-                    <th>郵便番号</th>
-                    <th>契約者都道府県</th>
-                    <th>契約者市区町村</th>
-                    <th>契約者住所番地以降</th>
-                    <th>契約者住所建物名</th>
-                    <th>連絡先電話番号1</th>
-                    <th>連絡先電話番号2</th>
-                    <th>FAX番号</th>
-                    <th>URL</th>
-                    <th>代表者名</th>
-                    <th>担当者名</th>
-                    <th>メール</th>
-                    <th>特記事項</th>
-                    <th>登録日</th>
-                    <th>登録者</th>
-                    <th>更新日</th>
-                    <th>更新者</th>                    
+                    <th class="text-nowrap">会社ID.</th>
+                    <th class="text-nowrap">法人番号</th>
+                    <th class="text-nowrap">契約者カナ</th>
+                    <th class="text-nowrap">契約者漢字</th>
+                    <th class="text-nowrap">郵便番号</th>
+                    <th class="text-nowrap">契約者都道府県</th>
+                    <th class="text-nowrap">契約者市区町村</th>
+                    <th class="text-nowrap">契約者住所番地以降</th>
+                    <th class="text-nowrap">契約者住所建物名</th>
+                    <th class="text-nowrap">連絡先電話番号1</th>
+                    <th class="text-nowrap">連絡先電話番号2</th>
+                    <th class="text-nowrap">FAX番号</th>
+                    <th class="text-nowrap">URL</th>
+                    <th class="text-nowrap">代表者名</th>
+                    <th class="text-nowrap">担当者名</th>
+                    <th class="text-nowrap">メール</th>
+                    <th class="text-nowrap">特記事項</th>
+                    <th class="text-nowrap">登録日</th>
+                    <th class="text-nowrap">登録者</th>
+                    <th class="text-nowrap">更新日</th>
+                    <th class="text-nowrap">更新者</th>                    
                </tr>
             </thead>
             <tbody>
+                {% for object in selected_companies %}
                 <tr>
-                    <td>{{ object.pk }}</td>
-                    <td>{{ object.corporate_number }}</td>
-                    <td>{{ object.kana_name }}</td>
-                    <td>{{ object.kanji_name }}</td>
-                    <td>{{ object.zip }}</td>
-                    <td>{{ object.address_pref }}</td>
-                    <td>{{ object.address_city }}</td>
-                    <td>{{ object.address_street }}</td>
-                    <td>{{ object.address_bld }}</td>
-                    <td>{{ object.telephone_1 }}</td>
-                    <td>{{ object.telephone_2 }}</td>
-                    <td>{{ object.fax }}</td>
-                    <td>{{ object.hp_url }}</td>
-                    <td>{{ object.owner_name }}</td>
-                    <td>{{ object.representative_name }}</td>
-                    <td>{{ object.email }}</td>
-                    <td>{{ object.note }}</td>
-                    <td>{{ object.registered_at|date:"Y/m/d f" }}</td>
-                    <td>{{ object.registered_by }}</td>
-                    <td>{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
-                    <td>{{ object.updated_by| default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.pk }}</td>
+                    <td class="text-nowrap">{{ object.corporate_number }}</td>
+                    <td class="text-nowrap">{{ object.kana_name }}</td>
+                    <td class="text-nowrap">{{ object.kanji_name }}</td>
+                    <td class="text-nowrap">{{ object.zip }}</td>
+                    <td class="text-nowrap">{{ object.address_pref }}</td>
+                    <td class="text-nowrap">{{ object.address_city }}</td>
+                    <td class="text-nowrap">{{ object.address_street }}</td>
+                    <td class="text-nowrap">{{ object.address_bld }}</td>
+                    <td class="text-nowrap">{{ object.telephone_1 }}</td>
+                    <td class="text-nowrap">{{ object.telephone_2 }}</td>
+                    <td class="text-nowrap">{{ object.fax }}</td>
+                    <td class="text-nowrap">{{ object.hp_url }}</td>
+                    <td class="text-nowrap">{{ object.owner_name }}</td>
+                    <td class="text-nowrap">{{ object.representative_name }}</td>
+                    <td class="text-nowrap">{{ object.email }}</td>
+                    <td class="text-nowrap">{{ object.note }}</td>
+                    <td class="text-nowrap">{{ object.registered_at|date:"Y/m/d f" }}</td>
+                    <td class="text-nowrap">{{ object.registered_by }}</td>
+                    <td class="text-nowrap">{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.updated_by| default_if_none:"-" }}</td>
                 </tr> 
+                <input type="hidden" name="selected_companies" value="{{ object.pk }}">
+                {% endfor %}
             </tbody>
         </table>    
         </div>

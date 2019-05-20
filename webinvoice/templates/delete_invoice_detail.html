@@ -32,6 +32,7 @@
                </tr>
             </thead>
             <tbody>
+                {% for object in selected_details %}
                 <tr>
                     <td>{{ object.pk }}</td>
                     <td>{{ object.invoice_entity }}</td>
@@ -55,6 +56,7 @@
                     <td>{{ object.updated_by| default_if_none:"-" }}</td>
                   
                 </tr> 
+                {% endfor %}
             </tbody>
         </table>    
     </div>

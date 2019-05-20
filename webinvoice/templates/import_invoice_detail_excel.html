@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block header %}
+請求明細Excel取込
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 col-12">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="file" id="id_file" required>
+            <button type="submit" class="btn my-btn-base my-upload-btn">アップロード</button>
+            {{ form.file.errors }}
+        </form>
+
+        {% if file %}
+            {% if object.error_count > 0 %}
+            <p>{{ object.error_count }}件のエラーがありました。</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>行番号</th>
+                        <th>エラー</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for err in object.errors.all %}
+                    <tr>
+                        <td>
+                            {{ err.row_index }}
+                        </td>
+                        <td>
+                            {{ err.error }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+            {% else %}
+            <div class="alert alert-success">全てのレコードが正常に処理されました</div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}
+{% block extra_js %}
+    <script>
+
+    </script>
+{% endblock %}

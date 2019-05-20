@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+{% block header %}
+会社Excel取り込み履歴
+{% endblock %}
+{% block content %}
+
+{% if object_list %}
+<div class="table-responsive">
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th class="text-nowrap">ファイル名</th>
+            <th class="text-nowrap">取り込み日時</th>
+            <th class="text-nowrap">取り込み者</th>
+            <th class="text-nowrap">件数</th>
+            <th class="text-nowrap">エラー件数</th>
+
+       </tr>
+    </thead>
+    <tbody>
+        {% for object in object_list %}
+        <tr>
+            <td class="text-nowrap">{{ object.file.name }}</td>
+            <td class="text-nowrap">{{ object.processed_at }}</td>
+            
+        </tr> 
+        {% endfor %}  
+    </tbody>
+</table>    
+</div>
+    {% if is_paginated %}
+    {% include "include/pagination.html" %}
+    {% endif %}
+
+{% else %}
+    <p>企業情報が登録されていません</p>
+{% endif %}
+
+{% endblock %}
+{% block extra_js %}
+    <script>
+       
+    </script>
+{% endblock %}

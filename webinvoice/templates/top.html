@@ -1,11 +1,19 @@
 {% extends "base.html" %}
-{% block content %}
 
+{% block style %}
+
+{% endblock %}
+
+{% block header %}
+トップ
+{% endblock %}
+
+{% block content %}
 <div class="row">
     <div class="col-md-4 offset-md-2 col-4 offset-2">
-        <a class="btn btn-primary btn-block" href="{% url 'web:file_upload' %}"><i class="fas fa-file"></i> 企業情報　インポート</a>
-        <a class="btn btn-primary btn-block" href="{% url 'web:file_upload' %}"><i class="fas fa-file"></i> 請求管理簿　インポート</a>
-        <a class="btn btn-primary btn-block" href="{% url 'web:file_upload' %}"><i class="fas fa-file"></i> 請求明細　インポート</a>
+        <a class="btn btn-primary btn-block" href="{% url 'web:upload_company' %}"><i class="fas fa-file"></i> 企業情報　インポート</a>
+        <a class="btn btn-primary btn-block" href="{% url 'web:upload_invoice_entity' %}"><i class="fas fa-file"></i> 請求管理簿　インポート</a>
+        <a class="btn btn-primary btn-block" href="{% url 'web:upload_invoice_detail' %}"><i class="fas fa-file"></i> 請求明細　インポート</a>
     </div>
     <div class="col-md-4 col-4">
         <a class="btn btn-success btn-block" href="{% url 'web:search' %}"><i class="far fa-edit"></i> 参照・修正・請求書作成/発行</a>

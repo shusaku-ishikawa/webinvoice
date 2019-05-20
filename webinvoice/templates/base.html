@@ -15,11 +15,58 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <!-- vender css end-->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
-  
+
     <link rel="shortcut icon" href="{%  static 'favicon/favicon.ico' %}">
     <link rel="icon" href="{%  static 'favicon/favicon.ico' %}">
-    
+    <style>
+        @page {
+            size: A4;
+            margin: 1cm;
+
+        }
+        .table.table {
+            font-size: 12px!important;
+        }
+        .header_row {
+            display: grid;
+            grid-template-columns: 500px 300px 500px;
+        }
+        .middle_row {
+            display: grid;
+            grid-template-columns: 700px 700px;
+        }
+
+        tr th,
+        tr td{
+            padding: 0.3rem !important;
+            margin: 0.3rem !important;
+        }
+
+        td button.btn {
+            font-size: 10px!important
+        }
+        .my-btn-base {
+            width: 6rem;
+            color:white;
+            padding: 5px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        .my-del-btn {
+            background-color: red;
+        }
+        .my-new-btn {
+            background-color: teal
+        }
+        .my-import-btn {
+            background-color: blue
+        }
+        .my-upload-btn {
+            background-color: gray
+        }
+
+    </style>
+    {% block style %}{% endblock %}
     <title>Web Invoice</title>
 </head>
 <body>
@@ -63,7 +110,6 @@
                 <h4 class="text-center" style="margin-top:3rem">{% block header %}{% endblock %}</h4>
             </div>
         </div>
-        
         <div class="container">
             {% block content %}{% endblock %}
         </div>

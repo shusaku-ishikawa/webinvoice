@@ -7,103 +7,107 @@
 {% block content %}
 {% load humanize %}
 
-<div class="row">
-    <div class="col-md-6 col-6">
-        <a href="{% url 'web:create_invoice_entity' %}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> 新規登録</a>
-    </div>
-</div>
 <ul class="messages">
     {% for message in messages %}
         <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
 </ul>
-{% if object_list %}
-<div class="table-responsive">
-<table class="table table-bordered">
-    <thead class="thead-dark">
-        <tr>
-            <th class="text-nowrap">ID</th>
-            <th class="text-nowrap">会社情報</th>
-            <th class="text-nowrap">請求郵便番号</th>
-            <th class="text-nowrap">請求都道府県</th>
-            <th class="text-nowrap">請求市区町村</th>
-            <th class="text-nowrap">請求住所番地以降</th>
-            <th class="text-nowrap">請求住所建物名</th>
-            <th class="text-nowrap">請求会社名</th>
-            <th class="text-nowrap">請求部署</th>
-            <th class="text-nowrap">請求宛名</th>
-            <th class="text-nowrap">請求宛名1</th>
-            <th class="text-nowrap">請求宛名2</th>
-            <th class="text-nowrap">請求宛名3</th>
-            <th class="text-nowrap">支払い方法</th>
-            <th class="text-nowrap">締め日</th>
-            <th class="text-nowrap">支払い期日</th>
-            <th class="text-nowrap">請求書送付時期</th>
-            <th class="text-nowrap">請求タイミング</th>
-            <th class="text-nowrap">請求周期</th>
-            <th class="text-nowrap">振込銀行名</th>
-            <th class="text-nowrap">振込支店名</th>
-            <th class="text-nowrap">口座種類</th>
-            <th class="text-nowrap">口座番号</th>
-            <th class="text-nowrap">クレカ決済会社</th>
-            <th class="text-nowrap">クレカコード</th>
-            <th class="text-nowrap">クレカID</th>
-            <th class="text-nowrap">決済会社</th>
-            <th class="text-nowrap">決済コード</th>
-            <th class="text-nowrap">決済ID</th>
-            <th class="text-nowrap">特記事項</th>
-            <th class="text-nowrap">登録日</th>
-            <th class="text-nowrap">登録者</th>
-            <th class="text-nowrap">更新日</th>
-            <th class="text-nowrap">更新者</th>
-            <th class="text-nowrap">修正</th>
-            <th class="text-nowrap">削除</th> 
-       </tr>
-    </thead>
-    <tbody>
-        {% for object in object_list %}
-        <tr>
-            <td class="text-nowrap">{{ object.pk }}</td>
-            <td class="text-nowrap">{{ object.company }}</td>
-            <td class="text-nowrap">{{ object.invoice_zip }}</td>
-            <td class="text-nowrap">{{ object.invoice_address_pref }}</td>
-            <td class="text-nowrap">{{ object.invoice_address_city }}</td>
-            <td class="text-nowrap">{{ object.invoice_address_street }}</td>
-            <td class="text-nowrap">{{ object.invoice_address_bld }}</td>
-            <td class="text-nowrap">{{ object.invoice_company_name }}</td>
-            <td class="text-nowrap">{{ object.inovoice_dept }}</td>
-            <td class="text-nowrap">{{ object.invoice_person }}</td>
-            <td class="text-nowrap">{{ object.invoice_project_1 }}</td>
-            <td class="text-nowrap">{{ object.invoice_project_2 }}</td>
-            <td class="text-nowrap">{{ object.invoice_project_3 }}</td>
-            <td class="text-nowrap">{{ object.payment_method }}</td>
-            <td class="text-nowrap">{{ object.invoice_closed_at }}</td>
-            <td class="text-nowrap">{{ object.payment_due_to }}</td>
-            <td class="text-nowrap">{{ object.invoice_sent_at }}</td>
-            <td class="text-nowrap">{{ object.invoice_timing }}</td>
-            <td class="text-nowrap">{{ object.invoice_period }}</td>
-            <td class="text-nowrap">{{ object.bank_name }}</td>
-            <td class="text-nowrap">{{ object.bank_branch_name }}</td>
-            <td class="text-nowrap">{{ object.bank_account_type }}</td>
-            <td class="text-nowrap">{{ object.bank_account_number }}</td>
-            <td class="text-nowrap">{{ object.credit_card_settlement_company }}</td>
-            <td class="text-nowrap">{{ object.credit_card_code }}</td>
-            <td class="text-nowrap">{{ object.credit_card_id }}</td>
-            <td class="text-nowrap">{{ object.settlement_company }}</td>
-            <td class="text-nowrap">{{ object.settlement_code }}</td>
-            <td class="text-nowrap">{{ object.settlement_id }}</td>
-            <td class="text-nowrap">{{ object.note }}</td>
-            <td class="text-nowrap">{{ object.registered_at|date:"Y/m/d f" }}</td>
-            <td class="text-nowrap">{{ object.registered_by }}</td>
-            <td class="text-nowrap">{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
-            <td class="text-nowrap">{{ object.updated_by| default_if_none:"-" }}</td>
-            <td class="text-nowrap"><a href="{% url 'web:update_invoice_entity' object.pk %}"><i class="far fa-edit"></i></a></td>
-            <td class="text-nowrap"><a href="{% url 'web:delete_invoice_entity' object.pk %}"><i class="fa fa-trash"></i></a></td>
-        </tr> 
-        {% endfor %}  
-    </tbody>
-</table>    
-</div>
+
+<form method="GET" action="{% url 'web:delete_invoice_entity' %}">
+    <button  type="submit" class="btn my-btn-base my-del-btn">削除</button>
+    <a href="{% url 'web:create_invoice_entity' %}" class="btn my-btn-base my-new-btn">手動登録</a>
+    <a href="{% url 'web:upload_invoice_entity' %}" class="btn my-btn-base my-import-btn">一括取込</a>
+    
+    {% if object_list %}
+   <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th></th>
+                    <th class="text-nowrap">ID</th>
+                    <th class="text-nowrap">会社情報</th>
+                    <th class="text-nowrap">請求郵便番号</th>
+                    <th class="text-nowrap">請求都道府県</th>
+                    <th class="text-nowrap">請求市区町村</th>
+                    <th class="text-nowrap">請求住所番地以降</th>
+                    <th class="text-nowrap">請求住所建物名</th>
+                    <th class="text-nowrap">請求会社名</th>
+                    <th class="text-nowrap">請求部署</th>
+                    <th class="text-nowrap">請求宛名</th>
+                    <th class="text-nowrap">請求宛名1</th>
+                    <th class="text-nowrap">請求宛名2</th>
+                    <th class="text-nowrap">請求宛名3</th>
+                    <th class="text-nowrap">支払い方法</th>
+                    <th class="text-nowrap">締め日</th>
+                    <th class="text-nowrap">支払い期日</th>
+                    <th class="text-nowrap">請求書送付時期</th>
+                    <th class="text-nowrap">請求タイミング</th>
+                    <th class="text-nowrap">請求周期</th>
+                    <th class="text-nowrap">振込銀行名</th>
+                    <th class="text-nowrap">振込支店名</th>
+                    <th class="text-nowrap">口座種類</th>
+                    <th class="text-nowrap">口座番号</th>
+                    <th class="text-nowrap">クレカ決済会社</th>
+                    <th class="text-nowrap">クレカコード</th>
+                    <th class="text-nowrap">クレカID</th>
+                    <th class="text-nowrap">決済会社</th>
+                    <th class="text-nowrap">決済コード</th>
+                    <th class="text-nowrap">決済ID</th>
+                    <th class="text-nowrap">特記事項</th>
+                    <th class="text-nowrap">登録日</th>
+                    <th class="text-nowrap">登録者</th>
+                    <th class="text-nowrap">更新日</th>
+                    <th class="text-nowrap">更新者</th>
+                    <th class="text-nowrap">修正</th>
+                
+            </tr>
+            </thead>
+            <tbody>
+                {% for object in object_list %}
+                <tr>
+                    <td class="text-nowrap"><input value="{{ object.pk }}" name="selected_entities" type="checkbox"></td>
+                    <td class="text-nowrap">{{ object.pk }}</td>
+                    <td class="text-nowrap">{{ object.company }}</td>
+                    <td class="text-nowrap">{{ object.invoice_zip|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.invoice_address_pref|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.invoice_address_city|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.invoice_address_street|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.invoice_address_bld|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.invoice_company_name|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.inovoice_dept|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.invoice_person|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.invoice_project_1|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.invoice_project_2|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.invoice_project_3|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.payment_method|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.invoice_closed_at|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.payment_due_to|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.invoice_sent_at|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.invoice_timing|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.invoice_period |default_if_none:"-"}}</td>
+                    <td class="text-nowrap">{{ object.bank_name|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.bank_branch_name|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.bank_account_type|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.bank_account_number|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.credit_card_settlement_company|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.credit_card_code|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.credit_card_id|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.settlement_company|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.settlement_code|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.settlement_id|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.note|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.registered_at|date:"Y/m/d f" }}</td>
+                    <td class="text-nowrap">{{ object.registered_by }}</td>
+                    <td class="text-nowrap">{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.updated_by|default_if_none:"-" }}</td>
+                    <td class="text-nowrap"><a href="{% url 'web:update_invoice_entity' object.pk %}"><i class="far fa-edit"></i></a></td>
+                
+                </tr> 
+                {% endfor %}  
+            </tbody>
+        </table>    
+    </div>
+</form>
     {% if is_paginated %}
     {% include "include/pagination.html" %}
     {% endif %}

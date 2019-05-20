@@ -44,7 +44,7 @@ from django.core.files.base import ContentFile
 import csv
 from io import TextIOWrapper, StringIO
 from django.db.models import *
-
+import pandas as pd
 
 # Create your views here.
 class TopPage(LoginRequiredMixin, generic.TemplateView):
@@ -87,7 +87,7 @@ class ListCompany(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
         key_corporate_number = "corporate_number"
         key_company_name = "company_name"
         key_phone_number = "phone_number"
-        key_invoice_id = "invoice_id"
+        key_invoice_code = "invoice_code"
 
         if key_corporate_number in self.request.GET and self.request.GET.get(key_corporate_number) != None:
             q = self.request.GET.get(key_corporate_number)
@@ -112,18 +112,25 @@ class UpdateCompany(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView)
     def get_success_url(self):
         return reverse('web:list_company')
 
-class DeleteCompany(SuccessMessageMixin, LoginRequiredMixin, generic.DeleteView):
-    model = Company
-    form_class = CompanyForm
+class DeleteCompany(SuccessMessageMixin, LoginRequiredMixin, generic.TemplateView):
     template_name = 'delete_company.html'
-    success_url = reverse_lazy('web:list_company')
 
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.soft_delete()
+    def get_success_url(self):
+        return reverse('web:list_company')
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        selected_companies = self.request.GET.getlist('selected_companies')
+        ctx['selected_companies'] = Company.objects.filter(pk__in = selected_companies)
+        return ctx
+    def post(self, request, *args, **kwargs):
+        selected_companies = self.request.POST.getlist('selected_companies')
+        companies_to_delete = Company.objects.filter(pk__in = selected_companies)
+        for c in companies_to_delete:
+            c.soft_delete()
+        
         messages.success(
-            self.request, '「{}」を削除しました'.format(self.object))
-        return HttpResponseRedirect(self.get_success_url())
+            self.request, '{} 件削除しました'.format(len(companies_to_delete)))
+        return HttpResponseRedirect(self.get_success_url())  
 
 class CreateInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
     template_name = "create_invoice_entity.html"
@@ -152,7 +159,7 @@ class ListInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.ListVie
         key_corporate_number = "corporate_number"
         key_company_name = "company_name"
         key_phone_number = "phone_number"
-        key_invoice_id = "invoice_id"
+        key_invoice_code = "invoice_code"
 
         if key_corporate_number in self.request.GET and self.request.GET.get(key_corporate_number) != None:
             q = self.request.GET.get(key_corporate_number)
@@ -177,18 +184,25 @@ class UpdateInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.Updat
     def get_success_url(self):
         return reverse('web:list_invoice_entity')
 
-class DeleteInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.DeleteView):
-    model = InvoiceEntity
-    form_class = InvoiceEntityForm
+class DeleteInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.TemplateView):
     template_name = 'delete_invoice_entity.html'
-    success_url = reverse_lazy('web:list_invoice_entity')
 
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.soft_delete()
+    def get_success_url(self):
+        return reverse('web:list_invoice_entity')
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        selected_entities = self.request.GET.getlist('selected_entities')
+        ctx['selected_entities'] = InvoiceEntity.objects.filter(pk__in = selected_entities)
+        return ctx
+    def post(self, request, *args, **kwargs):
+        selected_entities = self.request.POST.getlist('selected_entities')
+        entities_to_delete = InvoiceEntity.objects.filter(pk__in = selected_entities)
+        for c in entities_to_delete:
+            c.soft_delete()
+        
         messages.success(
-            self.request, '「{}」を削除しました'.format(self.object))
-        return HttpResponseRedirect(self.get_success_url())
+            self.request, '{} 件削除しました'.format(len(entities_to_delete)))
+        return HttpResponseRedirect(self.get_success_url())  
 
 class CreateInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
     template_name = "create_invoice_detail.html"
@@ -218,7 +232,7 @@ class ListInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.ListVie
         key_corporate_number = "corporate_number"
         key_company_name = "company_name"
         key_phone_number = "phone_number"
-        key_invoice_id = "invoice_id"
+        key_invoice_code = "invoice_code"
 
         if key_corporate_number in self.request.GET and self.request.GET.get(key_corporate_number) != "":
             q = self.request.GET.get(key_corporate_number)
@@ -232,9 +246,9 @@ class ListInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.ListVie
             q = self.request.GET.get(key_phone_number)
             data = data.filter(Q(invoice_entity__company__telephone_1__icontains = q) | Q(invoice_entity__company__telephone_2__icontains = q))
 
-        if key_invoice_id in self.request.GET and self.request.GET.get(key_invoice_id) != "":
-            q = self.request.GET.get(key_invoice_id)
-            data = data.filter(invoice_id__icontains = q)
+        if key_invoice_code in self.request.GET and self.request.GET.get(key_invoice_code) != "":
+            q = self.request.GET.get(key_invoice_code)
+            data = data.filter(invoice_code__icontains = q)
 
         
         return data
@@ -248,18 +262,25 @@ class UpdateInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.Updat
     def get_success_url(self):
         return reverse('web:list_invoice_detail')
 
-class DeleteInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.DeleteView):
-    model = InvoiceDetail
-    form_class = InvoiceDetailForm
+class DeleteInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.TemplateView):
     template_name = 'delete_invoice_detail.html'
-    success_url = reverse_lazy('web:list_invoice_detail')
 
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.soft_delete()
+    def get_success_url(self):
+        return reverse('web:list_invoice_detail')
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        selected_details = self.request.GET.getlist('selected_details')
+        ctx['selected_details'] = Company.objects.filter(pk__in = selected_details)
+        return ctx
+    def post(self, request, *args, **kwargs):
+        selected_details = self.request.POST.getlist('selected_entities')
+        details_to_delete = InvoiceDetail.objects.filter(pk__in = selected_details)
+        for c in details_to_delete:
+            c.soft_delete()
+        
         messages.success(
-            self.request, '「{}」を削除しました'.format(self.object))
-        return HttpResponseRedirect(self.get_success_url())
+            self.request, '{} 件削除しました'.format(len(details_to_delete)))
+        return HttpResponseRedirect(self.get_success_url())  
 
 class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
     model = Invoice
@@ -270,7 +291,8 @@ class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
         key_corporate_number = "corporate_number"
         key_company_name = "company_name"
         key_phone_number = "phone_number"
-        key_invoice_id = "invoice_id"
+        key_invoice_code = "invoice_code"
+        key_invoice_pk = "invoice_pk"
 
         if key_corporate_number in self.request.GET and self.request.GET.get(key_corporate_number) != "":
             q = self.request.GET.get(key_corporate_number)
@@ -284,9 +306,13 @@ class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
             q = self.request.GET.get(key_phone_number)
             data = data.filter(Q(invoice_entity__company__telephone_1__icontains = q) | Q(invoice_entity__company__telephone_2__icontains = q))
 
-        if key_invoice_id in self.request.GET and self.request.GET.get(key_invoice_id) != "":
-            q = self.request.GET.get(key_invoice_id)
-            data = data.filter(invoice_id__icontains = q)
+        if key_invoice_code in self.request.GET and self.request.GET.get(key_invoice_code) != "":
+            q = self.request.GET.get(key_invoice_code)
+            data = data.filter(invoice_code__icontains = q)
+           
+        if key_invoice_pk in self.request.GET and self.request.GET.get(key_invoice_pk) != "":
+            q = self.request.GET.get(key_invoice_pk)
+            data = data.filter(invoice_pk = q)
 
         return data
 
@@ -296,9 +322,9 @@ def add_to_invoice(request):
             
             detail = InvoiceDetail.objects.get(pk = request.POST.get('pk'))
             
-            exist = Invoice.objects.filter(invoice_id = detail.invoice_id)
+            exist = Invoice.objects.filter(invoice_code = detail.invoice_code)
             if len(exist) == 0:
-                new = Invoice(invoice_id = detail.invoice_id)
+                new = Invoice(invoice_code = detail.invoice_code)
                 new.registered_by = request.user
                 new.updated_by = request.user
                 new.save()
@@ -309,24 +335,162 @@ def add_to_invoice(request):
 class Search(LoginRequiredMixin, generic.TemplateView):
     template_name = 'search_form.html'
 
-class UploadFile(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
-    form_class = FileUploadForm
-    template_name = 'import_csv.html'
+class UploadCompanyExcel(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
+    form_class = CompanyExcelForm
+    template_name = 'import_company_excel.html'
 
     def form_valid(self, form):
-        file_name = form.save()
+        obj = form.save()
+        obj.type = UploadedFile.TYPE_COMPANY
 
-        with open('media/' + file_name, 'r') as f:
-            reader = csv.reader(f)
-            for row in reader:
-                print(len(row))
-                print(row[1])
-                print(row[2])
-                print(row[3])
-                
-        
+        d = pd.read_excel(obj.file.path, dtype=str) 
+        df = d.fillna('')
+        obj.record_count = len(df)
+        obj.save()
+        for index, row in df.iterrows():
+            try:
+                id = row['企業ID']
+                if id == '':
+                    c = Company(registered_by = self.request.user, updated_by = self.request.user)
+                else:
+                    c = Company.objects.get(pk = id)
+                    c.updated_by = self.request.user
+
+                c.corporate_number = row['法人番号']
+                c.kana_name = row['契約者名カナ']
+                c.kanji_name = row['契約者名']
+                c.zip = row['契約者郵便番号']
+                c.address_pref = row['契約者都道府県']
+                c.address_city = row['契約者市区町村']
+                c.address_street = row['契約者住所番地以降']
+                c.address_bld = row['契約者住所建物名']
+                c.telephone_1 = row['連絡先電話番号1']
+                c.telephone_2 = row['連絡先電話番号2']
+                c.fax = row['FAX番号']
+                c.hp_url = row['URL']
+                c.owner_name = row['代表者名']
+                c.representative_name = row['担当者名']
+                c.email = row['メールアドレス']
+                c.note = row['備考']
+                c.save()
+            except Exception as e:
+                print(str(e.args))
+                err = UploadedFileError()
+                err.file = obj
+                err.row_index = index + 1
+                err.error = str(e.args)
+                err.save()
+        c.save()
+
         context = {
-            'file_name': file_name,
+            'file': obj,
+            'form': form, 
+        }
+        return self.render_to_response(context)
+class UploadInvoiceEntityExcel(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
+    form_class = InvoiceEntityExcelForm
+    template_name = 'import_invoice_entity_excel.html'
+
+    def form_valid(self, form):
+        obj = form.save()
+        obj.type = UploadedFile.TYPE_ENTITY
+
+        d = pd.read_excel(obj.file.path, dtype=str) 
+        df = d.fillna('')
+        obj.record_count = len(df)
+        obj.save()
+        for index, row in df.iterrows():
+            try:
+                entity = InvoiceEntity()
+                c = Company.objects.get(corporate_number = row['法人番号'])
+                entity.company = c
+                entity.invoice_zip = row['請求郵便番号']
+                entity.invoice_address_pref = row['請求都道府県']
+                entity.invoice_address_city = row['請求市区町村']
+                entity.invoice_address_street = row['請求住所番地以降']
+                entity.invoice_address_bld = row['請求住所建物名']
+                entity.invoice_company_name = row['請求会社名']
+                entity.invoice_dept = row['請求所属部署']
+                entity.invoice_person = row['請求宛名']
+                entity.invoice_project_1 = row['請求宛名1']
+                entity.invoice_project_2 = row['請求宛名2']
+                entity.invoice_project_3 = row['請求宛名3']
+                entity.payment_method = row['支払方法']
+                entity.invoice_closed_at = row['締日']
+                entity.payment_due_to = row['支払期日']
+                entity.invoice_sent_at = row['送付タイミング']
+                entity.invoice_timing = row['請求タイミング']
+                entity.invoice_period = row['請求周期']
+                entity.bank_name = row['振込銀行名']
+                entity.bank_banch_name = row['振込支店名']
+                entity.bank_account_type = row['振込普通/当座']
+                entity.bank_account_number = row['振込銀行口座番号']
+                entity.credit_card_settlement_company = row['クレカ決済会社']
+                entity.credit_card_code = row['クレカコード']
+                entity.credit_card_id = row['クレカID']
+                entity.settlement_company = row['決済会社']
+                entity.settlement_code = row['決済コード']
+                entity.settlement_id = row['決済ID']
+                entity.note = row['備考']
+                entity.registered_by = self.request.user
+                entity.updated_by = self.request.user
+                entity.save()
+            except Exception as e:
+                print(str(e.args))
+                err = UploadedFileError()
+                err.file = obj
+                err.row_index = index + 1
+                err.error = str(e.args)
+                err.save()
+        context = {
+            'file': obj,
+            'form': form,
+            
+        }
+        return self.render_to_response(context)
+class UploadInvoiceDetailExcel(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
+    form_class = InvoiceDetailExcelForm
+    template_name = 'import_invoice_detail_excel.html'
+
+    def form_valid(self, form):
+        obj = form.save()
+        obj.type = UploadedFile.TYPE_DETAIL
+
+        d = pd.read_excel(obj.file.path, dtype=str) 
+        df = d.fillna('')
+        obj.record_count = len(df)
+        obj.save()
+        for index, row in df.iterrows():
+            try:
+                detail = InvoiceDetail()
+                entity = InvoiceEntity.objects.get(pk = row['請求管理簿ID'])
+                detail.invoice_entity = entity
+                detail.product_category_1 = row['商品大区分']
+                detail.product_category_2 = row['商品小区分']
+                detail.yearmonth = row['請求月']
+                detail.seq_number = row['SEQNO']
+                detail.order_number = row['申込管理番号']
+                detail.invoice_code = row['請求書ID']
+                detail.service_start_date = row['サービス開始日']
+                detail.service_name = row['サービス明細内容']
+                detail.invoice_amount_wo_tax = row['請求金額（税抜）']
+                detail.tax_type = row['税区分']
+                detail.tax_rate_perc = row['税率'].replace('%', '')
+                detail.tax_amount = row['請求金額（税額）']
+                #detail.invoice_amount_w_tax = row['請求金額（税込合計）']
+                detail.note = row['備考']
+                detail.registered_by = self.request.user
+                detail.updated_by = self.request.user
+                detail.save()
+            except Exception as e:
+                print(str(e.args))
+                err = UploadedFileError()
+                err.file = obj
+                err.row_index = index + 1
+                err.error = str(e.args)
+                err.save()
+        context = {
+            'file': obj,
             'form': form,
             
         }
@@ -337,12 +501,13 @@ class UploadFile(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
 def pdf(request, pk):
     instance = Invoice.objects.get(pk = pk)
     bank = BankInfo.get_bank_info()
+    ourinfo = OurInfo.get_ourinfo()
 
     ourinfo = {
-        'zip': '111-1111',
-        'address_1': 'xxxxx',
-        'address_2': 'yyyyy',
-        'phone': 'eeeeee'
+        'zip': ourinfo.zip,
+        'address_1': ourinfo.address_1,
+        'address_2': ourinfo.address_2,
+        'phone': ourinfo.phone
     }
 
     bank_info = {
@@ -376,4 +541,36 @@ def pdf(request, pk):
     response = HttpResponse(pdf, content_type='application/pdf')
     return response
 
-  
+class CompanyExcelUploadHistor(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
+    model = UploadedFile
+    template_name = 'list_upload_company.html'
+    paginate_by = 10  #and that's it !!
+    def get_queryset(self):
+        data = UploadedFile.objects.filter(type = UploadedFile.TYPE_COMPANY)
+        return data
+
+class EntityExcelUploadHistor(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
+    model = UploadedFile
+    template_name = 'list_upload_entity.html'
+    paginate_by = 10  #and that's it !!
+    def get_queryset(self):
+        data = UploadedFile.objects.filter(type = UploadedFile.TYPE_ENTITY)
+        return data
+
+class DetailExcelUploadHistor(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
+    model = UploadedFile
+    template_name = 'list_upload_detail.html'
+    paginate_by = 10  #and that's it !!
+    def get_queryset(self):
+        data = UploadedFile.objects.filter(type = UploadedFile.TYPE_DETAIL)
+        return data
+
+class CreateInvoice(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'create_invoice.html'
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        bank = BankInfo.get_bank_info()
+        ourinfo = OurInfo.get_ourinfo()
+        ctx['bank'] = bank
+        ctx['ourinfo'] = ourinfo
+        return ctx

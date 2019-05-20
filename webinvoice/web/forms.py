@@ -6,7 +6,7 @@ from django.contrib.auth.forms import (AuthenticationForm, PasswordChangeForm,
 from .models import *
 from django.core.exceptions import ValidationError
 from django.core.files.storage import default_storage
-
+import pandas as pd
 
 class LoginForm(AuthenticationForm):
     """ログインフォーム"""
@@ -47,13 +47,51 @@ class InvoiceDetailForm(forms.ModelForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control input-sm'
 
-class FileUploadForm(forms.ModelForm):
+class CompanyExcelForm(forms.ModelForm):
     """ ファイルアップロードフォーム """   
     class Meta:
         model = UploadedFile
-        exclude = ('pk', 'processed_at', 'uploaded_by', 'record_count', 'error_count')
+        exclude = ('pk', 'type', 'processed_at', 'uploaded_by', 'record_count', 'error_count')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control input-sm'
+    
+    def clean(self):
+        cleaned_data = super(CompanyExcelForm, self).clean()
+        d = pd.read_excel(self.files['file']) 
+        df = d.where((pd.notnull(d)), None)
+        # if len(df.columns) != UploadedFile.COLUMN_COUNT_COMPANY:
+        #     print(len(df.columns))
+        #     self.add_error('file', "列数が不正です")
+        return cleaned_data
 
+class InvoiceEntityExcelForm(forms.ModelForm):
+    """ ファイルアップロードフォーム """   
+    class Meta:
+        model = UploadedFile
+        exclude = ('pk', 'type', 'processed_at', 'uploaded_by', 'record_count', 'error_count')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control input-sm'
+    
+    def clean(self):
+        cleaned_data = super(InvoiceEntityExcelForm, self).clean()
+        print(self.files['file'])
+        return cleaned_data
+
+class InvoiceDetailExcelForm(forms.ModelForm):
+    """ ファイルアップロードフォーム """   
+    class Meta:
+        model = UploadedFile
+        exclude = ('pk', 'type', 'processed_at', 'uploaded_by', 'record_count', 'error_count')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control input-sm'
+    
+    def clean(self):
+        cleaned_data = super(InvoiceDetailExcelForm, self).clean()
+        print(self.files['file'])
+        return cleaned_data

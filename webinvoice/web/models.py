@@ -104,8 +104,8 @@ class Company(models.Model):
     address_bld = models.CharField(
         verbose_name = "契約者住所建物名",
         max_length = 50,
-        null = False,
-        blank = False
+        null = True,
+        blank = True
     )
 
     telephone_1 = models.CharField(
@@ -144,14 +144,14 @@ class Company(models.Model):
     owner_name = models.CharField(
         verbose_name = "代表者名",
         max_length = 50,
-        null = False,
-        blank = False
+        null = True,
+        blank = True
     )
     representative_name = models.CharField(
         verbose_name = "担当者名",
         max_length = 50,
-        null = False,
-        blank = False
+        null = True,
+        blank = True
     )
     email = models.EmailField(
         verbose_name = _('メール'),
@@ -238,8 +238,8 @@ class InvoiceEntity(models.Model):
     invoice_address_bld = models.CharField(
         verbose_name = "請求住所建物名",
         max_length = 50,
-        null = False,
-        blank = False
+        null = True,
+        blank = True
     )
     invoice_company_name = models.CharField(
         verbose_name = '請求会社名',
@@ -247,7 +247,7 @@ class InvoiceEntity(models.Model):
         null = True,
         blank = True
     )
-    inovoice_dept = models.CharField(
+    invoice_dept = models.CharField(
         verbose_name = '請求部署',
         max_length = 100,
         null = True,
@@ -293,6 +293,8 @@ class InvoiceEntity(models.Model):
     invoice_closed_at = models.CharField(
         verbose_name = '締め日',
         max_length = 20,
+        null = True,
+        blank = True,
         choices = (
             ('末日', '末日'),
             ('20日', '20日'),
@@ -302,6 +304,8 @@ class InvoiceEntity(models.Model):
     payment_due_to = models.CharField(
         verbose_name = '支払い期日',
         max_length = 20,
+        null = True,
+        blank = True,
         choices = (
             ('末日', '末日'),
             ('20日', '20日'),
@@ -311,6 +315,8 @@ class InvoiceEntity(models.Model):
     invoice_sent_at = models.CharField(
         verbose_name = '請求書送付時期',
         max_length = 20,
+        null = True,
+        blank = True,
         choices =  (
             ('末日', '末日'),
             ('20日', '20日'),
@@ -319,6 +325,8 @@ class InvoiceEntity(models.Model):
     invoice_timing = models.CharField(
         verbose_name = '請求タイミング',
         max_length = 20,
+        null = True,
+        blank = True,
         choices = (
             ('売掛', '売掛'),
             ('前入金', '前入金'),
@@ -327,6 +335,8 @@ class InvoiceEntity(models.Model):
     invoice_period = models.CharField(
         verbose_name = '請求周期',
         max_length = 20,
+        null = True,
+        blank = True,
         choices = (
             ('毎月', '毎月'),
             ('6ヶ月', '6ヶ月'),
@@ -335,16 +345,22 @@ class InvoiceEntity(models.Model):
     
     bank_name = models.CharField(
         verbose_name = '振込銀行名',
-        max_length = 20
+        max_length = 20,
+        blank = True,
+        null = True
     )
     bank_branch_name = models.CharField(
         verbose_name = '振込支店名',
-        max_length = 20
+        max_length = 20,
+        blank = True,
+        null = True
     )
 
     bank_account_type = models.CharField(
         verbose_name = '口座種類',
         max_length = 20,
+        blank = True,
+        null = True,
         choices = (
             ('普通', '普通'),
             ('当座', '当座')
@@ -353,31 +369,45 @@ class InvoiceEntity(models.Model):
 
     bank_account_number = models.CharField(
         verbose_name = '口座番号',
-        max_length = 20
+        max_length = 20,
+        blank = True,
+        null = True
     )
     credit_card_settlement_company = models.CharField(
         verbose_name = 'クレカ決済会社',
-        max_length = 20
+        max_length = 20,
+        blank = True,
+        null = True
     )
     credit_card_code = models.CharField(
         verbose_name = 'クレカコード',
-        max_length = 20
+        max_length = 20,
+        blank = True,
+        null = True
     )
     credit_card_id = models.CharField(
         verbose_name = 'クレカID',
-        max_length = 20
+        max_length = 20,
+        blank = True,
+        null = True
     )
     settlement_company = models.CharField(
         verbose_name = '決済会社',
-        max_length = 20
+        max_length = 20,
+        blank = True,
+        null = True
     )
     settlement_code = models.CharField(
         verbose_name = '決済コード',
-        max_length = 20
+        max_length = 20,
+        blank = True,
+        null = True
     )
     settlement_id = models.CharField(
         verbose_name = '決済ID',
-        max_length = 20
+        max_length = 20,
+        blank = True,
+        null = True
     )
   
     note = models.TextField(
@@ -424,7 +454,7 @@ class Invoice(models.Model):
         verbose_name_plural = '請求書'
         ordering = ['pk']
     
-    invoice_id = models.CharField(
+    invoice_code = models.CharField(
         verbose_name = '請求書ID',
         max_length = 50,
         primary_key = True
@@ -486,11 +516,6 @@ class Invoice(models.Model):
         return details.aggregate(total = Sum('invoice_amount_wo_tax'))['total']
 
     @property
-    def details(self):
-        details = InvoiceDetail.objects.filter(invoice_id = self.invoice_id)
-        return details
-
-    @property
     def invoice_entity(self):
         if len(self.details) > 0:
             return self.details[0].invoice_entity
@@ -509,7 +534,14 @@ class InvoiceDetail(models.Model):
         verbose_name = '請求明細'
         verbose_name_plural = '請求明細'
         ordering = ['pk']
-
+    invoice = models.ForeignKey(
+        to = Invoice,
+        verbose_name = '請求書',
+        on_delete = models.CASCADE,
+        related_name = 'details',
+        null = True,
+        blank = True
+    )
     invoice_entity = models.ForeignKey(
         to = InvoiceEntity,
         related_name = 'my_invoice_details',
@@ -536,7 +568,7 @@ class InvoiceDetail(models.Model):
         verbose_name = '申込管理番号',
         max_length = 50
     )
-    invoice_id = models.CharField(
+    invoice_code = models.CharField(
         verbose_name = '請求書ID',
         max_length = 50
     )
@@ -602,9 +634,9 @@ class InvoiceDetail(models.Model):
     @property
     def invoice_amount_w_tax(self):
         return int(self.invoice_amount_wo_tax) + int(self.tax_amount)
-    @property
-    def is_invoiced(self):
-        return len(Invoice.objects.filter(invoice_id = self.invoice_id)) > 0
+
+
+
 class UploadedFile(models.Model):
     def __str__(self):
         return self.order_number
@@ -618,6 +650,11 @@ class UploadedFile(models.Model):
     TYPE_ENTITY = 2
     TYPE_DETAIL = 3
 
+    COLUMN_COUNT_COMPANY = 17
+    COLUMN_COUNT_ENTITY = 17
+    COLUMN_COUNT_DETAIL = 17
+    
+
     type = models.CharField(
         verbose_name = 'ファイル種類',
         max_length = 10,
@@ -627,10 +664,10 @@ class UploadedFile(models.Model):
             (TYPE_DETAIL, '請求明細')
         )
     )
-    csv_file = models.FileField(
+    file = models.FileField(
         upload_to = 'company_csv',
         verbose_name = 'アップロードファイル',
-        validators = [FileExtensionValidator(['csv', ])],
+        validators = [FileExtensionValidator(['xlsx', ])],
     )
 
     processed_at = models.DateTimeField(
@@ -647,12 +684,27 @@ class UploadedFile(models.Model):
 
     record_count = models.IntegerField(
         verbose_name = '件数',
+        default = 0
     )
-
-    error_count = models.IntegerField(
-        verbose_name = 'エラー件数'
+    @property
+    def error_count(self):
+        return len(self.errors.all())
+class UploadedFileError(models.Model):
+    
+    file = models.ForeignKey(
+        to = UploadedFile,
+        on_delete = models.CASCADE,
+        related_name = 'errors'
     )
-
+    row_index = models.IntegerField(
+        verbose_name = '行番号',
+    )
+    error = models.CharField(
+        verbose_name = 'エラー',
+        null = True,
+        blank = True,
+        max_length = 255
+    )
 class BankInfo(models.Model):
     def __str__(self):
         return '口座情報'
@@ -710,6 +762,36 @@ class BankInfo(models.Model):
             return instance
         return qs[0]
 
+class OurInfo(models.Model):
+    zip = models.CharField(
+        verbose_name = '郵便番号',
+        max_length = 100,
+    )
+    address_1 = models.CharField(
+        verbose_name = '住所1',
+        max_length = 100
+    )
+    address_2 = models.CharField(
+        verbose_name = '住所2',
+        max_length = 100
+    )
+    phone = models.CharField(
+        verbose_name = '電話番号',
+        max_length = 100
+    )
+    @staticmethod
+    def get_ourinfo():
+        qs = OurInfo.objects.all()
+        if len(qs) == 0:
+            new = OurInfo()
+            new.zip = 'no data',
+            new.address_1 = 'no data'
+            new.address_2 = 'no data'
+            new.phone = 'no data'
+            new.save()
+            return new
+        return qs[0]
+    
 
 
     

@@ -1,15 +1,20 @@
 {% extends "base.html" %}
 
 {% load humanize %}
+
 {% block header %}
 請求書一覧
 {% endblock %}
+
 {% block content %}
 <ul class="messages">
     {% for message in messages %}
         <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
 </ul>
+
+<a href="{% url 'web:create_invoice' %}" class="btn my-btn-base my-new-btn">手動登録</a>
+    
 {% if object_list %}
 <div class="table-responsive">
 <table class="table table-bordered">
@@ -26,7 +31,7 @@
             <th class="text-nowrap">登録者</th>
             <th class="text-nowrap">更新日</th>
             <th class="text-nowrap">更新者</th>
-            <th class="text-nowrap">参照</th>
+            <th class="text-nowrap">明細</th>
             <th class="text-nowrap">PDF</th>
             
        </tr>
@@ -45,9 +50,8 @@
             <td class="text-nowrap">{{ object.registered_by }}</td>
             <td class="text-nowrap">{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
             <td class="text-nowrap">{{ object.updated_by| default_if_none:"-" }}</td>
-            <td class="text-nowrap"><a href="{% url 'web:list_invoice_detail' %}?invoice_id={{ object.invoice_id }}"><i class="fas fa-search"></i></a></td>
+            <td class="text-nowrap"><a href="{% url 'web:list_invoice_detail' %}?invoice_code={{ object.invoice_code }}%invoice_pk={{ object.pk }}"><i class="fas fa-search"></i></a></td>
             <td class="text-nowrap"><a href="{% url 'web:pdf_invoice' object.pk %}"><i class="fas fa-file-pdf"></i></a></td>
-            
         </tr> 
         {% endfor %}  
     </tbody>

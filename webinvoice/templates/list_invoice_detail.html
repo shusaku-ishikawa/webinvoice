@@ -6,82 +6,85 @@
 {% endblock %}
 {% block content %}
 
-<div class="row">
-    <div class="col-md-6 col-6">
-        <a href="{% url 'web:create_invoice_detail' %}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> 新規登録</a>
-    </div>
-</div>
 <ul class="messages">
     {% for message in messages %}
         <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
 </ul>
-{% if object_list %}
-<div class="table-responsive">
-<table class="table table-bordered">
-    <thead class="thead-dark">
-        <tr>
-            <th class="text-nowrap">ID</th>
-            <th class="text-nowrap">請求管理簿</th>
-            <th class="text-nowrap">商材大区分</th>
-            <th class="text-nowrap">商材小区分</th>
-            <th class="text-nowrap">請求月</th>
-            <th class="text-nowrap">SEQNO</th>
-            <th class="text-nowrap">申込管理番号</th>
-            <th class="text-nowrap">請求書ID</th>
-            <th class="text-nowrap">サービス開始日</th>
-            <th class="text-nowrap">請求明細内容</th>
-            <th class="text-nowrap">請求金額(税抜)</th>
-            <th class="text-nowrap">税区分</th>
-            <th class="text-nowrap">税率</th>
-            <th class="text-nowrap">請求金額(税額)</th>
-            <th class="text-nowrap">請求金額(税込)</th>
-            <th class="text-nowrap">備考</th>
-            <th class="text-nowrap">登録日</th>
-            <th class="text-nowrap">登録者</th>
-            <th class="text-nowrap">更新日</th>
-            <th class="text-nowrap">更新者</th>
-            <th class="text-nowrap">修正</th>
-            <th class="text-nowrap">削除</th> 
-            <th class="text-nowrap">請求書作成</th>
-       </tr>
-    </thead>
-    <tbody>
-        {% for object in object_list %}
-        <tr>
-            <td class="text-nowrap">{{ object.pk }}</td>
-            <td class="text-nowrap">{{ object.invoice_entity }}</td>
-            <td class="text-nowrap">{{ object.product_category_1 }}</td>
-            <td class="text-nowrap">{{ object.product_category_2 }}</td>
-            <td class="text-nowrap">{{ object.yearmonth }}</td>
-            <td class="text-nowrap">{{ object.seq_number }}</td>
-            <td class="text-nowrap">{{ object.order_number }}</td>
-            <td class="text-nowrap">{{ object.invoice_id }}</td>
-            <td class="text-nowrap">{{ object.service_start_date| date:"Y/m/d"|default_if_none:"-" }}</td>
-            <td class="text-nowrap">{{ object.service_name }}</td>
-            <td class="text-right">{{ object.invoice_amount_wo_tax| intcomma }}</td>
-            <td class="text-nowrap">{{ object.tax_type }}</td>
-            <td class="text-right">{{ object.tax_rate_perc| intcomma }}</td>
-            <td class="text-right">{{ object.tax_amount| intcomma }}</td>
-            <td class="text-right">{{ object.invoice_amount_w_tax| intcomma }}</td>
-            <td class="text-nowrap">{{ object.note }}</td>
-            <td class="text-nowrap">{{ object.registered_at|date:"Y/m/d f" }}</td>
-            <td class="text-nowrap">{{ object.registered_by }}</td>
-            <td class="text-nowrap">{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
-            <td class="text-nowrap">{{ object.updated_by| default_if_none:"-" }}</td>
-            <td class="text-nowrap"><a href="{% url 'web:update_invoice_detail' object.pk %}"><i class="far fa-edit"></i></a></td>
-            <td class="text-nowrap"><a href="{% url 'web:delete_invoice_detail' object.pk %}"><i class="fa fa-trash"></i></a></td>
-            {% if not object.is_invoiced %}
-            <td class="text-nowrap"><button type="button" class="btn btn-sm btn-primary" pk="{{ object.pk }}" name="add_button"><i class="fas fa-file-invoice-dollar"></i> 追加</button></td>
-            {% else %}
-            <td class="text-nowrap"><span><i class="fas fa-ban"></i> 追加済</span></td>
-            
-            {% endif %}
-        </tr> 
-        {% endfor %}  
-    </tbody>
-</table>    
-</div>
+
+<form method="GET" action="{% url 'web:delete_invoice_detail' %}">
+        <button  type="submit" class="btn my-btn-base my-del-btn">削除</button>
+        <a href="{% url 'web:create_invoice_detail' %}" class="btn my-btn-base my-new-btn">手動登録</a>
+        <a href="{% url 'web:upload_invoice_detail' %}" class="btn my-btn-base my-import-btn">一括取込</a>
+    {% if object_list %}
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th></th>
+                    <th class="text-nowrap">ID</th>
+                    <th class="text-nowrap">請求管理簿</th>
+                    <th class="text-nowrap">商材大区分</th>
+                    <th class="text-nowrap">商材小区分</th>
+                    <th class="text-nowrap">請求月</th>
+                    <th class="text-nowrap">SEQNO</th>
+                    <th class="text-nowrap">申込管理番号</th>
+                    <th class="text-nowrap">請求書ID</th>
+                    <th class="text-nowrap">サービス開始日</th>
+                    <th class="text-nowrap">請求明細内容</th>
+                    <th class="text-nowrap">請求金額(税抜)</th>
+                    <th class="text-nowrap">税区分</th>
+                    <th class="text-nowrap">税率</th>
+                    <th class="text-nowrap">請求金額(税額)</th>
+                    <th class="text-nowrap">請求金額(税込)</th>
+                    <th class="text-nowrap">備考</th>
+                    <th class="text-nowrap">登録日</th>
+                    <th class="text-nowrap">登録者</th>
+                    <th class="text-nowrap">更新日</th>
+                    <th class="text-nowrap">更新者</th>
+                    <th class="text-nowrap">修正</th>
+                    
+                    <th class="text-nowrap">請求書作成</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for object in object_list %}
+                <tr>
+                    <td class="text-nowrap"><input value="{{ object.pk }}" name="selected_details" type="checkbox"></td>
+                    <td class="text-nowrap">{{ object.pk }}</td>
+                    <td class="text-nowrap">{{ object.invoice_entity }}</td>
+                    <td class="text-nowrap">{{ object.product_category_1| default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.product_category_2| default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.yearmonth| default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.seq_number | default_if_none:"-"}}</td>
+                    <td class="text-nowrap">{{ object.order_number| default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.invoice_code| default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.service_start_date| date:"Y/m/d"|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.service_name| default_if_none:"-" }}</td>
+                    <td class="text-right">{{ object.invoice_amount_wo_tax| intcomma }}</td>
+                    <td class="text-nowrap">{{ object.tax_type| default_if_none:"-" }}</td>
+                    <td class="text-right">{{ object.tax_rate_perc| intcomma }}</td>
+                    <td class="text-right">{{ object.tax_amount| intcomma }}</td>
+                    <td class="text-right">{{ object.invoice_amount_w_tax| intcomma }}</td>
+                    <td class="text-nowrap">{{ object.note| default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.registered_at|date:"Y/m/d f" }}</td>
+                    <td class="text-nowrap">{{ object.registered_by }}</td>
+                    <td class="text-nowrap">{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.updated_by| default_if_none:"-" }}</td>
+                    <td class="text-nowrap"><a href="{% url 'web:update_invoice_detail' object.pk %}"><i class="far fa-edit"></i></a></td>
+                    {% if not object.invoice %}
+                    <td class="text-nowrap"><button type="button" class="btn btn-sm btn-primary" pk="{{ object.pk }}" name="add_button"><i class="fas fa-file-invoice-dollar"></i> 追加</button></td>
+                    {% else %}
+                    <td class="text-nowrap"><span><i class="fas fa-ban"></i> 追加済</span></td>
+                    
+                    {% endif %}
+                </tr> 
+                {% endfor %}  
+            </tbody>
+        </table>    
+    </div>    
+</form>
+
     {% if is_paginated %}
     {% include "include/pagination.html" %}
     {% endif %}
@@ -98,12 +101,12 @@
         var login_url = "{% url 'web:login' %}";
         function call_add_to_invoice(pk) {
             return $.ajax({
-                url: add_url,
-                type: 'POST',
-                dataType: 'json',
-                async: true,
-                data: {
-                    pk: pk
+                url:add_url,
+                type:'POST',
+                dataType:'json',
+                async:true,
+                data:{
+                    pk:pk
                 },
             });
         }
