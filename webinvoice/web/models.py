@@ -858,6 +858,115 @@ class OurInfo(models.Model):
             return new
         return qs[0]
     
+class HandWrittenInvoice(models.Model):
 
+    id = models.CharField(
+        verbose_name = 'id',
+        primary_key = True,
+        unique = True,
+        max_length = 50
+    )
+    customer_id = models.CharField(
+        verbose_name = 'お客様番号',
+        max_length = 50
+    )
+    vision_phone_number = models.CharField(
+        verbose_name = '連絡先電話番号',
+        max_length = 50
+    )
 
-    
+    zip = models.CharField(
+        verbose_name = _('請求郵便番号'), 
+        max_length = 10,
+        null = False,
+        blank = False,
+        validators = [
+            validate_postcode,
+        ]
+    )
+
+    address_1 = models.CharField(
+        verbose_name = "住所1",
+        max_length = 10,
+        null = False,
+        blank = False,
+        choices = pref_options
+    )
+    address_2 = models.CharField(
+        verbose_name = "住所2",
+        max_length = 30,
+        null = False,
+        blank = False
+    )
+    company_name = models.CharField(
+        verbose_name = '請求会社名',
+        max_length = 100,
+    )
+    dept = models.CharField(
+        verbose_name = '請求部署',
+        max_length = 100,
+    )
+    person = models.CharField(
+        verbose_name = '請求宛名',
+        max_length = 50,
+    )
+    project_1 = models.CharField(
+        verbose_name = '請求宛名1',
+        max_length = 50,
+        null = True,
+        blank = True
+    )
+    date_created = models.DateField(
+        verbose_name = '作成日',
+        default = timezone.now()
+    )
+    total_w_tax = models.IntegerField(
+        verbose_name = '請求金額'
+    )
+    due_date = models.DateField(
+        verbose_name = '支払期日',
+    )
+    yearmonth_1 = models.CharField(
+        max_length = 6,
+        null = True,
+        blank = True,
+    )
+    product_category_1 = models.CharField(
+        max_length = 100,
+        null = True,
+        blank = True,
+    )
+    product_name_1 = models.CharField(
+        max_length = 100,
+        null = True,
+        blank = True,
+    )
+    amount_1 = models.IntegerField(
+        null = True,
+        blank = True,
+    )
+    unit_price_2 = models.IntegerField(
+        null = True,
+        blank = True,
+    )
+    tax_type = models.CharField(
+        max_length = 10,
+        choices = (
+            ('1', '課税'),
+            ('2', '非課税')
+        ),
+        null = True,
+        blank = True,
+    )
+    total_wo_tax = models.IntegerField(
+        null = True,
+        blank = True,
+    )
+    tax_price = models.IntegerField(
+        null = True,
+        blank = True,
+    )
+    total_w_tax = models.IntegerField(
+        null = True,
+        blank = True,
+    )

@@ -565,8 +565,8 @@ class DetailExcelUploadHistor(SuccessMessageMixin, LoginRequiredMixin, generic.L
         data = UploadedFile.objects.filter(type = UploadedFile.TYPE_DETAIL)
         return data
 
-class CreateInvoice(LoginRequiredMixin, generic.TemplateView):
-    template_name = 'create_invoice.html'
+class CreateHandwrittenInvoice(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'create_handwritten_invoice.html'
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         bank = BankInfo.get_bank_info()

@@ -37,7 +37,7 @@ urlpatterns = [
     path('excel_li_company/', views.CompanyExcelUploadHistor.as_view(), name = 'company_upload_hisotry'),
     path('excel_li_entity/', views.EntityExcelUploadHistor.as_view(), name = 'entity_upload_hisotry'),
     path('excel_li_detail/', views.DetailExcelUploadHistor.as_view(), name = 'detail_upload_hisotry'),
-    path('create_invoice/', views.CreateInvoice.as_view(), name = 'create_invoice')
+    path('create_handwritten_invoice/', views.CreateHandwrittenInvoice.as_view(), name = 'create_handwritten_invoice')
     
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT) 
