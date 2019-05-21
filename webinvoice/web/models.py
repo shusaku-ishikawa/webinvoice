@@ -12,7 +12,7 @@ from django.db.models import Q, Sum
 from django.core.validators import FileExtensionValidator
 from datetime import datetime
 
-import re
+import re, base64
 
 # Create your models here.
 
@@ -38,6 +38,8 @@ pref_options = (
     ('秋田県', '秋田県') 
 )
 class Company(models.Model):
+    PREFIX = "C"
+    
     def __str__(self):
         return self.kanji_name
 
@@ -46,13 +48,29 @@ class Company(models.Model):
         verbose_name_plural = '会社'
         ordering = ['pk']
 
+    id = models.CharField(
+        verbose_name = '会社ID',
+        max_length = 50,
+        primary_key = True,
+        unique = True
+    )
+    def make_id(self):
+        qs = Company.objects.all().order_by('-id')
+        if len(qs) == 0:
+            return 1
+        return int(qs[0].id.replace(self.PREFIX, '')) + 1
+    def save(self, *args, **kwargs):
+        if not self.id:
+            custom_id = self.PREFIX + ('000000000000' + str(self.make_id()))[-10:]
+            self.id = custom_id
+        super(Company, self).save(*args, **kwargs)
+
     # 法人番号
     corporate_number = models.CharField(
         verbose_name = _('法人番号'),
         max_length = 50,
         null = False,
         blank = False,
-        unique = True,
         validators = [
             alphanumeric
         ]
@@ -193,13 +211,31 @@ class Company(models.Model):
         self.save()
 
 class InvoiceEntity(models.Model):
+    PREFIX = "B"
     def __str__(self):
         return self.invoice_company_name
-
+    def make_id(self):
+        qs = InvoiceEntity.objects.all().order_by('-id')
+        if len(qs) == 0:
+            return 1
+        return int(qs[0].id.replace(self.PREFIX, '')) + 1
+    def save(self, *args, **kwargs):
+        if not self.id:
+            custom_id = self.PREFIX + ('000000000000' + str(self.make_id())) [-10:]
+            self.id = custom_id
+        super(InvoiceEntity, self).save(*args, **kwargs)
+        
     class Meta:
         verbose_name = '請求管理簿'
         verbose_name_plural = '請求管理簿'
         ordering = ['pk']
+    id = models.CharField(
+        verbose_name = '会社ID',
+        max_length = 50,
+        primary_key = True,
+        unique = True
+    )
+
     company = models.ForeignKey(
         Company,
         verbose_name = '会社',
@@ -446,18 +482,30 @@ class InvoiceEntity(models.Model):
         self.save()
 
 class Invoice(models.Model):
+    PREFIX = "IV"
     def __str__(self):
         return str(self.pk)
+    def make_id(self):
+        qs = Invoice.objects.all().order_by('-id')
+        if len(qs) == 0:
+            return 1
+        return int(qs[0].id.replace(self.PREFIX, '')) + 1
 
+    def save(self, *args, **kwargs):
+        if not self.id:
+            custom_id = self.PREFIX + ('000000000000' + str(self.make_id()))[-10:]
+            self.id = custom_id
+        super(Invoice, self).save(*args, **kwargs)
     class Meta:
         verbose_name = '請求書'
         verbose_name_plural = '請求書'
         ordering = ['pk']
-    
-    invoice_code = models.CharField(
-        verbose_name = '請求書ID',
+
+    id = models.CharField(
+        verbose_name = '会社ID',
         max_length = 50,
-        primary_key = True
+        primary_key = True,
+        unique = True
     )
 
     pdf = models.FileField(
@@ -527,13 +575,31 @@ class Invoice(models.Model):
         return None
         
 class InvoiceDetail(models.Model):
+    PREFIX = "S"
     def __str__(self):
         return self.order_number
-
+    def make_id(self):
+        qs = InvoiceDetail.objects.all().order_by('-id')
+        if len(qs) == 0:
+            return 1
+        return int(qs[0].id.replace(self.PREFIX, '')) + 1
+    def save(self, *args, **kwargs):
+        if not self.id:
+            custom_id = self.PREFIX + ('000000000000' + str(self.make_id()))[-10:]
+            self.id = custom_id
+        super(InvoiceDetail, self).save(*args, **kwargs)
     class Meta:
         verbose_name = '請求明細'
         verbose_name_plural = '請求明細'
         ordering = ['pk']
+
+    id = models.CharField(
+        verbose_name = '会社ID',
+        max_length = 50,
+        primary_key = True,
+        unique = True
+    )
+
     invoice = models.ForeignKey(
         to = Invoice,
         verbose_name = '請求書',

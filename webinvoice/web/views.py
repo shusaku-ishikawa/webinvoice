@@ -573,4 +573,5 @@ class CreateInvoice(LoginRequiredMixin, generic.TemplateView):
         ourinfo = OurInfo.get_ourinfo()
         ctx['bank'] = bank
         ctx['ourinfo'] = ourinfo
+        ctx['rec_per_page'] = range(14)
         return ctx

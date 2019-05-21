@@ -3,6 +3,7 @@
 {% load static %}
 {% block style %}
   <style>
+    
     #invoice_table thead tr th,
     #summarytable tr th {
       background-color: gray!important;
@@ -25,6 +26,7 @@
     .outline {
       border: black solid 1px;
       padding: 20px;
+      font-size: 10px;
     }
     .bank-row {
       margin: 0;
@@ -32,6 +34,12 @@
     }
     .unselected {
       background-color: gray
+    }
+    td input {
+      width: 100%
+    }
+    .search-column {
+      border: gray solid 1px;
     }
   </style>
 {% endblock %}
@@ -41,155 +49,147 @@
 {% endblock %}
 
 {% block content %}
-<div class="outline">
-    <div class="container">
-      <div class="row">
+<div class="row">
+  <div class="col-md-10">
+    <div class="outline">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-6">
+            〒<input id="zip" name="zip" type="text"><br/>
+            <input id="address_1" type="text" name="address_1"><br/>
+            <input id="address2" type="text" name="address_2"><br/> 
+            <input id="company" type="text" name=""> <input id="person" type="text" name="person"><br/>
+            <input id="dept" type="text" name="dept"><br/>
+            <input id="project" type="text" name="project"><br/>
+          </div>
+  
+          <div class="col-md-6 col-6" style="text-align: right">
+            発行日：<span id="date">{% now 'Y/n/j' %}</span><br/>
+            お客様No：B<input type="text"><br/>
+            請求番号：IV<input type="text"></br></br>
+            <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
+            <img src="{% static 'img/vision_logo.png' %}" style="width:6rem;height:6rem;"/>
+            <img src="{% static 'img/vision_stamp.png' %}" style="width:4rem;height:4rem;"/><br/>
+            
+            〒{{ ourinfo.zip }}<br/>
+            {{ ourinfo.address_1 }}<br/>
+            {{ ourinfo.address_2 }}<br/></br>
+            連絡先電話番号： {{ ourinfo.phone }}<br/>
+            受付時間　9:00-18：00（土日祝日除く）<br/>
+            （平日9:00-18：00）</br>
+          </div> <!-- col -->
+        </div> <!-- row -->
+        <hr style="border-color:black">
+        <div class="row">
+        <div style="margin-top:2em;"></div>
+        
         <div class="col-md-6 col-6">
-          〒<span id="zip" class="unselected">[請求郵便番号]</span><br/>
-          <span id="address1" class="unselected">[請求住所1]</span><br/>
-          <span id="address2" class="unselected">[請求住所2]</span><br/> 
-          <span id="company" class="unselected">[請求会社名]</span><br/>
-          <span id="department" class="unselected">[請求部署名]</span><span id="person" class="unselected">[請求宛名]</span><br/>
-          <span id="project1" class="unselected">[請求宛名1]</span><br/>
-          <span id="project2" class="unselected">[請求宛名2]</span><br/>
-          <span id="project3" class="unselected">[請求宛名3]</span>
+          <h2 style="margin-top:0;padding-left:5rem;padding-top:2rem;padding-bottom:2rem;background-color:lightblue">請求書</h2>
+          <p>平素は格別のお引き立てを賜り厚くお礼申し上げます。</br>下記の通りご請求申し上げます。</p>
         </div>
-
-        <div class="col-md-6 col-6" style="text-align: right">
-          発行日：<span id="date">{% now 'Y/n/j' %}</span><br/>
-          お客様No：<input type="text"><br/>
-          請求番号：<input type="text"></br></br>
-          <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
-          <img src="{% static 'img/vision_logo.png' %}" style="width:6rem;height:6rem;"/>
-          <img src="{% static 'img/vision_stamp.png' %}" style="width:4rem;height:4rem;"/><br/>
-          
-          〒{{ ourinfo.zip }}<br/>
-          {{ ourinfo.address_1 }}<br/>
-          {{ ourinfo.address_2 }}<br/></br>
-          連絡先電話番号： {{ ourinfo.phone }}<br/>
-          受付時間　9:00-18：00（土日祝日除く）<br/>
-          （平日9:00-18：00）</br>
+        <div class="col-md-6 col-6">
+          <table id="summarytable" class="table table-bordered">
+            <tr>
+                <th style="width: 30%">ご請求金額</th>
+                <td align="right"><input type="number" id="total" name="total"></td>
+            </tr>
+            <tr>
+                <th style="width: 30%">お支払い期限</th>
+                <td align="right"><input type="date"></td>
+            </tr>
+            <tr>
+                <th style="width: 30%">お振込み先</th>
+                <td style="padding-bottom: 0; padding-top: 0">
+                  <div class="row bank-row">
+                    <div class="col-md-5 col-5" style="text-align: left">
+                      金融機関名
+                    </div>
+                    <div class="col-md-7 col-7">
+                      {{ bank.bank }} {{ bank.branch }}
+                    </div>
+                  </div>
+                  <div class="row bank-row">
+                    <div class="col-md-4 col-4" style="text-align: left">
+                      口座番号
+                    </div>
+                    <div class="col-md-8 col-8">
+                      {{ bank.type }}　{{ bank.number }}
+                    </div>
+                  </div>
+                  <div class="row bank-row" style="border-bottom: none">
+                    <div class="col-md-4 col-4" style="text-align: left">
+                      口座名義
+                    </div>
+                    <div class="col-md-8 col-8">
+                      {{ bank.meigi }}
+                    </div>
+                  </div>
+                </td>
+            </tr>
+          </table>
         </div> <!-- col -->
       </div> <!-- row -->
-      <hr style="border-color:black">
-      <div class="row">
-      <div style="margin-top:2em;"></div>
-      
-      <div class="col-md-6 col-6">
-        <h2 style="margin-top:0;padding-left:5rem;padding-top:2rem;padding-bottom:2rem;background-color:lightblue">請求書</h2>
-        <p>平素は格別のお引き立てを賜り厚くお礼申し上げます。</br>下記の通りご請求申し上げます。</p>
-      </div>
-      <div class="col-md-6 col-6">
-        <table id="summarytable" class="table table-bordered">
-          <tr>
-              <th style="width: 30%">ご請求金額</th>
-              <td align="right">{{ object.total_wo_tax | intcomma }}</td>
-          </tr>
-          <tr>
-              <th style="width: 30%">お支払い期限</th>
-              <td align="right"><input type="date"></td>
-          </tr>
-          <tr>
-              <th style="width: 30%">お振込み先</th>
-              <td style="padding-bottom: 0; padding-top: 0">
-                <div class="row bank-row">
-                  <div class="col-md-5 col-5" style="text-align: left">
-                    金融機関名
-                  </div>
-                  <div class="col-md-7 col-7">
-                    {{ bank.bank }} {{ bank.branch }}
-                  </div>
-                </div>
-                <div class="row bank-row">
-                  <div class="col-md-4 col-4" style="text-align: left">
-                    口座番号
-                  </div>
-                  <div class="col-md-8 col-8">
-                    {{ bank.type }}　{{ bank.number }}
-                  </div>
-                </div>
-                <div class="row bank-row" style="border-bottom: none">
-                  <div class="col-md-4 col-4" style="text-align: left">
-                    口座名義
-                  </div>
-                  <div class="col-md-8 col-8">
-                    {{ bank.meigi }}
-                  </div>
-                </div>
-              </td>
-          </tr>
-        </table>
-      </div> <!-- col -->
-    </div> <!-- row -->
-    <hr>
-      <table id="invoice_table" class="table table-bordered table-striped table-condensed">
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>ご利用月</th>
-            <th>商材</th>
-            <th>商品名またはサービス</th>
-            <th>数量</th>
-            <th>単価</th>
-            <th>税区分</th>
-            <th>税抜金額</th>
-            <th>税額</th>
-            <th>税込金額</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for obj in object.details.all %}
-          <tr>
-            <td align="center">{{ forloop.counter }}</td>
-            <td align="center">{{ obj.yearmonth }}</td>
-            <td align="center">{{ obj.product_category_1 }}</td>
-            <td align="center">{{ obj.service_name }}</td>
-            <td align="right">1</td>
-            <td align="right">{{ obj.invoice_amount_wo_tax | intcomma }}</td>
-            <td align="center">{{ obj.tax_type }}</td>
-            <td align="right">{{ obj.invoice_amount_wo_tax | intcomma }}</td>
-            <td align="right">{{ obj.tax_amount | intcomma | default_if_none:"-" }}</td>
-            <td align="right">{{ obj.invoice_amount_w_tax | intcomma }}</td>
-          </tr>
-          {%  endfor %}
-          {% for i in pad_range %}
+      <hr>
+        <table id="invoice_table" class="table table-bordered table-striped table-condensed">
+          <thead>
             <tr>
-            <td align="center">{{ forloop.counter|add:details_count }}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    <div class="row">
-      <div class="col-md-7 col-7" style="border: solid 1px black; border-radius: 10px;">
-      </div>
-      <div class="col-md-5 col-5" style="text-align: right">
-        <table id="summary_table" class="table">
-          <tr>
-            <th style="width: 40%">税抜金額合計</th>
-            <td>{{ object.total_wo_tax | intcomma }}</td>
-          </tr>
-          <tr>
-            <th style="width: 40%">税額合計</th>
-            <td>{{ object.total_tax | intcomma }}</td>
-          </tr>
-          <tr>
-            <th  style="width:40%">税込金額合計</th>
-            <td>{{ object.total_w_tax | intcomma }}</td>
-          </tr>
-          
+              <th>No.</th>
+              <th>ご利用月</th>
+              <th>商材</th>
+              <th>商品名またはサービス</th>
+              <th>数量</th>
+              <th>単価</th>
+              <th>税区分</th>
+              <th>税抜金額</th>
+              <th>税額</th>
+              <th>税込金額</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in rec_per_page %}
+            <tr>
+              <td align="center">{{ forloop.counter }}</td>
+              <td align="center"><input id="yearmonth_{{ forloop.counter }}" type="text"></td>
+              <td align="center"><input id="category_{{ forloop.counter }}" type="text"></td>
+              <td align="center"><input id="service_name_{{ forloop.counter }}" type="text"></td>
+              <td align="right"><input id="amount_{{ forloop.counter }}" type="number"></td>
+              <td align="right"><input id="unit_price_{{ forloop.counter }}"></td>
+              <td align="center"><input id="tax_type_{{ forloop.counter }}"></td>
+              <td align="right"><input id="invoice_amount_wo_tax_{{ forloop.counter }}" type="number"></td>
+              <td align="right"><input id="tax_amount_{{ forloop.counter }}"></td>
+              <td align="right"><input id="invoice_amount_w_tax_{{ forloop.counter }}"></td>
+            </tr>
+            {%  endfor %}
+          </tbody>
         </table>
-        <p style="margin:0">送付枚数 1 / 1</p>
-      </div> <!-- col -->
-    </div> <!-- row -->
-    </div> <!-- container -->
+      <div class="row">
+        <div class="col-md-7 col-7" style="border: solid 1px black; border-radius: 10px;">
+        </div>
+        <div class="col-md-5 col-5" style="text-align: right">
+          <table id="summary_table" class="table">
+            <tr>
+              <th style="width: 40%">税抜金額合計</th>
+              <td><input id="total_wo_tax" type="number"></td>
+            </tr>
+            <tr>
+              <th style="width: 40%">税額合計</th>
+              <td><input id="total_tax" type="number"></td>
+            </tr>
+            <tr>
+              <th  style="width:40%">税込金額合計</th>
+              <td><input id="total_w_tax" type="number"></td>
+            </tr>
+            
+          </table>
+          <p style="margin:0">送付枚数 1 / 1</p>
+        </div> <!-- col -->
+      </div> <!-- row -->
+      </div> <!-- container -->
   </div> <!-- outline -->
+  </div>
+  <div class="col-md-2 search-column">
+
+  </div>
+</div>
+
 {% endblock %}

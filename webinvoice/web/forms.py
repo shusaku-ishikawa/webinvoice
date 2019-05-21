@@ -21,7 +21,7 @@ class CompanyForm(forms.ModelForm):
     """ 会社登録フォーム """   
     class Meta:
         model = Company
-        exclude = ('pk', 'registered_at', 'registered_by', 'updated_at', 'updated_by', 'deleted')
+        exclude = ('id', 'registered_at', 'registered_by', 'updated_at', 'updated_by', 'deleted')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
@@ -31,7 +31,7 @@ class InvoiceEntityForm(forms.ModelForm):
     """ 請求管理簿登録フォーム """   
     class Meta:
         model = InvoiceEntity
-        exclude = ('pk', 'registered_at', 'registered_by', 'updated_at', 'updated_by', 'deleted')
+        exclude = ('id', 'registered_at', 'registered_by', 'updated_at', 'updated_by', 'deleted')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
@@ -41,7 +41,7 @@ class InvoiceDetailForm(forms.ModelForm):
     """ 請求明細登録フォーム """   
     class Meta:
         model = InvoiceDetail
-        exclude = ('pk', 'registered_at', 'registered_by', 'updated_at', 'updated_by', 'deleted')
+        exclude = ('id', 'registered_at', 'registered_by', 'updated_at', 'updated_by', 'deleted')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
@@ -51,7 +51,7 @@ class CompanyExcelForm(forms.ModelForm):
     """ ファイルアップロードフォーム """   
     class Meta:
         model = UploadedFile
-        exclude = ('pk', 'type', 'processed_at', 'uploaded_by', 'record_count', 'error_count')
+        exclude = ('id', 'type', 'processed_at', 'uploaded_by', 'record_count', 'error_count')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
