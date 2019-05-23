@@ -4,10 +4,16 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>invoice</title>
 
-  <!-- <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css"> -->
-  <!-- <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css">  -->
-  <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css">
- 
+  <!-- 
+       <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css"> 
+  -->
+  
+       <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css">
+   
+  
+  <!-- 
+      <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css">
+  -->
   <style>
     #invoice_table thead tr th,
     table tr th {
@@ -84,12 +90,20 @@
           お客様No：<span id="customerNo">{{ object.customer_id }}</span><br/>
           請求番号：<span id="invoiceCode">{{ object.id }}</span></br></br>
           <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
-          <!-- <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_logo.png" style="width:6rem;height:6rem;"/> -->
-          <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:12rem;height:auto;"/>
-          <!-- <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/> -->
-          <!-- <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_stamp.png" style="width:4rem;height:4rem"/></br> -->
-          <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:6rem;height:auto;"/><br/>
-          <!-- <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:4rem;height:4rem"/></br> -->
+          <!-- 
+              <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_logo.png" style="width:6rem;height:6rem;"/> 
+          -->
+          <!--
+              <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:12rem;height:auto;"/>
+          -->
+              <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:12rem;height:auto;"/> 
+          <!--
+              <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_stamp.png" style="width:4rem;height:4rem"/></br> 
+          -->
+          <!--
+              <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:6rem;height:auto;"/><br/>
+          -->
+              <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:6rem;height:auto"/></br> 
           
           〒{{ ourinfo.zip }}<br/>
           {{ ourinfo.address_1 }}<br/>

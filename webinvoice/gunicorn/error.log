@@ -189,3 +189,3277 @@
 [2019-03-17 10:02:55 +0900] [15725] [DEBUG] GET /invoice/mypage/list_product/
 [2019-03-17 10:02:56 +0900] [15725] [DEBUG] GET /invoice/mypage/list_invoice/
 [2019-03-17 10:03:13 +0900] [15725] [DEBUG] GET /invoice/mypage/my-pdf/
+[2019-05-24 08:38:54 +0900] [15467] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f236a47bd90>
+  on_reload: <function OnReload.on_reload at 0x7f236a47bea0>
+  when_ready: <function when_ready at 0x7f236a47f950>
+  pre_fork: <function pre_fork at 0x7f236a47f840>
+  post_fork: <function post_fork at 0x7f236a47f7b8>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f236a494378>
+  worker_int: <function worker_int at 0x7f236a47f9d8>
+  worker_abort: <function worker_abort at 0x7f236a47fa60>
+  pre_exec: <function pre_exec at 0x7f236a47f8c8>
+  pre_request: <function PreRequest.pre_request at 0x7f236a4947b8>
+  post_request: <function PostRequest.post_request at 0x7f236a494840>
+  child_exit: <function ChildExit.child_exit at 0x7f236a494950>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f236a494a60>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f236a494b70>
+  on_exit: <function OnExit.on_exit at 0x7f236a494c80>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:38:54 +0900] [15467] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:38:54 +0900] [15467] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:54 +0900] [15467] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:54 +0900] [15467] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:55 +0900] [15467] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:55 +0900] [15467] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:55 +0900] [15467] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:56 +0900] [15472] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f15c31cdd90>
+  on_reload: <function OnReload.on_reload at 0x7f15c31cdea0>
+  when_ready: <function when_ready at 0x7f15c31d1950>
+  pre_fork: <function pre_fork at 0x7f15c31d1840>
+  post_fork: <function post_fork at 0x7f15c31d17b8>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f15c31e6378>
+  worker_int: <function worker_int at 0x7f15c31d19d8>
+  worker_abort: <function worker_abort at 0x7f15c31d1a60>
+  pre_exec: <function pre_exec at 0x7f15c31d18c8>
+  pre_request: <function PreRequest.pre_request at 0x7f15c31e67b8>
+  post_request: <function PostRequest.post_request at 0x7f15c31e6840>
+  child_exit: <function ChildExit.child_exit at 0x7f15c31e6950>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f15c31e6a60>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f15c31e6b70>
+  on_exit: <function OnExit.on_exit at 0x7f15c31e6c80>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:38:56 +0900] [15472] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:38:56 +0900] [15472] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:56 +0900] [15472] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:56 +0900] [15472] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:56 +0900] [15478] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7fd6dde77d90>
+  on_reload: <function OnReload.on_reload at 0x7fd6dde77ea0>
+  when_ready: <function when_ready at 0x7fd6dde7b950>
+  pre_fork: <function pre_fork at 0x7fd6dde7b840>
+  post_fork: <function post_fork at 0x7fd6dde7b7b8>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7fd6dde90378>
+  worker_int: <function worker_int at 0x7fd6dde7b9d8>
+  worker_abort: <function worker_abort at 0x7fd6dde7ba60>
+  pre_exec: <function pre_exec at 0x7fd6dde7b8c8>
+  pre_request: <function PreRequest.pre_request at 0x7fd6dde907b8>
+  post_request: <function PostRequest.post_request at 0x7fd6dde90840>
+  child_exit: <function ChildExit.child_exit at 0x7fd6dde90950>
+  worker_exit: <function WorkerExit.worker_exit at 0x7fd6dde90a60>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7fd6dde90b70>
+  on_exit: <function OnExit.on_exit at 0x7fd6dde90c80>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:38:56 +0900] [15478] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:38:56 +0900] [15478] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:56 +0900] [15478] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:56 +0900] [15478] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:56 +0900] [15467] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:56 +0900] [15467] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:56 +0900] [15467] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:57 +0900] [15472] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:57 +0900] [15472] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:57 +0900] [15472] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:57 +0900] [15482] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f4aaabadd90>
+  on_reload: <function OnReload.on_reload at 0x7f4aaabadea0>
+  when_ready: <function when_ready at 0x7f4aaabb1950>
+  pre_fork: <function pre_fork at 0x7f4aaabb1840>
+  post_fork: <function post_fork at 0x7f4aaabb17b8>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f4aaabc6378>
+  worker_int: <function worker_int at 0x7f4aaabb19d8>
+  worker_abort: <function worker_abort at 0x7f4aaabb1a60>
+  pre_exec: <function pre_exec at 0x7f4aaabb18c8>
+  pre_request: <function PreRequest.pre_request at 0x7f4aaabc67b8>
+  post_request: <function PostRequest.post_request at 0x7f4aaabc6840>
+  child_exit: <function ChildExit.child_exit at 0x7f4aaabc6950>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f4aaabc6a60>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f4aaabc6b70>
+  on_exit: <function OnExit.on_exit at 0x7f4aaabc6c80>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:38:57 +0900] [15482] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:38:57 +0900] [15482] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:57 +0900] [15482] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:57 +0900] [15482] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:57 +0900] [15478] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:57 +0900] [15478] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:57 +0900] [15478] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:57 +0900] [15487] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7fe355513d90>
+  on_reload: <function OnReload.on_reload at 0x7fe355513ea0>
+  when_ready: <function when_ready at 0x7fe355517950>
+  pre_fork: <function pre_fork at 0x7fe355517840>
+  post_fork: <function post_fork at 0x7fe3555177b8>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7fe35552c378>
+  worker_int: <function worker_int at 0x7fe3555179d8>
+  worker_abort: <function worker_abort at 0x7fe355517a60>
+  pre_exec: <function pre_exec at 0x7fe3555178c8>
+  pre_request: <function PreRequest.pre_request at 0x7fe35552c7b8>
+  post_request: <function PostRequest.post_request at 0x7fe35552c840>
+  child_exit: <function ChildExit.child_exit at 0x7fe35552c950>
+  worker_exit: <function WorkerExit.worker_exit at 0x7fe35552ca60>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7fe35552cb70>
+  on_exit: <function OnExit.on_exit at 0x7fe35552cc80>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:38:57 +0900] [15487] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:38:57 +0900] [15487] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:57 +0900] [15487] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:57 +0900] [15487] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:57 +0900] [15467] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:57 +0900] [15467] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:57 +0900] [15467] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:58 +0900] [15492] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f8d7d80ed90>
+  on_reload: <function OnReload.on_reload at 0x7f8d7d80eea0>
+  when_ready: <function when_ready at 0x7f8d7d812950>
+  pre_fork: <function pre_fork at 0x7f8d7d812840>
+  post_fork: <function post_fork at 0x7f8d7d8127b8>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f8d7d827378>
+  worker_int: <function worker_int at 0x7f8d7d8129d8>
+  worker_abort: <function worker_abort at 0x7f8d7d812a60>
+  pre_exec: <function pre_exec at 0x7f8d7d8128c8>
+  pre_request: <function PreRequest.pre_request at 0x7f8d7d8277b8>
+  post_request: <function PostRequest.post_request at 0x7f8d7d827840>
+  child_exit: <function ChildExit.child_exit at 0x7f8d7d827950>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f8d7d827a60>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f8d7d827b70>
+  on_exit: <function OnExit.on_exit at 0x7f8d7d827c80>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:38:58 +0900] [15492] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:38:58 +0900] [15492] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:58 +0900] [15492] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:58 +0900] [15492] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:58 +0900] [15472] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:58 +0900] [15472] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:58 +0900] [15472] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:58 +0900] [15482] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:58 +0900] [15482] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:58 +0900] [15482] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:58 +0900] [15497] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f3cb1552d90>
+  on_reload: <function OnReload.on_reload at 0x7f3cb1552ea0>
+  when_ready: <function when_ready at 0x7f3cb1556950>
+  pre_fork: <function pre_fork at 0x7f3cb1556840>
+  post_fork: <function post_fork at 0x7f3cb15567b8>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f3cb156b378>
+  worker_int: <function worker_int at 0x7f3cb15569d8>
+  worker_abort: <function worker_abort at 0x7f3cb1556a60>
+  pre_exec: <function pre_exec at 0x7f3cb15568c8>
+  pre_request: <function PreRequest.pre_request at 0x7f3cb156b7b8>
+  post_request: <function PostRequest.post_request at 0x7f3cb156b840>
+  child_exit: <function ChildExit.child_exit at 0x7f3cb156b950>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f3cb156ba60>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f3cb156bb70>
+  on_exit: <function OnExit.on_exit at 0x7f3cb156bc80>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:38:58 +0900] [15497] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:38:58 +0900] [15497] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:58 +0900] [15497] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:58 +0900] [15497] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:58 +0900] [15478] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:58 +0900] [15478] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:58 +0900] [15478] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:58 +0900] [15487] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:58 +0900] [15487] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:58 +0900] [15487] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:58 +0900] [15502] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f5ffecd4d90>
+  on_reload: <function OnReload.on_reload at 0x7f5ffecd4ea0>
+  when_ready: <function when_ready at 0x7f5ffecd8950>
+  pre_fork: <function pre_fork at 0x7f5ffecd8840>
+  post_fork: <function post_fork at 0x7f5ffecd87b8>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f5ffeced378>
+  worker_int: <function worker_int at 0x7f5ffecd89d8>
+  worker_abort: <function worker_abort at 0x7f5ffecd8a60>
+  pre_exec: <function pre_exec at 0x7f5ffecd88c8>
+  pre_request: <function PreRequest.pre_request at 0x7f5ffeced7b8>
+  post_request: <function PostRequest.post_request at 0x7f5ffeced840>
+  child_exit: <function ChildExit.child_exit at 0x7f5ffeced950>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f5ffeceda60>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f5ffecedb70>
+  on_exit: <function OnExit.on_exit at 0x7f5ffecedc80>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:38:58 +0900] [15502] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:38:58 +0900] [15502] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:58 +0900] [15502] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:58 +0900] [15502] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:58 +0900] [15467] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:58 +0900] [15467] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:58 +0900] [15467] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:59 +0900] [15507] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f5635417d90>
+  on_reload: <function OnReload.on_reload at 0x7f5635417ea0>
+  when_ready: <function when_ready at 0x7f563541b950>
+  pre_fork: <function pre_fork at 0x7f563541b840>
+  post_fork: <function post_fork at 0x7f563541b7b8>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f5635430378>
+  worker_int: <function worker_int at 0x7f563541b9d8>
+  worker_abort: <function worker_abort at 0x7f563541ba60>
+  pre_exec: <function pre_exec at 0x7f563541b8c8>
+  pre_request: <function PreRequest.pre_request at 0x7f56354307b8>
+  post_request: <function PostRequest.post_request at 0x7f5635430840>
+  child_exit: <function ChildExit.child_exit at 0x7f5635430950>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f5635430a60>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f5635430b70>
+  on_exit: <function OnExit.on_exit at 0x7f5635430c80>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:38:59 +0900] [15507] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:38:59 +0900] [15507] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:59 +0900] [15507] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:59 +0900] [15507] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:59 +0900] [15492] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:59 +0900] [15492] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:59 +0900] [15492] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:59 +0900] [15472] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:59 +0900] [15472] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:59 +0900] [15472] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:59 +0900] [15482] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:59 +0900] [15482] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:59 +0900] [15482] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:59 +0900] [15512] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7fa43ca82d90>
+  on_reload: <function OnReload.on_reload at 0x7fa43ca82ea0>
+  when_ready: <function when_ready at 0x7fa43ca86950>
+  pre_fork: <function pre_fork at 0x7fa43ca86840>
+  post_fork: <function post_fork at 0x7fa43ca867b8>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7fa43ca9b378>
+  worker_int: <function worker_int at 0x7fa43ca869d8>
+  worker_abort: <function worker_abort at 0x7fa43ca86a60>
+  pre_exec: <function pre_exec at 0x7fa43ca868c8>
+  pre_request: <function PreRequest.pre_request at 0x7fa43ca9b7b8>
+  post_request: <function PostRequest.post_request at 0x7fa43ca9b840>
+  child_exit: <function ChildExit.child_exit at 0x7fa43ca9b950>
+  worker_exit: <function WorkerExit.worker_exit at 0x7fa43ca9ba60>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7fa43ca9bb70>
+  on_exit: <function OnExit.on_exit at 0x7fa43ca9bc80>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:38:59 +0900] [15512] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:38:59 +0900] [15512] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:59 +0900] [15512] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:59 +0900] [15512] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:59 +0900] [15497] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:59 +0900] [15497] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:59 +0900] [15497] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:59 +0900] [15478] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:59 +0900] [15478] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:59 +0900] [15478] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:59 +0900] [15487] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:59 +0900] [15487] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:59 +0900] [15487] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:59 +0900] [15517] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f76d4b2ed90>
+  on_reload: <function OnReload.on_reload at 0x7f76d4b2eea0>
+  when_ready: <function when_ready at 0x7f76d4b32950>
+  pre_fork: <function pre_fork at 0x7f76d4b32840>
+  post_fork: <function post_fork at 0x7f76d4b327b8>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f76d4b47378>
+  worker_int: <function worker_int at 0x7f76d4b329d8>
+  worker_abort: <function worker_abort at 0x7f76d4b32a60>
+  pre_exec: <function pre_exec at 0x7f76d4b328c8>
+  pre_request: <function PreRequest.pre_request at 0x7f76d4b477b8>
+  post_request: <function PostRequest.post_request at 0x7f76d4b47840>
+  child_exit: <function ChildExit.child_exit at 0x7f76d4b47950>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f76d4b47a60>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f76d4b47b70>
+  on_exit: <function OnExit.on_exit at 0x7f76d4b47c80>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:38:59 +0900] [15517] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:38:59 +0900] [15517] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:59 +0900] [15517] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:59 +0900] [15517] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:59 +0900] [15502] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:38:59 +0900] [15502] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:38:59 +0900] [15502] [ERROR] Retrying in 1 second.
+[2019-05-24 08:38:59 +0900] [15467] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:39:00 +0900] [15507] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:00 +0900] [15507] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:00 +0900] [15507] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:00 +0900] [15492] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:00 +0900] [15492] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:00 +0900] [15492] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:00 +0900] [15472] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:00 +0900] [15472] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:00 +0900] [15472] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:00 +0900] [15482] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:00 +0900] [15482] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:00 +0900] [15482] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:00 +0900] [15512] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:00 +0900] [15512] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:00 +0900] [15512] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:00 +0900] [15497] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:00 +0900] [15497] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:00 +0900] [15497] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:00 +0900] [15478] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:00 +0900] [15478] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:00 +0900] [15478] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:00 +0900] [15487] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:00 +0900] [15487] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:00 +0900] [15487] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:00 +0900] [15517] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:00 +0900] [15517] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:00 +0900] [15517] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:00 +0900] [15502] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:00 +0900] [15502] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:00 +0900] [15502] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:01 +0900] [15507] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:01 +0900] [15507] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:01 +0900] [15507] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:01 +0900] [15492] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:01 +0900] [15492] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:01 +0900] [15492] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:01 +0900] [15472] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:39:01 +0900] [15482] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:01 +0900] [15482] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:01 +0900] [15482] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:01 +0900] [15512] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:01 +0900] [15512] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:01 +0900] [15512] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:01 +0900] [15497] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:01 +0900] [15497] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:01 +0900] [15497] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:01 +0900] [15478] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:39:01 +0900] [15487] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:01 +0900] [15487] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:01 +0900] [15487] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:01 +0900] [15517] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:01 +0900] [15517] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:01 +0900] [15517] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:01 +0900] [15502] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:01 +0900] [15502] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:01 +0900] [15502] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:02 +0900] [15507] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:02 +0900] [15507] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:02 +0900] [15507] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:02 +0900] [15492] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:02 +0900] [15492] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:02 +0900] [15492] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:02 +0900] [15482] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:39:02 +0900] [15512] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:02 +0900] [15512] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:02 +0900] [15512] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:02 +0900] [15497] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:02 +0900] [15497] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:02 +0900] [15497] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:02 +0900] [15487] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:39:02 +0900] [15517] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:02 +0900] [15517] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:02 +0900] [15517] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:02 +0900] [15502] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:02 +0900] [15502] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:02 +0900] [15502] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:03 +0900] [15507] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:03 +0900] [15507] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:03 +0900] [15507] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:03 +0900] [15492] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:39:03 +0900] [15512] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:03 +0900] [15512] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:03 +0900] [15512] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:03 +0900] [15497] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:39:03 +0900] [15517] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:39:03 +0900] [15517] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:39:03 +0900] [15517] [ERROR] Retrying in 1 second.
+[2019-05-24 08:39:03 +0900] [15502] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:39:04 +0900] [15507] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:39:04 +0900] [15512] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:39:04 +0900] [15517] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:45:12 +0900] [15651] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7fa6b4461e18>
+  on_reload: <function OnReload.on_reload at 0x7fa6b4461f28>
+  when_ready: <function when_ready at 0x7fa6b44659d8>
+  pre_fork: <function pre_fork at 0x7fa6b44658c8>
+  post_fork: <function post_fork at 0x7fa6b4465840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7fa6b4479400>
+  worker_int: <function worker_int at 0x7fa6b4465a60>
+  worker_abort: <function worker_abort at 0x7fa6b4465ae8>
+  pre_exec: <function pre_exec at 0x7fa6b4465950>
+  pre_request: <function PreRequest.pre_request at 0x7fa6b4479840>
+  post_request: <function PostRequest.post_request at 0x7fa6b44798c8>
+  child_exit: <function ChildExit.child_exit at 0x7fa6b44799d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7fa6b4479ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7fa6b4479bf8>
+  on_exit: <function OnExit.on_exit at 0x7fa6b4479d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:45:12 +0900] [15651] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:45:12 +0900] [15651] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:12 +0900] [15651] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:12 +0900] [15651] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:12 +0900] [15656] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7ff43c623e18>
+  on_reload: <function OnReload.on_reload at 0x7ff43c623f28>
+  when_ready: <function when_ready at 0x7ff43c6279d8>
+  pre_fork: <function pre_fork at 0x7ff43c6278c8>
+  post_fork: <function post_fork at 0x7ff43c627840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7ff43c63b400>
+  worker_int: <function worker_int at 0x7ff43c627a60>
+  worker_abort: <function worker_abort at 0x7ff43c627ae8>
+  pre_exec: <function pre_exec at 0x7ff43c627950>
+  pre_request: <function PreRequest.pre_request at 0x7ff43c63b840>
+  post_request: <function PostRequest.post_request at 0x7ff43c63b8c8>
+  child_exit: <function ChildExit.child_exit at 0x7ff43c63b9d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7ff43c63bae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7ff43c63bbf8>
+  on_exit: <function OnExit.on_exit at 0x7ff43c63bd08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:45:12 +0900] [15656] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:45:12 +0900] [15656] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:12 +0900] [15656] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:12 +0900] [15656] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:12 +0900] [15661] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7fdcee69ae18>
+  on_reload: <function OnReload.on_reload at 0x7fdcee69af28>
+  when_ready: <function when_ready at 0x7fdcee69e9d8>
+  pre_fork: <function pre_fork at 0x7fdcee69e8c8>
+  post_fork: <function post_fork at 0x7fdcee69e840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7fdcee6b2400>
+  worker_int: <function worker_int at 0x7fdcee69ea60>
+  worker_abort: <function worker_abort at 0x7fdcee69eae8>
+  pre_exec: <function pre_exec at 0x7fdcee69e950>
+  pre_request: <function PreRequest.pre_request at 0x7fdcee6b2840>
+  post_request: <function PostRequest.post_request at 0x7fdcee6b28c8>
+  child_exit: <function ChildExit.child_exit at 0x7fdcee6b29d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7fdcee6b2ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7fdcee6b2bf8>
+  on_exit: <function OnExit.on_exit at 0x7fdcee6b2d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:45:12 +0900] [15661] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:45:12 +0900] [15661] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:12 +0900] [15661] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:12 +0900] [15661] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:13 +0900] [15666] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f93c7bd7e18>
+  on_reload: <function OnReload.on_reload at 0x7f93c7bd7f28>
+  when_ready: <function when_ready at 0x7f93c7bdb9d8>
+  pre_fork: <function pre_fork at 0x7f93c7bdb8c8>
+  post_fork: <function post_fork at 0x7f93c7bdb840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f93c7bef400>
+  worker_int: <function worker_int at 0x7f93c7bdba60>
+  worker_abort: <function worker_abort at 0x7f93c7bdbae8>
+  pre_exec: <function pre_exec at 0x7f93c7bdb950>
+  pre_request: <function PreRequest.pre_request at 0x7f93c7bef840>
+  post_request: <function PostRequest.post_request at 0x7f93c7bef8c8>
+  child_exit: <function ChildExit.child_exit at 0x7f93c7bef9d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f93c7befae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f93c7befbf8>
+  on_exit: <function OnExit.on_exit at 0x7f93c7befd08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:45:13 +0900] [15666] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:45:13 +0900] [15666] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:13 +0900] [15666] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:13 +0900] [15666] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:13 +0900] [15651] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:13 +0900] [15651] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:13 +0900] [15651] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:13 +0900] [15671] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f6791295e18>
+  on_reload: <function OnReload.on_reload at 0x7f6791295f28>
+  when_ready: <function when_ready at 0x7f67912999d8>
+  pre_fork: <function pre_fork at 0x7f67912998c8>
+  post_fork: <function post_fork at 0x7f6791299840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f67912ad400>
+  worker_int: <function worker_int at 0x7f6791299a60>
+  worker_abort: <function worker_abort at 0x7f6791299ae8>
+  pre_exec: <function pre_exec at 0x7f6791299950>
+  pre_request: <function PreRequest.pre_request at 0x7f67912ad840>
+  post_request: <function PostRequest.post_request at 0x7f67912ad8c8>
+  child_exit: <function ChildExit.child_exit at 0x7f67912ad9d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f67912adae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f67912adbf8>
+  on_exit: <function OnExit.on_exit at 0x7f67912add08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:45:13 +0900] [15671] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:45:13 +0900] [15671] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:13 +0900] [15671] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:13 +0900] [15671] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:13 +0900] [15656] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:13 +0900] [15656] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:13 +0900] [15656] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:13 +0900] [15676] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f852de6ce18>
+  on_reload: <function OnReload.on_reload at 0x7f852de6cf28>
+  when_ready: <function when_ready at 0x7f852de709d8>
+  pre_fork: <function pre_fork at 0x7f852de708c8>
+  post_fork: <function post_fork at 0x7f852de70840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f852de84400>
+  worker_int: <function worker_int at 0x7f852de70a60>
+  worker_abort: <function worker_abort at 0x7f852de70ae8>
+  pre_exec: <function pre_exec at 0x7f852de70950>
+  pre_request: <function PreRequest.pre_request at 0x7f852de84840>
+  post_request: <function PostRequest.post_request at 0x7f852de848c8>
+  child_exit: <function ChildExit.child_exit at 0x7f852de849d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f852de84ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f852de84bf8>
+  on_exit: <function OnExit.on_exit at 0x7f852de84d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:45:13 +0900] [15676] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:45:13 +0900] [15676] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:13 +0900] [15676] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:13 +0900] [15676] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:13 +0900] [15661] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:13 +0900] [15661] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:13 +0900] [15661] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:14 +0900] [15681] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7ff79e4d3e18>
+  on_reload: <function OnReload.on_reload at 0x7ff79e4d3f28>
+  when_ready: <function when_ready at 0x7ff79e4d79d8>
+  pre_fork: <function pre_fork at 0x7ff79e4d78c8>
+  post_fork: <function post_fork at 0x7ff79e4d7840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7ff79e4eb400>
+  worker_int: <function worker_int at 0x7ff79e4d7a60>
+  worker_abort: <function worker_abort at 0x7ff79e4d7ae8>
+  pre_exec: <function pre_exec at 0x7ff79e4d7950>
+  pre_request: <function PreRequest.pre_request at 0x7ff79e4eb840>
+  post_request: <function PostRequest.post_request at 0x7ff79e4eb8c8>
+  child_exit: <function ChildExit.child_exit at 0x7ff79e4eb9d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7ff79e4ebae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7ff79e4ebbf8>
+  on_exit: <function OnExit.on_exit at 0x7ff79e4ebd08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:45:14 +0900] [15681] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:45:14 +0900] [15681] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:14 +0900] [15681] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:14 +0900] [15681] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:14 +0900] [15666] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:14 +0900] [15666] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:14 +0900] [15666] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:14 +0900] [15651] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:14 +0900] [15651] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:14 +0900] [15651] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:14 +0900] [15686] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7fc4057b7e18>
+  on_reload: <function OnReload.on_reload at 0x7fc4057b7f28>
+  when_ready: <function when_ready at 0x7fc4057bb9d8>
+  pre_fork: <function pre_fork at 0x7fc4057bb8c8>
+  post_fork: <function post_fork at 0x7fc4057bb840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7fc4057cf400>
+  worker_int: <function worker_int at 0x7fc4057bba60>
+  worker_abort: <function worker_abort at 0x7fc4057bbae8>
+  pre_exec: <function pre_exec at 0x7fc4057bb950>
+  pre_request: <function PreRequest.pre_request at 0x7fc4057cf840>
+  post_request: <function PostRequest.post_request at 0x7fc4057cf8c8>
+  child_exit: <function ChildExit.child_exit at 0x7fc4057cf9d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7fc4057cfae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7fc4057cfbf8>
+  on_exit: <function OnExit.on_exit at 0x7fc4057cfd08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:45:14 +0900] [15686] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:45:14 +0900] [15686] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:14 +0900] [15686] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:14 +0900] [15686] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:14 +0900] [15671] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:14 +0900] [15671] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:14 +0900] [15671] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:14 +0900] [15656] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:14 +0900] [15656] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:14 +0900] [15656] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:14 +0900] [15691] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f9ce8c1be18>
+  on_reload: <function OnReload.on_reload at 0x7f9ce8c1bf28>
+  when_ready: <function when_ready at 0x7f9ce8c1f9d8>
+  pre_fork: <function pre_fork at 0x7f9ce8c1f8c8>
+  post_fork: <function post_fork at 0x7f9ce8c1f840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f9ce8c33400>
+  worker_int: <function worker_int at 0x7f9ce8c1fa60>
+  worker_abort: <function worker_abort at 0x7f9ce8c1fae8>
+  pre_exec: <function pre_exec at 0x7f9ce8c1f950>
+  pre_request: <function PreRequest.pre_request at 0x7f9ce8c33840>
+  post_request: <function PostRequest.post_request at 0x7f9ce8c338c8>
+  child_exit: <function ChildExit.child_exit at 0x7f9ce8c339d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f9ce8c33ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f9ce8c33bf8>
+  on_exit: <function OnExit.on_exit at 0x7f9ce8c33d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:45:14 +0900] [15691] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:45:14 +0900] [15691] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:14 +0900] [15691] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:14 +0900] [15691] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:14 +0900] [15676] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:14 +0900] [15676] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:14 +0900] [15676] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:14 +0900] [15661] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:14 +0900] [15661] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:14 +0900] [15661] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:14 +0900] [15696] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f43f2350e18>
+  on_reload: <function OnReload.on_reload at 0x7f43f2350f28>
+  when_ready: <function when_ready at 0x7f43f23549d8>
+  pre_fork: <function pre_fork at 0x7f43f23548c8>
+  post_fork: <function post_fork at 0x7f43f2354840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f43f2368400>
+  worker_int: <function worker_int at 0x7f43f2354a60>
+  worker_abort: <function worker_abort at 0x7f43f2354ae8>
+  pre_exec: <function pre_exec at 0x7f43f2354950>
+  pre_request: <function PreRequest.pre_request at 0x7f43f2368840>
+  post_request: <function PostRequest.post_request at 0x7f43f23688c8>
+  child_exit: <function ChildExit.child_exit at 0x7f43f23689d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f43f2368ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f43f2368bf8>
+  on_exit: <function OnExit.on_exit at 0x7f43f2368d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:45:14 +0900] [15696] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:45:14 +0900] [15696] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:14 +0900] [15696] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:14 +0900] [15696] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:15 +0900] [15681] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:15 +0900] [15681] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:15 +0900] [15681] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:15 +0900] [15666] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:15 +0900] [15666] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:15 +0900] [15666] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:15 +0900] [15651] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:15 +0900] [15651] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:15 +0900] [15651] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:15 +0900] [15701] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f66a0c1ce18>
+  on_reload: <function OnReload.on_reload at 0x7f66a0c1cf28>
+  when_ready: <function when_ready at 0x7f66a0c209d8>
+  pre_fork: <function pre_fork at 0x7f66a0c208c8>
+  post_fork: <function post_fork at 0x7f66a0c20840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f66a0c34400>
+  worker_int: <function worker_int at 0x7f66a0c20a60>
+  worker_abort: <function worker_abort at 0x7f66a0c20ae8>
+  pre_exec: <function pre_exec at 0x7f66a0c20950>
+  pre_request: <function PreRequest.pre_request at 0x7f66a0c34840>
+  post_request: <function PostRequest.post_request at 0x7f66a0c348c8>
+  child_exit: <function ChildExit.child_exit at 0x7f66a0c349d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f66a0c34ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f66a0c34bf8>
+  on_exit: <function OnExit.on_exit at 0x7f66a0c34d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:45:15 +0900] [15701] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:45:15 +0900] [15701] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:15 +0900] [15701] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:15 +0900] [15701] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:15 +0900] [15686] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:15 +0900] [15686] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:15 +0900] [15686] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:15 +0900] [15671] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:15 +0900] [15671] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:15 +0900] [15671] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:15 +0900] [15656] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:15 +0900] [15656] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:15 +0900] [15656] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:15 +0900] [15691] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:15 +0900] [15691] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:15 +0900] [15691] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:15 +0900] [15676] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:15 +0900] [15676] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:15 +0900] [15676] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:15 +0900] [15661] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:15 +0900] [15661] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:15 +0900] [15661] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:15 +0900] [15696] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:15 +0900] [15696] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:15 +0900] [15696] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:16 +0900] [15681] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:16 +0900] [15681] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:16 +0900] [15681] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:16 +0900] [15666] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:16 +0900] [15666] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:16 +0900] [15666] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:16 +0900] [15651] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:16 +0900] [15651] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:16 +0900] [15651] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:16 +0900] [15701] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:16 +0900] [15701] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:16 +0900] [15701] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:16 +0900] [15686] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:16 +0900] [15686] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:16 +0900] [15686] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:16 +0900] [15671] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:16 +0900] [15671] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:16 +0900] [15671] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:16 +0900] [15656] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:16 +0900] [15656] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:16 +0900] [15656] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:16 +0900] [15691] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:16 +0900] [15691] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:16 +0900] [15691] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:16 +0900] [15676] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:16 +0900] [15676] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:16 +0900] [15676] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:16 +0900] [15661] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:16 +0900] [15661] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:16 +0900] [15661] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:16 +0900] [15696] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:16 +0900] [15696] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:16 +0900] [15696] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:17 +0900] [15681] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:17 +0900] [15681] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:17 +0900] [15681] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:17 +0900] [15666] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:17 +0900] [15666] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:17 +0900] [15666] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:17 +0900] [15651] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:45:17 +0900] [15701] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:17 +0900] [15701] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:17 +0900] [15701] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:17 +0900] [15686] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:17 +0900] [15686] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:17 +0900] [15686] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:17 +0900] [15671] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:17 +0900] [15671] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:17 +0900] [15671] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:17 +0900] [15656] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:45:17 +0900] [15691] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:17 +0900] [15691] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:17 +0900] [15691] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:17 +0900] [15676] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:17 +0900] [15676] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:17 +0900] [15676] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:17 +0900] [15661] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:45:17 +0900] [15696] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:17 +0900] [15696] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:17 +0900] [15696] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:18 +0900] [15681] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:18 +0900] [15681] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:18 +0900] [15681] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:18 +0900] [15666] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:45:18 +0900] [15701] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:18 +0900] [15701] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:18 +0900] [15701] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:18 +0900] [15686] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:18 +0900] [15686] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:18 +0900] [15686] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:18 +0900] [15671] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:45:18 +0900] [15691] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:18 +0900] [15691] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:18 +0900] [15691] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:18 +0900] [15676] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:45:18 +0900] [15696] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:18 +0900] [15696] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:18 +0900] [15696] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:19 +0900] [15681] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:45:19 +0900] [15701] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:45:19 +0900] [15701] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:45:19 +0900] [15701] [ERROR] Retrying in 1 second.
+[2019-05-24 08:45:19 +0900] [15686] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:45:19 +0900] [15691] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:45:19 +0900] [15696] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:45:20 +0900] [15701] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:46:38 +0900] [15726] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7fe1625a8e18>
+  on_reload: <function OnReload.on_reload at 0x7fe1625a8f28>
+  when_ready: <function when_ready at 0x7fe1625ac9d8>
+  pre_fork: <function pre_fork at 0x7fe1625ac8c8>
+  post_fork: <function post_fork at 0x7fe1625ac840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7fe1625c0400>
+  worker_int: <function worker_int at 0x7fe1625aca60>
+  worker_abort: <function worker_abort at 0x7fe1625acae8>
+  pre_exec: <function pre_exec at 0x7fe1625ac950>
+  pre_request: <function PreRequest.pre_request at 0x7fe1625c0840>
+  post_request: <function PostRequest.post_request at 0x7fe1625c08c8>
+  child_exit: <function ChildExit.child_exit at 0x7fe1625c09d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7fe1625c0ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7fe1625c0bf8>
+  on_exit: <function OnExit.on_exit at 0x7fe1625c0d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:46:38 +0900] [15726] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:46:38 +0900] [15726] [DEBUG] Arbiter booted
+[2019-05-24 08:46:38 +0900] [15726] [INFO] Listening at: http://127.0.0.1:8001 (15726)
+[2019-05-24 08:46:38 +0900] [15726] [INFO] Using worker: sync
+[2019-05-24 08:46:38 +0900] [15726] [INFO] Server is ready. Spawning workers
+[2019-05-24 08:46:38 +0900] [15730] [INFO] Booting worker with pid: 15730
+[2019-05-24 08:46:38 +0900] [15730] [INFO] Worker spawned (pid: 15730)
+[2019-05-24 08:46:38 +0900] [15726] [DEBUG] 1 workers
+[2019-05-24 08:46:38 +0900] [15733] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f1f41a3de18>
+  on_reload: <function OnReload.on_reload at 0x7f1f41a3df28>
+  when_ready: <function when_ready at 0x7f1f41a419d8>
+  pre_fork: <function pre_fork at 0x7f1f41a418c8>
+  post_fork: <function post_fork at 0x7f1f41a41840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f1f41a55400>
+  worker_int: <function worker_int at 0x7f1f41a41a60>
+  worker_abort: <function worker_abort at 0x7f1f41a41ae8>
+  pre_exec: <function pre_exec at 0x7f1f41a41950>
+  pre_request: <function PreRequest.pre_request at 0x7f1f41a55840>
+  post_request: <function PostRequest.post_request at 0x7f1f41a558c8>
+  child_exit: <function ChildExit.child_exit at 0x7f1f41a559d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f1f41a55ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f1f41a55bf8>
+  on_exit: <function OnExit.on_exit at 0x7f1f41a55d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:46:38 +0900] [15733] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:46:38 +0900] [15733] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:38 +0900] [15733] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:38 +0900] [15733] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:38 +0900] [15739] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f38a36dde18>
+  on_reload: <function OnReload.on_reload at 0x7f38a36ddf28>
+  when_ready: <function when_ready at 0x7f38a36e19d8>
+  pre_fork: <function pre_fork at 0x7f38a36e18c8>
+  post_fork: <function post_fork at 0x7f38a36e1840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f38a36f5400>
+  worker_int: <function worker_int at 0x7f38a36e1a60>
+  worker_abort: <function worker_abort at 0x7f38a36e1ae8>
+  pre_exec: <function pre_exec at 0x7f38a36e1950>
+  pre_request: <function PreRequest.pre_request at 0x7f38a36f5840>
+  post_request: <function PostRequest.post_request at 0x7f38a36f58c8>
+  child_exit: <function ChildExit.child_exit at 0x7f38a36f59d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f38a36f5ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f38a36f5bf8>
+  on_exit: <function OnExit.on_exit at 0x7f38a36f5d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:46:38 +0900] [15739] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:46:38 +0900] [15739] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:38 +0900] [15739] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:38 +0900] [15739] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:39 +0900] [15743] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7fa9d0578e18>
+  on_reload: <function OnReload.on_reload at 0x7fa9d0578f28>
+  when_ready: <function when_ready at 0x7fa9d057c9d8>
+  pre_fork: <function pre_fork at 0x7fa9d057c8c8>
+  post_fork: <function post_fork at 0x7fa9d057c840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7fa9d0590400>
+  worker_int: <function worker_int at 0x7fa9d057ca60>
+  worker_abort: <function worker_abort at 0x7fa9d057cae8>
+  pre_exec: <function pre_exec at 0x7fa9d057c950>
+  pre_request: <function PreRequest.pre_request at 0x7fa9d0590840>
+  post_request: <function PostRequest.post_request at 0x7fa9d05908c8>
+  child_exit: <function ChildExit.child_exit at 0x7fa9d05909d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7fa9d0590ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7fa9d0590bf8>
+  on_exit: <function OnExit.on_exit at 0x7fa9d0590d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:46:39 +0900] [15743] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:46:39 +0900] [15743] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:39 +0900] [15743] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:39 +0900] [15743] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:39 +0900] [15748] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7fa329eace18>
+  on_reload: <function OnReload.on_reload at 0x7fa329eacf28>
+  when_ready: <function when_ready at 0x7fa329eb09d8>
+  pre_fork: <function pre_fork at 0x7fa329eb08c8>
+  post_fork: <function post_fork at 0x7fa329eb0840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7fa329ec4400>
+  worker_int: <function worker_int at 0x7fa329eb0a60>
+  worker_abort: <function worker_abort at 0x7fa329eb0ae8>
+  pre_exec: <function pre_exec at 0x7fa329eb0950>
+  pre_request: <function PreRequest.pre_request at 0x7fa329ec4840>
+  post_request: <function PostRequest.post_request at 0x7fa329ec48c8>
+  child_exit: <function ChildExit.child_exit at 0x7fa329ec49d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7fa329ec4ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7fa329ec4bf8>
+  on_exit: <function OnExit.on_exit at 0x7fa329ec4d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:46:39 +0900] [15748] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:46:39 +0900] [15748] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:39 +0900] [15748] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:39 +0900] [15748] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:39 +0900] [15733] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:39 +0900] [15733] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:39 +0900] [15733] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:39 +0900] [15753] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f45c3cefe18>
+  on_reload: <function OnReload.on_reload at 0x7f45c3ceff28>
+  when_ready: <function when_ready at 0x7f45c3cf39d8>
+  pre_fork: <function pre_fork at 0x7f45c3cf38c8>
+  post_fork: <function post_fork at 0x7f45c3cf3840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f45c3d07400>
+  worker_int: <function worker_int at 0x7f45c3cf3a60>
+  worker_abort: <function worker_abort at 0x7f45c3cf3ae8>
+  pre_exec: <function pre_exec at 0x7f45c3cf3950>
+  pre_request: <function PreRequest.pre_request at 0x7f45c3d07840>
+  post_request: <function PostRequest.post_request at 0x7f45c3d078c8>
+  child_exit: <function ChildExit.child_exit at 0x7f45c3d079d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f45c3d07ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f45c3d07bf8>
+  on_exit: <function OnExit.on_exit at 0x7f45c3d07d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:46:39 +0900] [15753] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:46:39 +0900] [15753] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:39 +0900] [15753] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:39 +0900] [15753] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:39 +0900] [15739] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:39 +0900] [15739] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:39 +0900] [15739] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:40 +0900] [15758] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f0e43264e18>
+  on_reload: <function OnReload.on_reload at 0x7f0e43264f28>
+  when_ready: <function when_ready at 0x7f0e432689d8>
+  pre_fork: <function pre_fork at 0x7f0e432688c8>
+  post_fork: <function post_fork at 0x7f0e43268840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f0e4327c400>
+  worker_int: <function worker_int at 0x7f0e43268a60>
+  worker_abort: <function worker_abort at 0x7f0e43268ae8>
+  pre_exec: <function pre_exec at 0x7f0e43268950>
+  pre_request: <function PreRequest.pre_request at 0x7f0e4327c840>
+  post_request: <function PostRequest.post_request at 0x7f0e4327c8c8>
+  child_exit: <function ChildExit.child_exit at 0x7f0e4327c9d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f0e4327cae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f0e4327cbf8>
+  on_exit: <function OnExit.on_exit at 0x7f0e4327cd08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:46:40 +0900] [15758] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:46:40 +0900] [15758] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:40 +0900] [15758] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:40 +0900] [15758] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:40 +0900] [15743] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:40 +0900] [15743] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:40 +0900] [15743] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:40 +0900] [15748] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:40 +0900] [15748] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:40 +0900] [15748] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:40 +0900] [15763] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f2c2c5a4e18>
+  on_reload: <function OnReload.on_reload at 0x7f2c2c5a4f28>
+  when_ready: <function when_ready at 0x7f2c2c5a89d8>
+  pre_fork: <function pre_fork at 0x7f2c2c5a88c8>
+  post_fork: <function post_fork at 0x7f2c2c5a8840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f2c2c5bc400>
+  worker_int: <function worker_int at 0x7f2c2c5a8a60>
+  worker_abort: <function worker_abort at 0x7f2c2c5a8ae8>
+  pre_exec: <function pre_exec at 0x7f2c2c5a8950>
+  pre_request: <function PreRequest.pre_request at 0x7f2c2c5bc840>
+  post_request: <function PostRequest.post_request at 0x7f2c2c5bc8c8>
+  child_exit: <function ChildExit.child_exit at 0x7f2c2c5bc9d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f2c2c5bcae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f2c2c5bcbf8>
+  on_exit: <function OnExit.on_exit at 0x7f2c2c5bcd08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:46:40 +0900] [15763] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:46:40 +0900] [15763] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:40 +0900] [15763] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:40 +0900] [15763] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:40 +0900] [15733] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:40 +0900] [15733] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:40 +0900] [15733] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:40 +0900] [15769] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f0659130e18>
+  on_reload: <function OnReload.on_reload at 0x7f0659130f28>
+  when_ready: <function when_ready at 0x7f06591349d8>
+  pre_fork: <function pre_fork at 0x7f06591348c8>
+  post_fork: <function post_fork at 0x7f0659134840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f0659148400>
+  worker_int: <function worker_int at 0x7f0659134a60>
+  worker_abort: <function worker_abort at 0x7f0659134ae8>
+  pre_exec: <function pre_exec at 0x7f0659134950>
+  pre_request: <function PreRequest.pre_request at 0x7f0659148840>
+  post_request: <function PostRequest.post_request at 0x7f06591488c8>
+  child_exit: <function ChildExit.child_exit at 0x7f06591489d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f0659148ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f0659148bf8>
+  on_exit: <function OnExit.on_exit at 0x7f0659148d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:46:40 +0900] [15769] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:46:40 +0900] [15769] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:40 +0900] [15769] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:40 +0900] [15769] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:40 +0900] [15753] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:40 +0900] [15753] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:40 +0900] [15753] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:40 +0900] [15739] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:40 +0900] [15739] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:40 +0900] [15739] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:41 +0900] [15773] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f71ad9ede18>
+  on_reload: <function OnReload.on_reload at 0x7f71ad9edf28>
+  when_ready: <function when_ready at 0x7f71ad9f19d8>
+  pre_fork: <function pre_fork at 0x7f71ad9f18c8>
+  post_fork: <function post_fork at 0x7f71ad9f1840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f71ada05400>
+  worker_int: <function worker_int at 0x7f71ad9f1a60>
+  worker_abort: <function worker_abort at 0x7f71ad9f1ae8>
+  pre_exec: <function pre_exec at 0x7f71ad9f1950>
+  pre_request: <function PreRequest.pre_request at 0x7f71ada05840>
+  post_request: <function PostRequest.post_request at 0x7f71ada058c8>
+  child_exit: <function ChildExit.child_exit at 0x7f71ada059d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f71ada05ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f71ada05bf8>
+  on_exit: <function OnExit.on_exit at 0x7f71ada05d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:46:41 +0900] [15773] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:46:41 +0900] [15773] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:41 +0900] [15773] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:41 +0900] [15773] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:41 +0900] [15758] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:41 +0900] [15758] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:41 +0900] [15758] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:41 +0900] [15743] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:41 +0900] [15743] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:41 +0900] [15743] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:41 +0900] [15778] [DEBUG] Current configuration:
+  config: gunicorn/conf.py
+  bind: ['127.0.0.1:8001']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 600
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /var/www/python_projects/webinvoice.git/webinvoice
+  daemon: True
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 503
+  group: 504
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: gunicorn/access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: gunicorn/error.log
+  loglevel: debug
+  capture_output: False
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: webinvoice.wsgi:application
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7f71dce58e18>
+  on_reload: <function OnReload.on_reload at 0x7f71dce58f28>
+  when_ready: <function when_ready at 0x7f71dce5c9d8>
+  pre_fork: <function pre_fork at 0x7f71dce5c8c8>
+  post_fork: <function post_fork at 0x7f71dce5c840>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f71dce70400>
+  worker_int: <function worker_int at 0x7f71dce5ca60>
+  worker_abort: <function worker_abort at 0x7f71dce5cae8>
+  pre_exec: <function pre_exec at 0x7f71dce5c950>
+  pre_request: <function PreRequest.pre_request at 0x7f71dce70840>
+  post_request: <function PostRequest.post_request at 0x7f71dce708c8>
+  child_exit: <function ChildExit.child_exit at 0x7f71dce709d8>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f71dce70ae8>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f71dce70bf8>
+  on_exit: <function OnExit.on_exit at 0x7f71dce70d08>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-05-24 08:46:41 +0900] [15778] [INFO] Starting gunicorn 19.9.0
+[2019-05-24 08:46:41 +0900] [15778] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:41 +0900] [15778] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:41 +0900] [15778] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:41 +0900] [15748] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:41 +0900] [15748] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:41 +0900] [15748] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:41 +0900] [15763] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:41 +0900] [15763] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:41 +0900] [15763] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:41 +0900] [15733] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:41 +0900] [15733] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:41 +0900] [15733] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:41 +0900] [15769] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:41 +0900] [15769] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:41 +0900] [15769] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:41 +0900] [15753] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:41 +0900] [15753] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:41 +0900] [15753] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:41 +0900] [15739] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:41 +0900] [15739] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:41 +0900] [15739] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:42 +0900] [15773] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:42 +0900] [15773] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:42 +0900] [15773] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:42 +0900] [15758] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:42 +0900] [15758] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:42 +0900] [15758] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:42 +0900] [15743] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:42 +0900] [15743] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:42 +0900] [15743] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:42 +0900] [15778] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:42 +0900] [15778] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:42 +0900] [15778] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:42 +0900] [15748] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:42 +0900] [15748] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:42 +0900] [15748] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:42 +0900] [15763] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:42 +0900] [15763] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:42 +0900] [15763] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:42 +0900] [15733] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:42 +0900] [15733] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:42 +0900] [15733] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:42 +0900] [15769] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:42 +0900] [15769] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:42 +0900] [15769] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:42 +0900] [15730] [DEBUG] GET /invoice/mypage/top/
+[2019-05-24 08:46:42 +0900] [15753] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:42 +0900] [15753] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:42 +0900] [15753] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:42 +0900] [15739] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:42 +0900] [15739] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:42 +0900] [15739] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:43 +0900] [15773] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:43 +0900] [15773] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:43 +0900] [15773] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:43 +0900] [15758] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:43 +0900] [15758] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:43 +0900] [15758] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:43 +0900] [15743] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:43 +0900] [15743] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:43 +0900] [15743] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:43 +0900] [15778] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:43 +0900] [15778] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:43 +0900] [15778] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:43 +0900] [15748] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:43 +0900] [15748] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:43 +0900] [15748] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:43 +0900] [15763] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:43 +0900] [15763] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:43 +0900] [15763] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:43 +0900] [15733] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:46:43 +0900] [15769] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:43 +0900] [15769] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:43 +0900] [15769] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:43 +0900] [15753] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:43 +0900] [15753] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:43 +0900] [15753] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:43 +0900] [15739] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:46:44 +0900] [15773] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:44 +0900] [15773] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:44 +0900] [15773] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:44 +0900] [15758] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:44 +0900] [15758] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:44 +0900] [15758] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:44 +0900] [15743] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:46:44 +0900] [15778] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:44 +0900] [15778] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:44 +0900] [15778] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:44 +0900] [15748] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:46:44 +0900] [15763] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:44 +0900] [15763] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:44 +0900] [15763] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:44 +0900] [15769] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:44 +0900] [15769] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:44 +0900] [15769] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:44 +0900] [15753] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:46:45 +0900] [15773] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:45 +0900] [15773] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:45 +0900] [15773] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:45 +0900] [15758] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:46:45 +0900] [15778] [ERROR] Connection in use: ('127.0.0.1', 8001)
+[2019-05-24 08:46:45 +0900] [15778] [DEBUG] connection to ('127.0.0.1', 8001) failed: [Errno 98] Address already in use
+[2019-05-24 08:46:45 +0900] [15778] [ERROR] Retrying in 1 second.
+[2019-05-24 08:46:45 +0900] [15763] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:46:45 +0900] [15769] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:46:46 +0900] [15773] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:46:46 +0900] [15778] [ERROR] Can't connect to ('127.0.0.1', 8001)
+[2019-05-24 08:46:47 +0900] [15730] [DEBUG] GET /invoice/mypage/list_handwritten_invoice/
+[2019-05-24 08:46:55 +0900] [15730] [DEBUG] GET /invoice/mypage/update_handwritten_invoice/IV12212
+[2019-05-24 08:47:06 +0900] [15730] [DEBUG] GET /invoice/mypage/list_handwritten_invoice/
+[2019-05-24 08:47:11 +0900] [15730] [DEBUG] GET /invoice/mypage/pdf_handwritten/IV12212
+[2019-05-24 08:52:37 +0900] [15730] [DEBUG] GET /invoice/mypage/
+[2019-05-24 08:52:39 +0900] [15730] [DEBUG] POST /invoice/mypage/
+[2019-05-24 08:52:43 +0900] [15730] [DEBUG] POST /invoice/mypage/
+[2019-05-24 08:52:43 +0900] [15730] [DEBUG] GET /invoice/mypage/top/
+[2019-05-24 08:52:46 +0900] [15730] [DEBUG] GET /invoice/mypage/list_handwritten_invoice/
+[2019-05-24 08:52:57 +0900] [15730] [DEBUG] GET /invoice/mypage/pdf_handwritten/IV101
+[2019-05-24 08:53:51 +0900] [15730] [DEBUG] GET /invoice/mypage/pdf_handwritten/IV101
+[2019-05-24 08:54:20 +0900] [15730] [DEBUG] GET /invoice/mypage/admin
+[2019-05-24 08:54:20 +0900] [15730] [DEBUG] GET /invoice/mypage/admin/
+[2019-05-24 08:54:26 +0900] [15730] [DEBUG] GET /invoice/mypage/admin/
+[2019-05-24 08:54:30 +0900] [15730] [DEBUG] GET /invoice/mypage/admin/
