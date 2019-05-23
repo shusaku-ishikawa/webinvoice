@@ -920,32 +920,42 @@ class HandWrittenInvoice(models.Model):
         verbose_name = '作成日',
         default = timezone.now()
     )
-    total_w_tax = models.IntegerField(
+    invoice_price = models.IntegerField(
         verbose_name = '請求金額'
     )
     due_date = models.DateField(
         verbose_name = '支払期日',
     )
-    yearmonth_1 = models.CharField(
+
+class HandWrittenInvoiceDetail(models.Model):
+    parent = models.ForeignKey(
+        to = HandWrittenInvoice,
+        on_delete = models.CASCADE,
+        related_name = 'details'
+    )
+    row_no = models.IntegerField(
+        verbose_name = '行番号'
+    )
+    yearmonth = models.CharField(
         max_length = 6,
         null = True,
         blank = True,
     )
-    product_category_1 = models.CharField(
+    product_category = models.CharField(
         max_length = 100,
         null = True,
         blank = True,
     )
-    product_name_1 = models.CharField(
+    product_name = models.CharField(
         max_length = 100,
         null = True,
         blank = True,
     )
-    amount_1 = models.IntegerField(
+    amount = models.IntegerField(
         null = True,
         blank = True,
     )
-    unit_price_2 = models.IntegerField(
+    unit_price = models.IntegerField(
         null = True,
         blank = True,
     )

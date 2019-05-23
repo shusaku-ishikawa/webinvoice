@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block header %}
+手書き請求書一覧
+{% endblock %}
+
+{% block content %}
+<ul class="messages">
+    {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'web:create_handwritten_invoice' %}" class="btn my-btn-base my-new-btn">新規作成</a>
+
+<form method="GET">
+<input type="text" name="q_company_name"><br>
+<input type="text" name="q_costomer_id"><br>
+<input type="text" name="q_create_user"><br>
+<input type="date" name="q_date_created"><br>
+<input type="text" name="q_address"><br>
+<button type="submit">検索</button>
+</form>
+
+
+    
+{% if object_list %}
+<div class="table-responsive">
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th class="text-nowrap">請求書ID</th>
+            <th class="text-nowrap">お客様ID</th>
+            <th class="text-nowrap">年月</th>
+            <th class="text-nowrap">連絡先電話番号(Vision)</th>
+            <th class="text-nowrap">請求郵便番号</th>
+            <th class="text-nowrap">住所1</th>
+            <th class="text-nowrap">住所2</th>
+            <th class="text-nowrap">請求会社名</th>
+            <th class="text-nowrap">請求部署</th>
+            <th class="text-nowrap">請求宛名</th>
+            <th class="text-nowrap">請求プロジェクト</th>
+            <th class="text-nowrap">作成日</th>
+            <th class="text-nowrap">請求金額</th>
+            <th class="text-nowrap">支払い期限</th>
+            <th class="text-nowrap">税抜合計</th>
+            <th class="text-nowrap">税額合計</th>
+            <th class="text-nowrap">税込合計</th>
+            <th class="text-nowrap">更新</th>
+            
+       </tr>
+    </thead>
+    <tbody>
+        {% for object in object_list %}
+        <tr>
+            <td class="text-nowrap">{{ object.id }}</td>
+            <td class="text-nowrap">{{ object.customer_id }}</td>
+            <td class="text-nowrap">{{ object.yearmonth }}</td>
+            <td class="text-nowrap">{{ object.vision_phone_number }}</td>
+            <td class="text-nowrap">{{ object.zip }}</td>
+            <td class="text-nowrap">{{ object.address_1 }}</td>
+            <td class="text-nowrap">{{ object.address_2 }}</td>
+            <td class="text-nowrap">{{ object.company_name }}</td>
+            <td class="text-nowrap">{{ object.dept }}</td>
+            <td class="text-nowrap">{{ object.person }}</td>
+            <td class="text-nowrap">{{ object.project_1 }}</td>
+            <td class="text-nowrap">{{ object.date_created }}</td>
+            <td class="text-nowrap">{{ object.invoice_total }}</td>
+            <td class="text-nowrap">{{ object.due_date }}</td>
+            <td class="text-nowrap">{{ object.invoice_total_wo_tax }}</td>
+            <td class="text-nowrap">{{ object.invoice_tax }}</td>
+            <td class="text-nowrap">{{ object.invoice_total_w_tax }}</td>
+            <td class="text-nowrap"><button type="button">更新</button></td>
+        </tr> 
+        {% endfor %}  
+    </tbody>
+</table>    
+</div>
+    {% if is_paginated %}
+    {% include "include/pagination.html" %}
+    {% endif %}
+
+{% else %}
+    <p>請求書が登録されていません</p>
+{% endif %}
+
+{% endblock %}
+{% block extra_js %}
+    <script>
+       
+    </script>
+{% endblock %}

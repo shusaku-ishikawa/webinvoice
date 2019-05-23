@@ -575,3 +575,112 @@ class CreateHandwrittenInvoice(LoginRequiredMixin, generic.TemplateView):
         ctx['ourinfo'] = ourinfo
         ctx['rec_per_page'] = range(14)
         return ctx
+
+    def get_success_url(self):
+        return reverse_lazy('web:create_handwritten_invoice')
+
+    def post(self, request, *args, **kwargs):
+        vision_phone = request.POST.get('phone')
+        zip = request.POST.get('zip')
+        address_1 = request.POST.get('address_1')
+        address_2 = request.POST.get('address_2')
+        company = request.POST.get('company')
+        person = request.POST.get('person')
+        dept = request.POST.get('dept')
+        project = request.POST.get('project')
+        date_created = request.POST.get('date_created')
+        customerNo = InvoiceEntity.PREFIX + request.POST.get('customerNo')
+        invoiceNo = Invoice.PREFIX + request.POST.get('invoiceNo')
+        invoiceAmount = request.POST.get('total')
+        
+        dueDate = request.POST.get('due_date')
+
+        total_wo_tax = request.POST.get('total_wo_tax')
+        total_tax = request.POST.get('total_tax')
+        total_w_tax = request.POST.get('total_w_tax')
+        
+        new = HandWrittenInvoice()
+        new.id = invoiceNo
+        new.customer_id = customerNo
+        new.vision_phone_number = vision_phone
+        new.zip = zip
+        new.address_1 = address_1
+        new.address_2 = address_2
+        new.company_name = company
+        new.dept = dept
+        new.person = person
+        new.project = project
+        new.date_created = date_created
+        new.invoice_price = invoiceAmount
+        new.invoice_total_wo_tax = total_wo_tax
+        new.invoice_tax = total_tax
+        new.invoice_total_w_tax = total_w_tax
+        new.due_date = dueDate
+        new.create_user = request.user
+        new.save()        
+
+        for i in range(1, 15):
+            row = i
+            yearmonth = request.POST.get("yearmonth_" + str(i))
+            category = request.POST.get("category_" + str(i))
+            service_name = request.POST.get("service_name_" + str(i))
+            amount = request.POST.get("amount_" + str(i))
+            unit_price = request.POST.get("unit_price_" + str(i))
+            tax_type = request.POST.get("tax_type_" + str(i))
+            invoice_amount_wo_tax = request.POST.get("invoice_amount_wo_tax_" + str(i))
+            tax_amount = request.POST.get("tax_amount_" + str(i))
+            invoice_amount_w_tax = request.POST.get("invoice_amount_w_tax_" + str(i))
+            
+            new_detail = HandWrittenInvoiceDetail()
+            new_detail.parent = new
+            new_detail.row_no = row
+            new_detail.yearmonth = yearmonth
+            new_detail.product_category = category
+            new_detail.product_name = service_name
+            new_detail.amount = amount
+            new_detail.unit_price = unit_price
+            new_detail.tax_type = tax_type
+            new_detail.total_wo_tax = invoice_amount_wo_tax
+            new_detail.tax_price = tax_amount
+            new_detail.total_w_tax = invoice_amount_w_tax
+            new_detail.save()
+        
+        messages.success(
+            self.request, '登録が完了しました')
+        return HttpResponseRedirect(self.get_success_url())  
+
+class ListHandwrittenInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
+    model = HandWrittenInvoice
+    template_name = 'list_handwritten_invoice.html'
+    paginate_by = 10  #and that's it !!
+    def get_queryset(self):
+        data = HandWrittenInvoice.objects.all()
+        key_customer_id = "q_costomer_id"
+        key_company_name = "q_company_name"
+        key_create_user = "q_create_user"
+        key_date_created = "q_date_created"
+        key_address = "q_address"
+
+        # if key_customer_id in self.request.GET and self.request.GET.get(key_customer_id) != "":
+        #     q = self.request.GET.get(key_customer_id)
+        #     data = data.filter(invoice_entity__company__corporate_number__icontains = q)
+        
+        # if key_company_name in self.request.GET and self.request.GET.get(key_company_name) != "":
+        #     q = self.request.GET.get(key_company_name)
+        #     data = data.filter(Q(invoice_entity__invoice_company_name__icontains = q) | Q(invoice_entity__company__kanji_name__icontains = q))
+
+        # if key_phone_number in self.request.GET and self.request.GET.get(key_phone_number) != "":
+        #     q = self.request.GET.get(key_phone_number)
+        #     data = data.filter(Q(invoice_entity__company__telephone_1__icontains = q) | Q(invoice_entity__company__telephone_2__icontains = q))
+
+        # if key_invoice_code in self.request.GET and self.request.GET.get(key_invoice_code) != "":
+        #     q = self.request.GET.get(key_invoice_code)
+        #     data = data.filter(invoice_code__icontains = q)
+           
+        # if key_invoice_pk in self.request.GET and self.request.GET.get(key_invoice_pk) != "":
+        #     q = self.request.GET.get(key_invoice_pk)
+        #     data = data.filter(invoice_pk = q)
+
+        return data
+
+
