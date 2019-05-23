@@ -39,7 +39,9 @@ urlpatterns = [
     path('excel_li_detail/', views.DetailExcelUploadHistor.as_view(), name = 'detail_upload_hisotry'),
     
     path('create_handwritten_invoice/', views.CreateHandwrittenInvoice.as_view(), name = 'create_handwritten_invoice'),
+    path('update_handwritten_invoice/<str:pk>', views.UpdateHandwrittenInvoice.as_view(), name = 'update_handwritten_invoice'),
     path('list_handwritten_invoice/', views.ListHandwrittenInvoice.as_view(), name = 'list_handwritten_invoice'), 
+    path('pdf_handwritten/<str:pk>', views.pdf_handwritten, name='pdf_handwritten_invoice'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT) 
 

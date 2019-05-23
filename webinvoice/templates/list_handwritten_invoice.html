@@ -5,7 +5,34 @@
 {% block header %}
 手書き請求書一覧
 {% endblock %}
-
+{% block style %}
+    <style>
+        form {
+            width: 300px;
+            margin-bottom: 10px;
+        }
+        label {
+            width: 60px;
+            font-size: 14px;
+        }
+        .my-search-btn {
+            background-color: gray;
+            color: white
+        }
+        .update-btn {
+            background-color: teal!important;
+            color:white;
+            margin:10px;
+            padding: 3px;
+        }
+        .output-btn {
+            background-color: red!important;
+            color:white;
+            margin:10px;
+            padding: 3px;
+        }
+    </style>
+{% endblock %}
 {% block content %}
 <ul class="messages">
     {% for message in messages %}
@@ -13,17 +40,24 @@
     {% endfor %}
 </ul>
 
-<a href="{% url 'web:create_handwritten_invoice' %}" class="btn my-btn-base my-new-btn">新規作成</a>
-
-<form method="GET">
-<input type="text" name="q_company_name"><br>
-<input type="text" name="q_costomer_id"><br>
-<input type="text" name="q_create_user"><br>
-<input type="date" name="q_date_created"><br>
-<input type="text" name="q_address"><br>
-<button type="submit">検索</button>
-</form>
-
+    <form method="GET">
+        <label for="id_company_name" >会社名</label>
+        <input id="id_company_name" type="text" name="q_company_name"><br>
+        
+        <label for="id_customer_id" >お客様ID</label>
+        <input id="id_customer_id" type="text" name="q_costomer_id"><br>
+        
+        <label for="id_create_user">作成者</label>
+        <input id="id_create_user" type="text" name="q_create_user"><br>
+        
+        <label for="id_date_created">作成日</label>
+        <input id="id_date_created" type="date" name="q_date_created"><br>
+        
+        <label for="id_address">住所</label>
+        <input id="id_address" type="text" name="q_address"> <button class="btn my-btn-base my-search-btn" type="submit">検索</button>
+        <a href="{% url 'web:create_handwritten_invoice' %}" class="btn my-btn-base my-new-btn">新規作成</a>
+    
+    </form>
 
     
 {% if object_list %}
@@ -48,6 +82,7 @@
             <th class="text-nowrap">税抜合計</th>
             <th class="text-nowrap">税額合計</th>
             <th class="text-nowrap">税込合計</th>
+            <th class="text-nowrap">PDF出力</th>
             <th class="text-nowrap">更新</th>
             
        </tr>
@@ -65,14 +100,15 @@
             <td class="text-nowrap">{{ object.company_name }}</td>
             <td class="text-nowrap">{{ object.dept }}</td>
             <td class="text-nowrap">{{ object.person }}</td>
-            <td class="text-nowrap">{{ object.project_1 }}</td>
-            <td class="text-nowrap">{{ object.date_created }}</td>
-            <td class="text-nowrap">{{ object.invoice_total }}</td>
-            <td class="text-nowrap">{{ object.due_date }}</td>
-            <td class="text-nowrap">{{ object.invoice_total_wo_tax }}</td>
-            <td class="text-nowrap">{{ object.invoice_tax }}</td>
-            <td class="text-nowrap">{{ object.invoice_total_w_tax }}</td>
-            <td class="text-nowrap"><button type="button">更新</button></td>
+            <td class="text-nowrap">{{ object.project_1|default_if_none:'' }}</td>
+            <td class="text-nowrap text-right">{{ object.date_created|date:'Y/m/d' }}</td>
+            <td class="text-nowrap text-right">{{ object.invoice_price|intcomma }}</td>
+            <td class="text-nowrap text-right">{{ object.due_date|date:'Y/m/d' }}</td>
+            <td class="text-nowrap text-right">{{ object.total_wo_tax|intcomma }}</td>
+            <td class="text-nowrap text-right">{{ object.total_tax|intcomma }}</td>
+            <td class="text-nowrap text-right">{{ object.total_w_tax|intcomma }}</td>
+            <td class="text-nowrap"><a class="my-btn-base output-btn" href="{% url 'web:pdf_handwritten_invoice' object.pk %}">PDF出力</a></td>
+            <td class="text-nowrap"><a class="my-btn-base update-btn" href="{% url 'web:update_handwritten_invoice' object.pk %}">更新</a></td>
         </tr> 
         {% endfor %}  
     </tbody>

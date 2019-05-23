@@ -19,14 +19,14 @@
     #summary_table tr th,
     #summary_table tr td {
       height: 5px!important;
-      font-size: 15px !important;
+      font-size: 14px !important;
       padding: 1px!important;
       margin: 1px!important;  
     }
     .outline {
       border: black solid 1px;
       padding: 20px;
-      font-size: 10px;
+      font-size: 14px;
     }
     .bank-row {
       margin: 0;
@@ -41,6 +41,18 @@
     .search-column {
       border: gray solid 1px;
     }
+    input {
+      width: 180px;
+      font-size: 14px;
+      margin: 1px;
+    }
+    input[type="number"] {
+      text-align: right
+    }
+    .to-list-btn {
+      background-color: gray;
+      color:white
+    }
   </style>
 {% endblock %}
 
@@ -51,24 +63,28 @@
 {% block content %}
 <form method="POST">
     {% csrf_token %}
-<button type="submit">PDF出力</button>
+    {% if obj_to_update %}
+      <input type="hidden" name="obj_to_update" value="{{ obj_to_update.pk }}">
+    {% endif %}
+<button type="submit" class="btn my-btn-base my-new-btn">PDF出力</button>
+<a href="{% url 'web:list_handwritten_invoice' %}" class="btn my-btn-base to-list-btn">一覧画面へ</a>
 
 <div class="outline">
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-6">
-          〒<input id="zip" name="zip" type="text" placeholder="請求先郵便番号"><br/>
-          <input id="address_1" type="text" name="address_1" placeholder="請求住所1"><br/>
-          <input id="address2" type="text" name="address_2" placeholder="請求住所2"><br/> 
-          <input id="company" type="text" name="company" placeholder="請求会社名"> <input id="person" type="text" name="person" placeholder="請求宛名"><br/>
-          <input id="dept" type="text" name="dept" placeholder="請求部署"><br/>
-          <input id="project" type="text" name="project" placeholder="請求プロジェクト"><br/>
+          〒<input required value="{{ obj_to_update.zip }}" id="zip" name="zip" type="text" placeholder="請求先郵便番号"><br/>
+          <input required value="{{ obj_to_update.address_1 }}" id="address_1" type="text" name="address_1" placeholder="請求住所1"><br/>
+          <input required value="{{ obj_to_update.address_2 }}" id="address2" type="text" name="address_2" placeholder="請求住所2"><br/> 
+          <input required value="{{ obj_to_update.company_name }}" id="company" type="text" name="company" placeholder="請求会社名"> <input value="{{ obj_to_update.person }}" id="person" type="text" name="person" placeholder="請求宛名"><br/>
+          <input required value="{{ obj_to_update.dept }}" id="dept" type="text" name="dept" placeholder="請求部署"><br/>
+          <input value="{{ obj_to_update.project }}" id="project" type="text" name="project" placeholder="請求プロジェクト"><br/>
         </div>
 
         <div class="col-md-6 col-6" style="text-align: right">
-          発行日：<input type="date" name="date_created"><br/>
-          お客様No：B<input name="customerNo" type="text"><br/>
-          請求番号：IV<input name="invoiceNo" type="text"></br></br>
+          発行日：<input required value="{{ obj_to_update.date_created|date:'Y-m-d' }}" type="date" name="date_created"><br/>
+          お客様No：B<input value="{{ obj_to_update.customer_id_no_prefix }}" required name="customerNo" type="text"  ><br/>
+          請求番号：IV<input value="{{ obj_to_update.invoice_id_no_prefix  }}" required name="invoiceNo" type="text" ></br></br>
           <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
           <img src="{% static 'img/vision_logo.png' %}" style="width:6rem;height:6rem;"/>
           <img src="{% static 'img/vision_stamp.png' %}" style="width:4rem;height:4rem;"/><br/>
@@ -76,7 +92,7 @@
           〒{{ ourinfo.zip }}<br/>
           {{ ourinfo.address_1 }}<br/>
           {{ ourinfo.address_2 }}<br/></br>
-          連絡先電話番号： <input type="text" name="phone"><br/>
+          連絡先電話番号： <input value="{{ obj_to_update.vision_phone_number }}" required type="text" name="phone"><br/>
           受付時間　9:00-18：00（土日祝日除く）<br/>
           （平日9:00-18：00）</br>
         </div> <!-- col -->
@@ -90,14 +106,14 @@
         <p>平素は格別のお引き立てを賜り厚くお礼申し上げます。</br>下記の通りご請求申し上げます。</p>
       </div>
       <div class="col-md-6 col-6">
-        <table id="summarytable" class="table table-bordered">
+        <table id="bank-table" class="table table-bordered">
           <tr>
               <th style="width: 30%">ご請求金額</th>
-              <td align="right"><input type="number" id="total" name="total"></td>
+              <td align="right"><input value="{{ obj_to_update.invoice_price }}" required type="number" id="total" name="total"></td>
           </tr>
           <tr>
               <th style="width: 30%">お支払い期限</th>
-              <td align="right"><input name="due_date" type="date"></td>
+              <td align="right"><input value="{{ obj_to_update.due_date|date:'Y-m-d' }}" required name="due_date" type="date"></td>
           </tr>
           <tr>
               <th style="width: 30%">お振込み先</th>
@@ -148,20 +164,37 @@
           </tr>
         </thead>
         <tbody>
-          {% for i in rec_per_page %}
-          <tr>
-            <td align="center">{{ forloop.counter }}</td>
-            <td align="center"><input id="yearmonth_{{ forloop.counter }}" type="text"></td>
-            <td align="center"><input id="category_{{ forloop.counter }}" type="text"></td>
-            <td align="center"><input id="service_name_{{ forloop.counter }}" type="text"></td>
-            <td align="right"><input id="amount_{{ forloop.counter }}" type="number"></td>
-            <td align="right"><input id="unit_price_{{ forloop.counter }}" type="number"></td>
-            <td align="center"><input id="tax_type_{{ forloop.counter }}" ></td>
-            <td align="right"><input id="invoice_amount_wo_tax_{{ forloop.counter }}" type="number"></td>
-            <td align="right"><input id="tax_amount_{{ forloop.counter }}" type="number"></td>
-            <td align="right"><input id="invoice_amount_w_tax_{{ forloop.counter }}" type="number"></td>
-          </tr>
-          {%  endfor %}
+          {% if not obj_to_update %}
+            {% for i in rec_per_page %}
+            <tr>
+              <td align="center">{{ forloop.counter }}</td>
+              <td align="center"><input name="yearmonth_{{ forloop.counter }}" type="text"></td>
+              <td align="center"><input name="category_{{ forloop.counter }}" type="text"></td>
+              <td align="center"><input name="service_name_{{ forloop.counter }}" type="text"></td>
+              <td align="right"><input name="amount_{{ forloop.counter }}" type="number"></td>
+              <td align="right"><input name="unit_price_{{ forloop.counter }}" type="number"></td>
+              <td align="center"><input name="tax_type_{{ forloop.counter }}" ></td>
+              <td align="right"><input name="invoice_amount_wo_tax_{{ forloop.counter }}" type="number"></td>
+              <td align="right"><input name="tax_amount_{{ forloop.counter }}" type="number"></td>
+              <td align="right"><input name="invoice_amount_w_tax_{{ forloop.counter }}" type="number"></td>
+            </tr>
+            {%  endfor %}
+          {% else %}
+            {% for d in obj_to_update.details.all %}
+              <tr>
+                <td align="center">{{ forloop.counter }}</td>
+                <td align="center"><input value="{{ d.yearmonth|default_if_none:'' }}" name="yearmonth_{{ forloop.counter }}" type="text"></td>
+                <td align="center"><input value="{{ d.product_category| default_if_none:''  }}" name="category_{{ forloop.counter }}" type="text"></td>
+                <td align="center"><input value="{{ d.product_name| default_if_none:''  }}" name="service_name_{{ forloop.counter }}" type="text"></td>
+                <td align="right"><input value="{{ d.amount| default_if_none:'' }}" name="amount_{{ forloop.counter }}" type="number"></td>
+                <td align="right"><input value="{{ d.unit_price| default_if_none:''  }}" name="unit_price_{{ forloop.counter }}" type="number"></td>
+                <td align="center"><input value="{{ d.tax_type| default_if_none:''  }}" name="tax_type_{{ forloop.counter }}" ></td>
+                <td align="right"><input value="{{ d.total_wo_tax| default_if_none:''  }}" name="invoice_amount_wo_tax_{{ forloop.counter }}" type="number"></td>
+                <td align="right"><input value="{{ d.tax_price| default_if_none:'' }}"  name="tax_amount_{{ forloop.counter }}" type="number"></td>
+                <td align="right"><input value="{{ d.total_w_tax| default_if_none:''  }}" name="invoice_amount_w_tax_{{ forloop.counter }}" type="number"></td>
+              </tr>
+            {% endfor %}
+          {% endif %}
         </tbody>
       </table>
     <div class="row">
@@ -171,15 +204,15 @@
         <table id="summary_table" class="table">
           <tr>
             <th style="width: 40%">税抜金額合計</th>
-            <td><input id="total_wo_tax" name="total_wo_tax" type="number"></td>
+            <td><input value="{{ obj_to_update.total_wo_tax }}" required id="total_wo_tax" name="total_wo_tax" type="number"></td>
           </tr>
           <tr>
             <th style="width: 40%">税額合計</th>
-            <td><input id="total_tax" name="total_tax" type="number"></td>
+            <td><input value="{{ obj_to_update.total_tax }}" required id="total_tax" name="total_tax" type="number"></td>
           </tr>
           <tr>
             <th  style="width:40%">税込金額合計</th>
-            <td><input id="total_w_tax" name="total_w_tax" type="number"></td>
+            <td><input value="{{ obj_to_update.total_w_tax }}" required id="total_w_tax" name="total_w_tax" type="number"></td>
           </tr>
           
         </table>

@@ -926,6 +926,29 @@ class HandWrittenInvoice(models.Model):
     due_date = models.DateField(
         verbose_name = '支払期日',
     )
+    total_wo_tax = models.IntegerField(
+        verbose_name = '税抜合計'
+    )
+    total_tax = models.IntegerField(
+        verbose_name = '税額合計'
+    )
+    total_w_tax = models.IntegerField(
+        verbose_name = '税込合計'
+    )
+    @property
+    def yearmonth(self):
+        if self.details.all():
+            return self.details.all()[0].yearmonth
+        return ''
+    @property
+    def invoice_id_no_prefix(self):
+        print(self.id)
+        print(self.id.replace(Invoice.PREFIX, ''))
+        
+        return self.id.replace(Invoice.PREFIX, '')
+    @property
+    def customer_id_no_prefix(self):
+        return self.customer_id.replace(InvoiceEntity.PREFIX, '')
 
 class HandWrittenInvoiceDetail(models.Model):
     parent = models.ForeignKey(

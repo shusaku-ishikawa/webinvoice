@@ -541,6 +541,43 @@ def pdf(request, pk):
     response = HttpResponse(pdf, content_type='application/pdf')
     return response
 
+def pdf_handwritten(request, pk):
+    instance = HandWrittenInvoice.objects.get(pk = pk)
+    bank = BankInfo.get_bank_info()
+    ourinfo = OurInfo.get_ourinfo()
+
+    ourinfo = {
+        'zip': ourinfo.zip,
+        'address_1': ourinfo.address_1,
+        'address_2': ourinfo.address_2,
+    }
+
+    bank_info = {
+        'bank': bank.bank,
+        'branch': bank.branch,
+        'type': bank.type,
+        'number': bank.number,
+        'meigi': bank.meigi
+    }
+
+    context = {
+        'object': instance,
+        'bank': bank_info,
+        'ourinfo': ourinfo,
+    }
+    html_template = render_to_string('pdf/invoice-handwritten.html', context)
+
+    options = {
+        'page-size': 'Letter',
+        'encoding': "UTF-8",
+        
+    }
+
+    pdf = pdfkit.from_string(html_template, False, options)
+    
+    response = HttpResponse(pdf, content_type='application/pdf')
+    return response
+
 class CompanyExcelUploadHistor(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
     model = UploadedFile
     template_name = 'list_upload_company.html'
@@ -577,9 +614,10 @@ class CreateHandwrittenInvoice(LoginRequiredMixin, generic.TemplateView):
         return ctx
 
     def get_success_url(self):
-        return reverse_lazy('web:create_handwritten_invoice')
+        return reverse_lazy('web:list_handwritten_invoice')
 
     def post(self, request, *args, **kwargs):
+        obj_to_update = request.POST.get('obj_to_update')
         vision_phone = request.POST.get('phone')
         zip = request.POST.get('zip')
         address_1 = request.POST.get('address_1')
@@ -599,7 +637,10 @@ class CreateHandwrittenInvoice(LoginRequiredMixin, generic.TemplateView):
         total_tax = request.POST.get('total_tax')
         total_w_tax = request.POST.get('total_w_tax')
         
-        new = HandWrittenInvoice()
+        if obj_to_update != None and obj_to_update != "":
+            new = HandWrittenInvoice.objects.get(pk = obj_to_update)
+        else:
+            new = HandWrittenInvoice()
         new.id = invoiceNo
         new.customer_id = customerNo
         new.vision_phone_number = vision_phone
@@ -612,9 +653,9 @@ class CreateHandwrittenInvoice(LoginRequiredMixin, generic.TemplateView):
         new.project = project
         new.date_created = date_created
         new.invoice_price = invoiceAmount
-        new.invoice_total_wo_tax = total_wo_tax
-        new.invoice_tax = total_tax
-        new.invoice_total_w_tax = total_w_tax
+        new.total_wo_tax = total_wo_tax
+        new.total_tax = total_tax
+        new.total_w_tax = total_w_tax
         new.due_date = dueDate
         new.create_user = request.user
         new.save()        
@@ -631,23 +672,44 @@ class CreateHandwrittenInvoice(LoginRequiredMixin, generic.TemplateView):
             tax_amount = request.POST.get("tax_amount_" + str(i))
             invoice_amount_w_tax = request.POST.get("invoice_amount_w_tax_" + str(i))
             
-            new_detail = HandWrittenInvoiceDetail()
-            new_detail.parent = new
+            if obj_to_update != None and obj_to_update != "":
+                new_detail = HandWrittenInvoiceDetail.objects.get(parent = new, row_no = row)
+            else:
+                new_detail = HandWrittenInvoiceDetail()
             new_detail.row_no = row
-            new_detail.yearmonth = yearmonth
-            new_detail.product_category = category
-            new_detail.product_name = service_name
-            new_detail.amount = amount
-            new_detail.unit_price = unit_price
-            new_detail.tax_type = tax_type
-            new_detail.total_wo_tax = invoice_amount_wo_tax
-            new_detail.tax_price = tax_amount
-            new_detail.total_w_tax = invoice_amount_w_tax
+            new_detail.parent = new
+            
+            if yearmonth != None and yearmonth != '':    
+                new_detail.yearmonth = yearmonth
+                new_detail.product_category = category
+                new_detail.product_name = service_name
+                new_detail.amount = amount
+                new_detail.unit_price = unit_price
+                new_detail.tax_type = tax_type
+                new_detail.total_wo_tax = invoice_amount_wo_tax
+                new_detail.tax_price = tax_amount
+                new_detail.total_w_tax = invoice_amount_w_tax
             new_detail.save()
-        
-        messages.success(
-            self.request, '登録が完了しました')
+        if obj_to_update != None and obj_to_update != "":
+            messages.success(
+                self.request, '更新が完了しました')
+        else:
+            messages.success(
+                self.request, '登録が完了しました')
         return HttpResponseRedirect(self.get_success_url())  
+
+class UpdateHandwrittenInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.TemplateView):
+    template_name = 'create_handwritten_invoice.html'
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        bank = BankInfo.get_bank_info()
+        ourinfo = OurInfo.get_ourinfo()
+        ctx['bank'] = bank
+        ctx['ourinfo'] = ourinfo
+        ctx['rec_per_page'] = range(14)
+        ctx['obj_to_update'] = HandWrittenInvoice.objects.get(pk = self.kwargs['pk'])
+        
+        return ctx
 
 class ListHandwrittenInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
     model = HandWrittenInvoice
@@ -661,26 +723,26 @@ class ListHandwrittenInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.Li
         key_date_created = "q_date_created"
         key_address = "q_address"
 
-        # if key_customer_id in self.request.GET and self.request.GET.get(key_customer_id) != "":
-        #     q = self.request.GET.get(key_customer_id)
-        #     data = data.filter(invoice_entity__company__corporate_number__icontains = q)
+        if key_customer_id in self.request.GET and self.request.GET.get(key_customer_id) != "":
+            q = self.request.GET.get(key_customer_id)
+            data = data.filter(customer_id__icontains = q)
         
-        # if key_company_name in self.request.GET and self.request.GET.get(key_company_name) != "":
-        #     q = self.request.GET.get(key_company_name)
-        #     data = data.filter(Q(invoice_entity__invoice_company_name__icontains = q) | Q(invoice_entity__company__kanji_name__icontains = q))
+        if key_company_name in self.request.GET and self.request.GET.get(key_company_name) != "":
+            q = self.request.GET.get(key_company_name)
+            data = data.filter(company_name__icontains = q)
 
-        # if key_phone_number in self.request.GET and self.request.GET.get(key_phone_number) != "":
-        #     q = self.request.GET.get(key_phone_number)
-        #     data = data.filter(Q(invoice_entity__company__telephone_1__icontains = q) | Q(invoice_entity__company__telephone_2__icontains = q))
-
-        # if key_invoice_code in self.request.GET and self.request.GET.get(key_invoice_code) != "":
-        #     q = self.request.GET.get(key_invoice_code)
-        #     data = data.filter(invoice_code__icontains = q)
+        if key_create_user in self.request.GET and self.request.GET.get(key_create_user) != "":
+            q = self.request.GET.get(key_create_user)
+            data = data.filter(create_user__name__icontains = q)
            
-        # if key_invoice_pk in self.request.GET and self.request.GET.get(key_invoice_pk) != "":
-        #     q = self.request.GET.get(key_invoice_pk)
-        #     data = data.filter(invoice_pk = q)
+        if key_date_created in self.request.GET and self.request.GET.get(key_date_created) != "":
+            q = self.request.GET.get(key_date_created)
+            data = data.filter(date_created = q)
 
+        if key_address in self.request.GET and self.request.GET.get(key_address) != "":
+            q = self.request.GET.get(key_address)
+            data = data.filter(Q(address_1__icontains = q) | Q(address_2__icontains = q) )
+        
         return data
 
 

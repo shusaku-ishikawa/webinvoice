@@ -1,0 +1,26 @@
+@page {
+    size: A4;
+    margin: 1cm;
+
+}
+.table.table {
+    font-size: 12px!important;
+}
+.header_row {
+    display: grid;
+    grid-template-columns: 500px 300px 500px;
+}
+.middle_row {
+    display: grid;
+    grid-template-columns: 700px 700px;
+}
+
+tr th,
+tr td{
+    padding: 0.3rem !important;
+    margin: 0.3rem !important;
+}
+
+td button.btn {
+    font-size: 10px!important
+}
