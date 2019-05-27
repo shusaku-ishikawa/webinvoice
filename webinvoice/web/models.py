@@ -945,7 +945,12 @@ class HandWrittenInvoice(models.Model):
         related_name = 'create_user',
         on_delete = models.CASCADE
     )
-    
+    @property
+    def customer_id_no_prefix(self):
+        return self.customer_id.replace(InvoiceEntity.PREFIX, "")
+    @property
+    def invoice_id_no_prefix(self):
+        return self.id.replace(Invoice.PREFIX, "") 
     
 class HandWrittenInvoiceDetail(models.Model):
     parent = models.ForeignKey(

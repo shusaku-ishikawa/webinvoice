@@ -88,7 +88,7 @@
         <div class="col-md-6 col-6" style="text-align: right">
           発行日：<input required value="{{ obj_to_update.date_created|date:'Y-m-d' }}" type="date" name="date_created"><br/>
           お客様No：B<input value="{{ obj_to_update.customer_id_no_prefix }}" required name="customerNo" type="text"  ><br/>
-          請求番号：IV<input value="{{ obj_to_update.invoice_id_no_prefix  }}" required name="invoiceNo" type="text" ></br></br>
+          請求番号：IV<input {% if obj_to_update  %}readonly{% endif  %}  value="{{ obj_to_update.invoice_id_no_prefix  }}" required name="invoiceNo" type="text" ></br></br>
           <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
           <img src="{% static 'img/vision_logo.png' %}" style="width:6rem;height:6rem;"/>
           <img src="{% static 'img/vision_stamp.png' %}" style="width:4rem;height:4rem;"/><br/>
@@ -113,7 +113,7 @@
         <table id="bank-table" class="table table-bordered">
           <tr>
               <th style="width: 30%">ご請求金額</th>
-              <td align="right"><input value="{{ obj_to_update.invoice_price }}" required type="number" id="total" name="total"></td>
+              <td align="right"><input value="{{ obj_to_update.total }}" required type="number" id="total" name="total"></td>
           </tr>
           <tr>
               <th style="width: 30%">お支払い期限</th>
