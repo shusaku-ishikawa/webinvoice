@@ -61,12 +61,16 @@
 {% endblock %}
 
 {% block content %}
-<form method="POST">
+<form method="POST" action="{% url 'web:create_handwritten_invoice' %}">
     {% csrf_token %}
     {% if obj_to_update %}
       <input type="hidden" name="obj_to_update" value="{{ obj_to_update.pk }}">
     {% endif %}
+{% if obj_to_update %}
+<button type="submit" class="btn my-btn-base my-update-btn">更新</button>
+{% else %}
 <button type="submit" class="btn my-btn-base my-new-btn">PDF出力</button>
+{% endif %}
 <a href="{% url 'web:list_handwritten_invoice' %}" class="btn my-btn-base to-list-btn">一覧画面へ</a>
 
 <div class="outline">

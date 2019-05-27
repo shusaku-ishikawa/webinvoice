@@ -710,7 +710,7 @@ class UpdateHandwrittenInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.
         ctx['obj_to_update'] = HandWrittenInvoice.objects.get(pk = self.kwargs['pk'])
         
         return ctx
-
+    
 class ListHandwrittenInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
     model = HandWrittenInvoice
     template_name = 'list_handwritten_invoice.html'

@@ -829,6 +829,10 @@ class BankInfo(models.Model):
         return qs[0]
 
 class OurInfo(models.Model):
+    class Meta:
+        verbose_name = "Vision基本情報"
+        verbose_name_plural = "Vision基本情報"
+
     zip = models.CharField(
         verbose_name = '郵便番号',
         max_length = 100,
@@ -920,36 +924,29 @@ class HandWrittenInvoice(models.Model):
         verbose_name = '作成日',
         default = timezone.now()
     )
-    invoice_price = models.IntegerField(
+    invoice_total = models.IntegerField(
         verbose_name = '請求金額'
     )
+
     due_date = models.DateField(
         verbose_name = '支払期日',
     )
-    total_wo_tax = models.IntegerField(
-        verbose_name = '税抜合計'
+    invoice_total_wo_tax = models.IntegerField(
+        verbose_name  = '税抜合計'
     )
-    total_tax = models.IntegerField(
-        verbose_name = '税額合計'
+    invoice_tax = models.IntegerField(
+        verbose_name  = '税額合計'
     )
-    total_w_tax = models.IntegerField(
-        verbose_name = '税込合計'
+    invoice_total_w_tax = models.IntegerField(
+        verbose_name  = '税込合計'
     )
-    @property
-    def yearmonth(self):
-        if self.details.all():
-            return self.details.all()[0].yearmonth
-        return ''
-    @property
-    def invoice_id_no_prefix(self):
-        print(self.id)
-        print(self.id.replace(Invoice.PREFIX, ''))
-        
-        return self.id.replace(Invoice.PREFIX, '')
-    @property
-    def customer_id_no_prefix(self):
-        return self.customer_id.replace(InvoiceEntity.PREFIX, '')
-
+    create_user = models.ForeignKey(
+        to = User,
+        related_name = 'create_user',
+        on_delete = models.CASCADE
+    )
+    
+    
 class HandWrittenInvoiceDetail(models.Model):
     parent = models.ForeignKey(
         to = HandWrittenInvoice,
