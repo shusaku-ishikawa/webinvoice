@@ -629,7 +629,7 @@ class CreateHandwrittenInvoice(LoginRequiredMixin, generic.TemplateView):
         date_created = request.POST.get('date_created')
         customerNo = InvoiceEntity.PREFIX + request.POST.get('customerNo')
         invoiceNo = Invoice.PREFIX + request.POST.get('invoiceNo')
-        invoiceAmount = request.POST.get('total')
+        invoice_total = request.POST.get('total')
         
         dueDate = request.POST.get('due_date')
 
@@ -652,7 +652,7 @@ class CreateHandwrittenInvoice(LoginRequiredMixin, generic.TemplateView):
         new.person = person
         new.project = project
         new.date_created = date_created
-        new.invoice_price = invoiceAmount
+        new.total = invoice_total
         new.total_wo_tax = total_wo_tax
         new.total_tax = total_tax
         new.total_w_tax = total_w_tax

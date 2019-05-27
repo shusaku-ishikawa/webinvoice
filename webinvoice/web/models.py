@@ -924,20 +924,20 @@ class HandWrittenInvoice(models.Model):
         verbose_name = '作成日',
         default = timezone.now()
     )
-    invoice_total = models.IntegerField(
+    total = models.IntegerField(
         verbose_name = '請求金額'
     )
 
     due_date = models.DateField(
         verbose_name = '支払期日',
     )
-    invoice_total_wo_tax = models.IntegerField(
+    total_wo_tax = models.IntegerField(
         verbose_name  = '税抜合計'
     )
-    invoice_tax = models.IntegerField(
+    total_tax = models.IntegerField(
         verbose_name  = '税額合計'
     )
-    invoice_total_w_tax = models.IntegerField(
+    total_w_tax = models.IntegerField(
         verbose_name  = '税込合計'
     )
     create_user = models.ForeignKey(
