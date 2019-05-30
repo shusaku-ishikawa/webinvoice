@@ -185,7 +185,7 @@
             <td align="center">{{ d.row_no }}</td>
             <td align="center">{{ d.yearmonth|default_if_none:'' }}</td>
             <td align="center">{{ d.product_category|default_if_none:'' }}</td>
-            <td align="center">{{ d.service_name|default_if_none:'' }}</td>
+            <td align="center">{{ d.product_name|default_if_none:'' }}</td>
             <td align="right">{{ d.amount|default_if_none:'' }}</td>
             <td align="right">{{ d.unit_price|default_if_none:'' | intcomma }}</td>
             <td align="center">{{ d.tax_type|default_if_none:'' }}</td>

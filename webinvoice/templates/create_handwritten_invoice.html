@@ -65,6 +65,12 @@
 {% endblock %}
 
 {% block content %}
+<ul class="messages">
+  {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+  {% endfor %}
+</ul>
+
 <form method="POST" action="{% url 'web:create_handwritten_invoice' %}">
     {% csrf_token %}
     {% if obj_to_update %}

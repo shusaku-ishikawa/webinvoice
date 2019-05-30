@@ -615,8 +615,13 @@ class CreateHandwrittenInvoice(LoginRequiredMixin, generic.TemplateView):
 
     def get_success_url(self):
         return reverse_lazy('web:list_handwritten_invoice')
+    def get_update_error_url(self, pk):
+        return reverse_lazy('web:update_handwritten_invoice', kwargs={'pk': pk},)
+    def get_create_error_url(self):
+        return reverse_lazy('web:create_handwritten_invoice')
 
     def post(self, request, *args, **kwargs):
+       
         obj_to_update = request.POST.get('obj_to_update')
         vision_phone = request.POST.get('phone')
         zip = request.POST.get('zip')
@@ -637,66 +642,89 @@ class CreateHandwrittenInvoice(LoginRequiredMixin, generic.TemplateView):
         total_tax = request.POST.get('total_tax')
         total_w_tax = request.POST.get('total_w_tax')
         
-        if obj_to_update != None and obj_to_update != "":
-            new = HandWrittenInvoice.objects.get(pk = obj_to_update)
-        else:
-            new = HandWrittenInvoice()
-        new.id = invoiceNo
-        new.customer_id = customerNo
-        new.vision_phone_number = vision_phone
-        new.zip = zip
-        new.address_1 = address_1
-        new.address_2 = address_2
-        new.company_name = company
-        new.dept = dept
-        new.person = person
-        new.project = project
-        new.date_created = date_created
-        new.total = invoice_total
-        new.total_wo_tax = total_wo_tax
-        new.total_tax = total_tax
-        new.total_w_tax = total_w_tax
-        new.due_date = dueDate
-        new.create_user = request.user
-        new.save()        
-
-        for i in range(1, 15):
-            row = i
-            yearmonth = request.POST.get("yearmonth_" + str(i))
-            category = request.POST.get("category_" + str(i))
-            service_name = request.POST.get("service_name_" + str(i))
-            amount = request.POST.get("amount_" + str(i))
-            unit_price = request.POST.get("unit_price_" + str(i))
-            tax_type = request.POST.get("tax_type_" + str(i))
-            invoice_amount_wo_tax = request.POST.get("invoice_amount_wo_tax_" + str(i))
-            tax_amount = request.POST.get("tax_amount_" + str(i))
-            invoice_amount_w_tax = request.POST.get("invoice_amount_w_tax_" + str(i))
-            
+        try:
             if obj_to_update != None and obj_to_update != "":
-                new_detail = HandWrittenInvoiceDetail.objects.get(parent = new, row_no = row)
+                new = HandWrittenInvoice.objects.get(pk = obj_to_update)
             else:
-                new_detail = HandWrittenInvoiceDetail()
-            new_detail.row_no = row
-            new_detail.parent = new
-            
-            if yearmonth != None and yearmonth != '':    
-                new_detail.yearmonth = yearmonth
-                new_detail.product_category = category
-                new_detail.product_name = service_name
-                new_detail.amount = amount
-                new_detail.unit_price = unit_price
-                new_detail.tax_type = tax_type
-                new_detail.total_wo_tax = invoice_amount_wo_tax
-                new_detail.tax_price = tax_amount
-                new_detail.total_w_tax = invoice_amount_w_tax
-            new_detail.save()
-        if obj_to_update != None and obj_to_update != "":
-            messages.success(
-                self.request, '更新が完了しました')
+                new = HandWrittenInvoice()
+            new.id = invoiceNo
+            new.customer_id = customerNo
+            new.vision_phone_number = vision_phone
+            new.zip = zip
+            new.address_1 = address_1
+            new.address_2 = address_2
+            new.company_name = company
+            new.dept = dept
+            new.person = person
+            new.project = project
+            new.date_created = date_created
+            new.total = invoice_total
+            new.total_wo_tax = total_wo_tax
+            new.total_tax = total_tax
+            new.total_w_tax = total_w_tax
+            new.due_date = dueDate
+            new.create_user = request.user
+            new.save()        
+        except Exception as e:
+            messages.error(
+                self.request, '全体項目に不備がありました。' + str(e.args))
+            if obj_to_update:
+                return HttpResponseRedirect(self.get_update_error_url(new.pk))  
+            else:  
+                return HttpResponseRedirect(self.get_create_error_url())  
+        errlist = []
+        for i in range(1, 15):
+            try:
+                row = i
+                yearmonth = request.POST.get("yearmonth_" + str(i))
+                category = request.POST.get("category_" + str(i))
+                service_name = request.POST.get("service_name_" + str(i))
+                amount = request.POST.get("amount_" + str(i))
+                unit_price = request.POST.get("unit_price_" + str(i))
+                tax_type = request.POST.get("tax_type_" + str(i))
+                invoice_amount_wo_tax = request.POST.get("invoice_amount_wo_tax_" + str(i))
+                tax_amount = request.POST.get("tax_amount_" + str(i))
+                invoice_amount_w_tax = request.POST.get("invoice_amount_w_tax_" + str(i))
+                
+                if obj_to_update != None and obj_to_update != "":
+                    new_detail = HandWrittenInvoiceDetail.objects.get(parent = new, row_no = row)
+                else:
+                    new_detail = HandWrittenInvoiceDetail()
+                new_detail.row_no = row
+                new_detail.parent = new
+                
+                if yearmonth != None and yearmonth != '':    
+                    new_detail.yearmonth = yearmonth
+                    new_detail.product_category = category
+                    new_detail.product_name = service_name
+                    new_detail.amount = amount
+                    new_detail.unit_price = unit_price
+                    new_detail.tax_type = tax_type
+                    new_detail.total_wo_tax = invoice_amount_wo_tax
+                    new_detail.tax_price = tax_amount
+                    new_detail.total_w_tax = invoice_amount_w_tax
+                new_detail.save()
+            except Exception as e:
+                errlist.append(str(i) + '行目の更新に失敗しました。' + str(e.args))
+        
+        
+
+        if len(errlist) > 0:
+            if obj_to_update:
+                for e in errlist:
+                    messages.error(self.request, e)
+                return HttpResponseRedirect(self.get_update_error_url(new.pk))  
+                
+            else:  
+                return HttpResponseRedirect(self.get_create_error_url())  
         else:
-            messages.success(
-                self.request, '登録が完了しました')
-        return HttpResponseRedirect(self.get_success_url())  
+            if obj_to_update != None and obj_to_update != "":
+                messages.success(
+                    self.request, '更新が完了しました')
+            else:
+                messages.success(
+                    self.request, '登録が完了しました')
+            return HttpResponseRedirect(self.get_success_url())  
 
 class UpdateHandwrittenInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.TemplateView):
     template_name = 'create_handwritten_invoice.html'
