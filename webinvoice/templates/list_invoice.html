@@ -2,6 +2,17 @@
 
 {% load humanize %}
 
+
+{% block style %}
+    <style>
+        .my-pdf-btn {
+            background-color: green;
+            color: white;
+        }
+    
+    </style>
+{% endblock %}
+
 {% block header %}
 請求書一覧
 {% endblock %}
@@ -13,13 +24,17 @@
     {% endfor %}
 </ul>
 
+<form method="GET" action="{% url 'web:delete_invoice' %}">
+
+<input type="submit" class="btn my-btn-base my-del-btn" value="削除">
 <a href="{% url 'web:create_handwritten_invoice' %}" class="btn my-btn-base my-new-btn">手書登録</a>
-    
+<input type="submit" class="btn my-btn-base my-pdf-btn" value="PDF出力" formaction="{% url 'web:pdf_invoice' %}" >
 {% if object_list %}
 <div class="table-responsive">
 <table class="table table-bordered">
     <thead class="thead-dark">
         <tr>
+            <th class="text-nowrap"></th>
             <th class="text-nowrap">請求書ID</th>
             <th class="text-nowrap">請求管理簿</th>
             <th class="text-nowrap">年月</th>
@@ -32,31 +47,30 @@
             <th class="text-nowrap">更新日</th>
             <th class="text-nowrap">更新者</th>
             <th class="text-nowrap">明細</th>
-            <th class="text-nowrap">PDF</th>
-            
        </tr>
     </thead>
     <tbody>
         {% for object in object_list %}
         <tr>
-            <td class="text-nowrap">{{ object.invoice_id }}</td>
+            <td class="text-nowrap"><input value="{{ object.id }}" name="selected_invoices" type="checkbox"></td>        
+            <td class="text-nowrap">{{ object.id }}</td>
             <td class="text-nowrap">{{ object.invoice_entity }}</td>
             <td class="text-nowrap">{{ object.yearmonth }}</td>
             <td class="text-nowrap">{{ object.total_wo_tax| intcomma }}</td>
             <td class="text-nowrap">{{ object.total_tax| intcomma }}</td>
             <td class="text-nowrap">{{ object.total_w_tax| intcomma }}</td>
             <td class="text-nowrap">{{ object.note }}</td>
-            <td class="text-nowrap">{{ object.registered_at|date:"Y/m/d f" }}</td>
+            <td class="text-nowrap">{{ object.registered_at|date:"Y/m/d H:i" }}</td>
             <td class="text-nowrap">{{ object.registered_by }}</td>
-            <td class="text-nowrap">{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
+            <td class="text-nowrap">{{ object.updated_at|date:"Y/m/d H:i"|default_if_none:"-" }}</td>
             <td class="text-nowrap">{{ object.updated_by| default_if_none:"-" }}</td>
-            <td class="text-nowrap"><a href="{% url 'web:list_invoice_detail' %}?invoice_code={{ object.invoice_code }}%invoice_pk={{ object.pk }}"><i class="fas fa-search"></i></a></td>
-            <td class="text-nowrap"><a href="{% url 'web:pdf_invoice' object.pk %}"><i class="fas fa-file-pdf"></i></a></td>
+            <td class="text-nowrap"><a href="{% url 'web:list_invoice_detail' %}?invoice_code={{ object.id }}&is_invoiced=y"><i class="fas fa-search"></i></a></td>
         </tr> 
         {% endfor %}  
     </tbody>
 </table>    
 </div>
+</form>
     {% if is_paginated %}
     {% include "include/pagination.html" %}
     {% endif %}
@@ -68,6 +82,7 @@
 {% endblock %}
 {% block extra_js %}
     <script>
-       
+        var pdf_url = "{% url 'web:pdf_invoice' %}";
+
     </script>
 {% endblock %}

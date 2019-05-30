@@ -5,10 +5,15 @@
   <title>invoice</title>
 
   <!-- <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css"> -->
-  <!-- <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css">  -->
-  <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css"> 
+  <!-- <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css"> -->
  
   <style>
+    .page {
+      page-break-before: always;
+    }
+   
+   
     #invoice_table thead tr th,
     #summarytable tr th {
       background-color: gray!important;
@@ -34,7 +39,8 @@
   </style>
 </head>
   <body>
-    <div class="container">
+    {% for object in object_list %}
+    <div class="container page">
       <div class="row">
         <div class="col-md-6 col-6">
           〒<span id="zip">{{ object.invoice_entity.invoice_zip }}</span><br/>
@@ -80,7 +86,7 @@
         <table id="summarytable" class="table">
           <tr>
               <th style="width: 30%">ご請求金額</th>
-              <td align="right">{{ object.total_wo_tax | intcomma }}</td>
+              <td align="right">{{ object.total_w_tax | intcomma }}</td>
           </tr>
           <tr>
               <th style="width: 30%">お支払い期限</th>
@@ -149,9 +155,9 @@
             <td align="right">{{ obj.invoice_amount_w_tax | intcomma }}</td>
           </tr>
           {%  endfor %}
-          {% for i in pad_range %}
+          {% for i in object.pad_range %}
             <tr>
-            <td align="center">{{ forloop.counter|add:details_count }}</td>
+            <td align="center">{{ forloop.counter|add:object.details_count }}</td>
             <td></td>
             <td></td>
             <td></td>
@@ -188,6 +194,7 @@
       </div> <!-- col -->
     </div> <!-- row -->
     </div> <!-- container -->
+    {% endfor %}
   </body>
 </html>
 <script>

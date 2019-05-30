@@ -71,7 +71,7 @@
   {% endfor %}
 </ul>
 
-<form method="POST" action="{% url 'web:create_handwritten_invoice' %}">
+<form method="POST"  action="{% url 'web:create_handwritten_invoice' %}">
     {% csrf_token %}
     {% if obj_to_update %}
       <input type="hidden" name="obj_to_update" value="{{ obj_to_update.pk }}">
@@ -180,9 +180,9 @@
         <tbody>
           {% if not obj_to_update %}
             {% for i in rec_per_page %}
-            <tr>
+            <tr class="row_{{ i }}">
               <td align="center">{{ forloop.counter }}</td>
-              <td align="center"><input name="yearmonth_{{ forloop.counter }}" type="text"></td>
+              <td align="center"><input maxlength="6" name="yearmonth_{{ forloop.counter }}" type="text"></td>
               <td align="center"><input name="category_{{ forloop.counter }}" type="text"></td>
               <td align="center"><input name="service_name_{{ forloop.counter }}" type="text"></td>
               <td align="right"><input name="amount_{{ forloop.counter }}" type="number"></td>
@@ -195,9 +195,9 @@
             {%  endfor %}
           {% else %}
             {% for d in obj_to_update.details.all %}
-              <tr>
+              <tr class="row_{{ d.row_no }}">
                 <td align="center">{{ forloop.counter }}</td>
-                <td align="center"><input value="{{ d.yearmonth|default_if_none:'' }}" name="yearmonth_{{ forloop.counter }}" type="text"></td>
+                <td align="center"><input maxlength="6" value="{{ d.yearmonth|default_if_none:'' }}" name="yearmonth_{{ forloop.counter }}" type="text"></td>
                 <td align="center"><input value="{{ d.product_category| default_if_none:''  }}" name="category_{{ forloop.counter }}" type="text"></td>
                 <td align="center"><input value="{{ d.product_name| default_if_none:''  }}" name="service_name_{{ forloop.counter }}" type="text"></td>
                 <td align="right"><input value="{{ d.amount| default_if_none:'' }}" name="amount_{{ forloop.counter }}" type="number"></td>
@@ -239,3 +239,84 @@
 </form>
 
 {% endblock %}
+{% block extra_js %}
+  <script>
+    var rec_count = 14;
+    var yearmont_format = /^\d{6}$/;
+    $(function() {
+      $('form').on('submit', function() {
+        for (let i = 1; i < rec_count; i++ ) {
+          var $yearmonth = $('input[name="yearmonth_' + i + '"]' );
+          
+          if ($yearmonth.val() != "") {
+            if (!yearmont_format.test($yearmonth.val())) {
+              alert('年月は数字6けたで入力してください');
+              $yearmonth.focus();
+              return false;
+            }
+          
+          var $category = $('input[name="category_' + i + '"]' );
+          console.log($category.val());
+          if ($category.val() == '') {
+              alert('入力してください。');
+              $category.focus();
+              return false;
+          }
+
+          var $service_name = $('input[name="service_name_' + i + '"]' );
+          if ($service_name.val() == '') {
+              alert('入力してください。');
+              $service_name.focus();
+              return false;
+          }
+          
+          var $amount = $('input[name="amount_' + i + '"]' );
+          if ($amount.val() == '') {
+              alert('入力してください。');
+              $amount.focus();
+              return false;
+          }
+          var $unit_price = $('input[name="unit_price_' + i + '"]' );
+          if ($unit_price.val() == '') {
+              alert('入力してください。');
+              $unit_price.focus();
+              return false;
+          }
+          
+          var $tax_type = $('input[name="tax_type_' + i + '"]' );
+          if ($tax_type.val() == '') {
+              alert('入力してください。');
+              $tax_type.focus();
+              return false;
+          }
+
+          var $invoice_amount_wo_tax = $('input[name="invoice_amount_wo_tax_' + i + '"]' );
+          if ($invoice_amount_wo_tax.val() == '') {
+              alert('入力してください。');
+              $invoice_amount_wo_tax.focus();
+              return false;
+          }
+
+          var $tax_amount = $('input[name="tax_amount_' + i + '"]' );
+          if ($tax_amount.val() == '') {
+              alert('入力してください。');
+              $tax_amount.focus();
+              return false;
+          }
+
+          var $invoice_amount_w_tax = $('input[name="invoice_amount_w_tax_' + i + '"]' );
+          if ($invoice_amount_w_tax.val() == '') {
+              alert('入力してください。');
+              $invoice_amount_w_tax.focus();
+              return false;
+          }
+          }
+        }
+      });
+    });
+  
+  </script>
+
+
+{% endblock %}
+

@@ -81,6 +81,7 @@
                         <td class="text-nowrap">{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
                         <td class="text-nowrap">{{ object.updated_by| default_if_none:"-" }}</td>
                     </tr> 
+                    <input type="hidden" name="selected_entities" value="{{ object.pk }}">
                     {% endfor %} 
                 </tbody>
             </table>    

@@ -197,8 +197,8 @@ class DeleteInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.Templ
     def post(self, request, *args, **kwargs):
         selected_entities = self.request.POST.getlist('selected_entities')
         entities_to_delete = InvoiceEntity.objects.filter(pk__in = selected_entities)
-        for c in entities_to_delete:
-            c.soft_delete()
+        for e in entities_to_delete:
+            e.soft_delete()
         
         messages.success(
             self.request, '{} 件削除しました'.format(len(entities_to_delete)))
@@ -233,6 +233,7 @@ class ListInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.ListVie
         key_company_name = "company_name"
         key_phone_number = "phone_number"
         key_invoice_code = "invoice_code"
+        key_is_invoiced = "is_invoiced"
 
         if key_corporate_number in self.request.GET and self.request.GET.get(key_corporate_number) != "":
             q = self.request.GET.get(key_corporate_number)
@@ -249,7 +250,14 @@ class ListInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.ListVie
         if key_invoice_code in self.request.GET and self.request.GET.get(key_invoice_code) != "":
             q = self.request.GET.get(key_invoice_code)
             data = data.filter(invoice_code__icontains = q)
-
+        
+        if key_is_invoiced in self.request.GET and self.request.GET.get(key_is_invoiced) != "":
+            q = self.request.GET.get(key_is_invoiced)
+            if q == 'y':
+                data = data.filter(invoice__isnull = False)
+            elif q == 'n':
+                data = data.filter(invoice__isnull = True)
+        
         
         return data
 
@@ -270,13 +278,13 @@ class DeleteInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.Templ
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         selected_details = self.request.GET.getlist('selected_details')
-        ctx['selected_details'] = Company.objects.filter(pk__in = selected_details)
+        ctx['selected_details'] = InvoiceDetail.objects.filter(pk__in = selected_details)
         return ctx
     def post(self, request, *args, **kwargs):
-        selected_details = self.request.POST.getlist('selected_entities')
+        selected_details = self.request.POST.getlist('selected_details')
         details_to_delete = InvoiceDetail.objects.filter(pk__in = selected_details)
-        for c in details_to_delete:
-            c.soft_delete()
+        for d in details_to_delete:
+            d.soft_delete()
         
         messages.success(
             self.request, '{} 件削除しました'.format(len(details_to_delete)))
@@ -287,7 +295,7 @@ class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
     template_name = 'list_invoice.html'
     paginate_by = 10  #and that's it !!
     def get_queryset(self):
-        data = Invoice.objects.filter(deleted = False)
+        data = Invoice.objects.all()
         key_corporate_number = "corporate_number"
         key_company_name = "company_name"
         key_phone_number = "phone_number"
@@ -315,6 +323,26 @@ class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
             data = data.filter(invoice_pk = q)
 
         return data
+
+class DeleteInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.TemplateView):
+    template_name = 'delete_invoice.html'
+
+    def get_success_url(self):
+        return reverse('web:list_invoice')
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        selected_invoices = self.request.GET.getlist('selected_invoices')
+        ctx['selected_invoices'] = Invoice.objects.filter(pk__in = selected_invoices)
+        return ctx
+    def post(self, request, *args, **kwargs):
+        selected_invoices = self.request.POST.getlist('selected_invoices')
+        invoices_to_delete = Invoice.objects.filter(pk__in = selected_invoices)
+        for i in invoices_to_delete:
+            i.delete()
+        
+        messages.success(
+            self.request, '{} 件削除しました'.format(len(invoices_to_delete)))
+        return HttpResponseRedirect(self.get_success_url())  
 
 def add_to_invoice(request):
     if request.method == 'POST':
@@ -498,8 +526,11 @@ class UploadInvoiceDetailExcel(SuccessMessageMixin, LoginRequiredMixin, generic.
 
 
 
-def pdf(request, pk):
-    instance = Invoice.objects.get(pk = pk)
+def pdf(request):
+    selected_invoices = request.GET.getlist('selected_invoices')
+
+    instances = Invoice.objects.filter(id__in = selected_invoices)
+    print(instances)
     bank = BankInfo.get_bank_info()
     ourinfo = OurInfo.get_ourinfo()
 
@@ -519,24 +550,24 @@ def pdf(request, pk):
     }
 
     context = {
-        'object': instance,
+        'object_list': instances,
         'bank': bank_info,
         'ourinfo': ourinfo,
-        'pad_range': range(14 - len(instance.details.all())),
-        'details_count': len(instance.details.all())
+        #'pad_range': range(14 - len(instance.details.all())),
+        #'details_count': len(instance.details.all())
     }
     html_template = render_to_string('pdf/invoice.html', context)
 
     options = {
         'page-size': 'Letter',
         'encoding': "UTF-8",
-        'javascript-delay':'1000'
     }
 
     pdf = pdfkit.from_string(html_template, False, options)
 
-    instance.pdf.save(str(instance.pk) + '.pdf', ContentFile(pdf))
-    instance.save()
+    #for instance in instances:
+    # instance.pdf.save(str(instance.pk) + '.pdf', ContentFile(pdf))
+    # instance.save()
     
     response = HttpResponse(pdf, content_type='application/pdf')
     return response
@@ -601,6 +632,32 @@ class DetailExcelUploadHistor(SuccessMessageMixin, LoginRequiredMixin, generic.L
     def get_queryset(self):
         data = UploadedFile.objects.filter(type = UploadedFile.TYPE_DETAIL)
         return data
+
+def create_invoice_bulk(request):
+    not_yet_invoiced = InvoiceDetail.objects.filter(invoice__isnull = True)
+    add_count = 0
+    modify_count= 0
+
+    for d in not_yet_invoiced:
+        try:
+            invoice = Invoice.objects.get(id = d.invoice_code)
+            invoice.updated_by = request.user
+            invoice.save()
+            modify_count = modify_count + 1
+        except Exception:
+            invoice = Invoice(id = d.invoice_code, registered_by = request.user)
+            invoice.save()
+            add_count = add_count + 1
+
+        d.invoice = invoice
+        d.updated_by = request.user
+        d.save()
+
+    messages.success(request, "{} 件 新規作成 {} 件 修正しました".format(add_count, modify_count))
+    return HttpResponseRedirect(reverse_lazy('web:list_invoice'))
+
+        
+
 
 class CreateHandwrittenInvoice(LoginRequiredMixin, generic.TemplateView):
     template_name = 'create_handwritten_invoice.html'

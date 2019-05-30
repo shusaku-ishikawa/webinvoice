@@ -32,8 +32,10 @@ urlpatterns = [
     path('upload_invoice_detail/', views.UploadInvoiceDetailExcel.as_view(), name='upload_invoice_detail'),
     
     path('invoice_li/', views.ListInvoice.as_view(), name='list_invoice'),
+    path('invoice_del/', views.DeleteInvoice.as_view(), name='delete_invoice'),
+
     path('add_to_invoice/', views.add_to_invoice, name='add_to_invoice'),
-    path('pdf/<str:pk>', views.pdf, name='pdf_invoice'),
+    path('pdf/', views.pdf, name='pdf_invoice'),
     path('excel_li_company/', views.CompanyExcelUploadHistor.as_view(), name = 'company_upload_hisotry'),
     path('excel_li_entity/', views.EntityExcelUploadHistor.as_view(), name = 'entity_upload_hisotry'),
     path('excel_li_detail/', views.DetailExcelUploadHistor.as_view(), name = 'detail_upload_hisotry'),
@@ -42,6 +44,6 @@ urlpatterns = [
     path('update_handwritten_invoice/<str:pk>', views.UpdateHandwrittenInvoice.as_view(), name = 'update_handwritten_invoice'),
     path('list_handwritten_invoice/', views.ListHandwrittenInvoice.as_view(), name = 'list_handwritten_invoice'), 
     path('pdf_handwritten/<str:pk>', views.pdf_handwritten, name='pdf_handwritten_invoice'),
-    
+    path('bulk_invoice/', views.create_invoice_bulk, name="create_invoice_bulk"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT) 
 

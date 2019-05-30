@@ -502,7 +502,7 @@ class Invoice(models.Model):
         ordering = ['pk']
 
     id = models.CharField(
-        verbose_name = '会社ID',
+        verbose_name = '請求書ID',
         max_length = 50,
         primary_key = True,
         unique = True
@@ -540,14 +540,14 @@ class Invoice(models.Model):
         on_delete = models.SET_NULL,
         related_name = 'invoice_updated'
     )
-    deleted = models.BooleanField(
-        verbose_name = '削除フラグ',
-        default = False
-    )
-    def soft_delete(self):
-        self.deleted = True
-        self.save()
 
+    @property
+    def details_count(self):
+        return len(self.details.all())
+
+    @property
+    def pad_range(self):
+        return range(14 - len(self.details.all()))
     @property
     def total_wo_tax(self):
         details = self.details.all()
@@ -560,18 +560,17 @@ class Invoice(models.Model):
 
     @property
     def total_w_tax(self):
-        details = self.details.all()
-        return details.aggregate(total = Sum('invoice_amount_wo_tax'))['total']
-
+        return self.total_wo_tax + self.total_tax
+        
     @property
     def invoice_entity(self):
-        if len(self.details) > 0:
-            return self.details[0].invoice_entity
+        if len(self.details.all()) > 0:
+            return self.details.all()[0].invoice_entity
         return None
     @property
     def yearmonth(self):
-        if len(self.details) > 0:
-            return self.details[0].yearmonth
+        if len(self.details.all()) > 0:
+            return self.details.all()[0].yearmonth
         return None
         
 class InvoiceDetail(models.Model):
@@ -594,7 +593,7 @@ class InvoiceDetail(models.Model):
         ordering = ['pk']
 
     id = models.CharField(
-        verbose_name = '会社ID',
+        verbose_name = '請求明細ID',
         max_length = 50,
         primary_key = True,
         unique = True
@@ -603,7 +602,7 @@ class InvoiceDetail(models.Model):
     invoice = models.ForeignKey(
         to = Invoice,
         verbose_name = '請求書',
-        on_delete = models.CASCADE,
+        on_delete = models.SET_NULL,
         related_name = 'details',
         null = True,
         blank = True
@@ -945,6 +944,12 @@ class HandWrittenInvoice(models.Model):
         related_name = 'create_user',
         on_delete = models.CASCADE
     )
+    @property
+    def yearmonth(self):
+        if len(self.details.all()) == 0:
+            return None
+        else:
+            return self.details.all()[0].yearmonth
     @property
     def customer_id_no_prefix(self):
         return self.customer_id.replace(InvoiceEntity.PREFIX, "")

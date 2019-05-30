@@ -1,9 +1,23 @@
 {% extends "base.html" %}
 
+
+{% block style %}
+    <style>
+        .my-bulk-invoice-btn {
+            background-color: orange;
+            color: white;
+        }
+        
+    </style>
+{% endblock %}
+
 {% load humanize %}
 {% block header %}
 請求明細一覧
 {% endblock %}
+
+
+
 {% block content %}
 
 <ul class="messages">
@@ -14,9 +28,11 @@
 
 <form method="GET" action="{% url 'web:delete_invoice_detail' %}">
         <button  type="submit" class="btn my-btn-base my-del-btn">削除</button>
+        <a href="{% url 'web:create_invoice_bulk' %}" class="btn my-btn-base my-bulk-invoice-btn">一括請求書作成</a>
         <a href="{% url 'web:create_invoice_detail' %}" class="btn my-btn-base my-new-btn">手動登録</a>
         <a href="{% url 'web:upload_invoice_detail' %}" class="btn my-btn-base my-import-btn">一括取込</a>
-    {% if object_list %}
+
+        {% if object_list %}
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead class="thead-dark">
