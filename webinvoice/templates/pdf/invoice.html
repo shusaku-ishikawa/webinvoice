@@ -4,8 +4,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>invoice</title>
 
-  <!-- <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css"> -->
-  <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css"> 
+  <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css">  -->
   <!-- <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css"> -->
  
   <style>
@@ -45,7 +45,7 @@
         <div class="col-md-6 col-6">
           〒<span id="zip">{{ object.invoice_entity.invoice_zip }}</span><br/>
           <span id="address1">{{ object.invoice_entity.invoice_address_pref }}{{ object.invoice_entity.invoice_address_city }}</span><br/>
-          <span id="address2">{{ object.invoice_entity.invoice_address_street }}{{ object.invoice_entity.invoice_address_bld }}</span><br/> 
+          <span id="address2">{{ object.invoice_entity.invoice_address_street }}{{ object.invoice_entity.invoice_address_bld|default_if_none:'' }}</span><br/> 
           <span id="company">{{ object.invoice_entity.invoice_company_name }}　御中</span><br/>
           <span id="department">{{ object.invoice_entity.invoice_dept }}</span><span id="person">{{ object.invoice_entity.invoice_person }}　様</span><br/>
           <span id="project1">{{ object.invoice_entity.invoice_project_1| default_if_none:'' }}</span><br/>

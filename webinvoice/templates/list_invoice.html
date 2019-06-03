@@ -82,7 +82,23 @@
 {% endblock %}
 {% block extra_js %}
     <script>
-        var pdf_url = "{% url 'web:pdf_invoice' %}";
+        $(function() {
+            var pdf_url = "{% url 'web:pdf_invoice' %}";
+            var has_check = false;
+            var $checkboxes = $('input[name="selected_invoices"]');
+            $('form').on('submit', function() {
+                $checkboxes.each(function(index, elem) {
+                    if ($(elem).prop('checked') == true) {
+                        has_check = true;
+                    }
+                });
+                if (!has_check) {
+                    alert('対象の請求書をチェックしてください');
+                    return false;
+                }
+            })
+           
+        })
 
     </script>
 {% endblock %}

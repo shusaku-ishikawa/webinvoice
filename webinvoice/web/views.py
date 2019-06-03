@@ -363,7 +363,28 @@ def add_to_invoice(request):
 class Search(LoginRequiredMixin, generic.TemplateView):
     template_name = 'search_form.html'
 
+
+
 class UploadCompanyExcel(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
+    
+    columns = [
+        ('corporate_number', '法人番号'),
+        ('kana_name', '契約者名カナ'),
+        ('kanji_name', '契約者名'),
+        ('zip', '契約者郵便番号'),
+        ('address_pref', '契約者都道府県'),
+        ('address_city', '契約者市区町村'),
+        ('address_street', '契約者住所番地以降'),
+        ('address_bld', '契約者住所建物名'),
+        ('telephone_1', '連絡先電話番号1'),
+        ('telephone_2', '連絡先電話番号2'),
+        ('fax', 'FAX番号'),
+        ('hp_url', 'URL'),
+        ('owner_name', '代表者名'),
+        ('representative_name', '担当者名'),
+        ('email', 'メールアドレス'),
+        ('note', '備考')
+    ]
     form_class = CompanyExcelForm
     template_name = 'import_company_excel.html'
 
@@ -376,39 +397,35 @@ class UploadCompanyExcel(SuccessMessageMixin, LoginRequiredMixin, generic.FormVi
         obj.record_count = len(df)
         obj.save()
         for index, row in df.iterrows():
-            try:
-                id = row['企業ID']
-                if id == '':
-                    c = Company(registered_by = self.request.user, updated_by = self.request.user)
-                else:
-                    c = Company.objects.get(pk = id)
-                    c.updated_by = self.request.user
+            param_dict = {}
+            for key, name in self.columns:
+                param_dict[key] = row[name]
 
-                c.corporate_number = row['法人番号']
-                c.kana_name = row['契約者名カナ']
-                c.kanji_name = row['契約者名']
-                c.zip = row['契約者郵便番号']
-                c.address_pref = row['契約者都道府県']
-                c.address_city = row['契約者市区町村']
-                c.address_street = row['契約者住所番地以降']
-                c.address_bld = row['契約者住所建物名']
-                c.telephone_1 = row['連絡先電話番号1']
-                c.telephone_2 = row['連絡先電話番号2']
-                c.fax = row['FAX番号']
-                c.hp_url = row['URL']
-                c.owner_name = row['代表者名']
-                c.representative_name = row['担当者名']
-                c.email = row['メールアドレス']
-                c.note = row['備考']
-                c.save()
-            except Exception as e:
-                print(str(e.args))
-                err = UploadedFileError()
-                err.file = obj
-                err.row_index = index + 1
-                err.error = str(e.args)
-                err.save()
-        c.save()
+            id = row['企業ID']
+            if id == '':
+                param_dict['registered_by'] = self.request.user
+                param_dict['updated_by'] = self.request.user
+
+                f = CompanyForm(param_dict)
+                #c = Company(registered_by = self.request.user, updated_by = self.request.user)
+            else:
+                param_dict['updated_by'] = self.request.user
+                c = Company.objects.get(pk = id)
+                f = CompanyForm(param_dict, instance = c)
+            if f.is_valid():
+                f.save()
+            else:
+                for key in f.errors.as_data():
+                    print(key)
+                    #print(f.errors[key].as_data())
+                    for error in f.errors[key].as_data():
+                        print(str(error))
+                        err = UploadedFileError()
+                        err.file = obj
+                        err.row_index = index + 1
+                        err.error = key + ': ' + str(error)
+                        err.save()
+                
 
         context = {
             'file': obj,
@@ -416,6 +433,38 @@ class UploadCompanyExcel(SuccessMessageMixin, LoginRequiredMixin, generic.FormVi
         }
         return self.render_to_response(context)
 class UploadInvoiceEntityExcel(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
+    columns = [
+        ('company', '企業ID'),
+        ('invoice_zip', '請求郵便番号'),
+        ('invoice_address_pref', '請求都道府県'),
+        ('invoice_address_city', '請求市区町村'),
+        ('invoice_address_street', '請求住所番地以降'),
+        ('invoice_address_bld', '請求住所建物名'),
+        ('invoice_company_name', '請求会社名'),
+        ('invoice_dept', '請求所属部署'),
+        ('invoice_person', '請求宛名'),
+        ('invoice_project_1', '請求宛名1'),
+        ('invoice_project_2', '請求宛名2'),
+        ('invoice_project_3', '請求宛名3'),
+        ('payment_method', '支払方法'),
+        ('invoice_closed_at', '締日'),
+        ('payment_due_to', '支払期日'),
+        ('invoice_sent_at', '送付タイミング'),
+        ('invoice_timing', '請求タイミング'),
+        ('invoice_period', '請求周期'),
+        ('bank_name', '振込銀行名'),
+        ('bank_banch_name', '振込支店名'),
+        ('bank_account_type', '振込普通/当座'),
+        ('bank_account_number', '振込銀行口座番号'),
+        ('credit_card_settlement_company', 'クレカ決済会社'),
+        ('credit_card_code', 'クレカコード'),
+        ('credit_card_id', 'クレカID'),
+        ('settlement_company', '決済会社'),
+        ('settlement_code', '決済コード'),
+        ('settlement_id', '決済ID'),
+        ('note', '備考'),
+    ]
+    
     form_class = InvoiceEntityExcelForm
     template_name = 'import_invoice_entity_excel.html'
 
@@ -428,48 +477,39 @@ class UploadInvoiceEntityExcel(SuccessMessageMixin, LoginRequiredMixin, generic.
         obj.record_count = len(df)
         obj.save()
         for index, row in df.iterrows():
-            try:
-                entity = InvoiceEntity()
-                c = Company.objects.get(corporate_number = row['法人番号'])
-                entity.company = c
-                entity.invoice_zip = row['請求郵便番号']
-                entity.invoice_address_pref = row['請求都道府県']
-                entity.invoice_address_city = row['請求市区町村']
-                entity.invoice_address_street = row['請求住所番地以降']
-                entity.invoice_address_bld = row['請求住所建物名']
-                entity.invoice_company_name = row['請求会社名']
-                entity.invoice_dept = row['請求所属部署']
-                entity.invoice_person = row['請求宛名']
-                entity.invoice_project_1 = row['請求宛名1']
-                entity.invoice_project_2 = row['請求宛名2']
-                entity.invoice_project_3 = row['請求宛名3']
-                entity.payment_method = row['支払方法']
-                entity.invoice_closed_at = row['締日']
-                entity.payment_due_to = row['支払期日']
-                entity.invoice_sent_at = row['送付タイミング']
-                entity.invoice_timing = row['請求タイミング']
-                entity.invoice_period = row['請求周期']
-                entity.bank_name = row['振込銀行名']
-                entity.bank_banch_name = row['振込支店名']
-                entity.bank_account_type = row['振込普通/当座']
-                entity.bank_account_number = row['振込銀行口座番号']
-                entity.credit_card_settlement_company = row['クレカ決済会社']
-                entity.credit_card_code = row['クレカコード']
-                entity.credit_card_id = row['クレカID']
-                entity.settlement_company = row['決済会社']
-                entity.settlement_code = row['決済コード']
-                entity.settlement_id = row['決済ID']
-                entity.note = row['備考']
-                entity.registered_by = self.request.user
-                entity.updated_by = self.request.user
-                entity.save()
-            except Exception as e:
-                print(str(e.args))
-                err = UploadedFileError()
-                err.file = obj
-                err.row_index = index + 1
-                err.error = str(e.args)
-                err.save()
+            param_dict = {}
+            for key, name in self.columns:
+                if key == 'payment_due_to':
+                    param_dict[key] = row[name].split(' ')[0]
+                    print(param_dict[key])
+                else:
+                    param_dict[key] = row[name]
+
+            id = row['請求管理簿ID']
+            if id == '':
+                param_dict['registered_by'] = self.request.user
+                param_dict['updated_by'] = self.request.user
+                
+                f = InvoiceEntityForm(param_dict)
+               
+            else:
+                param_dict['updated_by'] = self.request.user
+                ie = InvoiceEntity.objects.get(pk = id)
+                f = InvoiceEntityForm(param_dict, instance = ie)
+            if f.is_valid():
+                f.save()
+            else:
+                for key in f.errors.as_data():
+                    print(key)
+                    #print(f.errors[key].as_data())
+                    for error in f.errors[key].as_data():
+                        print(str(error))
+                        err = UploadedFileError()
+                        err.file = obj
+                        err.row_index = index + 1
+                        err.error = key + ': ' + str(error)
+                        err.save()
+
         context = {
             'file': obj,
             'form': form,
@@ -477,6 +517,24 @@ class UploadInvoiceEntityExcel(SuccessMessageMixin, LoginRequiredMixin, generic.
         }
         return self.render_to_response(context)
 class UploadInvoiceDetailExcel(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
+    
+    columns = [
+        ('invoice_entity', '請求管理簿ID'),
+        ('product_category_1', '商材大区分'),
+        ('product_category_2', '商材小区分'),
+        ('yearmonth', '請求月'),
+        ('seq_number', 'SEQNO'),
+        ('order_number', '申込管理番号'),
+        ('invoice_code', '請求書ID'),
+        ('service_start_date', 'サービス開始日'),
+        ('service_name', '請求明細内容'),
+        ('invoice_amount_wo_tax', '請求金額（税抜）'),
+        ('tax_type', '税区分'),
+        ('tax_rate_perc', '税率'),
+        ('tax_amount', '請求金額（税額）'),
+        ('note', '備考'),
+    ]
+
     form_class = InvoiceDetailExcelForm
     template_name = 'import_invoice_detail_excel.html'
 
@@ -489,34 +547,41 @@ class UploadInvoiceDetailExcel(SuccessMessageMixin, LoginRequiredMixin, generic.
         obj.record_count = len(df)
         obj.save()
         for index, row in df.iterrows():
-            try:
-                detail = InvoiceDetail()
-                entity = InvoiceEntity.objects.get(pk = row['請求管理簿ID'])
-                detail.invoice_entity = entity
-                detail.product_category_1 = row['商品大区分']
-                detail.product_category_2 = row['商品小区分']
-                detail.yearmonth = row['請求月']
-                detail.seq_number = row['SEQNO']
-                detail.order_number = row['申込管理番号']
-                detail.invoice_code = row['請求書ID']
-                detail.service_start_date = row['サービス開始日']
-                detail.service_name = row['サービス明細内容']
-                detail.invoice_amount_wo_tax = row['請求金額（税抜）']
-                detail.tax_type = row['税区分']
-                detail.tax_rate_perc = row['税率'].replace('%', '')
-                detail.tax_amount = row['請求金額（税額）']
-                #detail.invoice_amount_w_tax = row['請求金額（税込合計）']
-                detail.note = row['備考']
-                detail.registered_by = self.request.user
-                detail.updated_by = self.request.user
-                detail.save()
-            except Exception as e:
-                print(str(e.args))
-                err = UploadedFileError()
-                err.file = obj
-                err.row_index = index + 1
-                err.error = str(e.args)
-                err.save()
+            param_dict = {}
+            for key, name in self.columns:
+                if key == 'tax_rate_perc':
+                    param_dict[key] = row[name].replace('%', "")
+                elif key == 'service_start_date':
+                    param_dict[key] = row[name].split(' ')[0]
+                else:
+                    param_dict[key] = row[name]
+
+            id = row['請求明細ID']
+            if id == '':
+                param_dict['registered_by'] = self.request.user
+                
+                f = InvoiceDetailForm(param_dict)
+               
+            else:
+                param_dict['updated_by'] = self.request.user
+                ie = InvoiceDetail.objects.get(pk = id)
+                f = InvoiceDetailForm(param_dict, instance = ie)
+            if f.is_valid():
+                f.save()
+                print('saved')
+            else:
+                
+                for key in f.errors.as_data():
+                    print(key)
+                    #print(f.errors[key].as_data())
+                    for error in f.errors[key].as_data():
+                        print(str(error))
+                        err = UploadedFileError()
+                        err.file = obj
+                        err.row_index = index + 1
+                        err.error = key + ': ' + str(error)
+                        err.save()
+                        print('after err save')
         context = {
             'file': obj,
             'form': form,
@@ -534,20 +599,6 @@ def pdf(request):
     bank = BankInfo.get_bank_info()
     ourinfo = OurInfo.get_ourinfo()
 
-    ourinfo = {
-        'zip': ourinfo.zip,
-        'address_1': ourinfo.address_1,
-        'address_2': ourinfo.address_2,
-        'phone': ourinfo.phone
-    }
-
-    bank_info = {
-        'bank': bank.bank,
-        'branch': bank.branch,
-        'type': bank.type,
-        'number': bank.number,
-        'meigi': bank.meigi
-    }
 
     context = {
         'object_list': instances,

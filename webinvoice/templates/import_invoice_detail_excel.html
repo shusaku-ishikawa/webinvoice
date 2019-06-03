@@ -15,8 +15,8 @@
         </form>
 
         {% if file %}
-            {% if object.error_count > 0 %}
-            <p>{{ object.error_count }}件のエラーがありました。</p>
+            {% if file.error_count > 0 %}
+            <p>{{ file.error_count }}件のエラーがありました。</p>
             <table>
                 <thead>
                     <tr>
@@ -25,7 +25,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for err in object.errors.all %}
+                    {% for err in file.errors.all %}
                     <tr>
                         <td>
                             {{ err.row_index }}

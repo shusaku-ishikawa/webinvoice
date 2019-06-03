@@ -23,7 +23,7 @@ def validate_postcode(value):
         raise ValidationError(u'%s 郵便番号のフォーマットが正しくありません' % value)
 
 def validate_phonenumber(value):
-    reg = re.compile('^[0-9]*$')
+    reg = re.compile('^[0-9-]*$')
     if not reg.match(value):
         raise ValidationError(u'%s 電話番号のフォーマットが正しくありません' % value)
 
@@ -33,9 +33,53 @@ def validate_month(value):
         raise ValidationError(u'%s 年月のフォーマットが正しくありません' % value)
 
 pref_options = (
-    ('東京都', '東京都'),
     ('北海道', '北海道'),
-    ('秋田県', '秋田県') 
+    ('青森県', '青森県'),
+    ('岩手県', '岩手県'),
+    ('宮城県', '宮城県'),
+    ('秋田県', '秋田県'),
+    ('山形県', '山形県'),
+    ('福島県', '福島県'),
+    ('茨城県', '茨城県'),
+    ('栃木県', '栃木県'),
+    ('群馬県', '群馬県'),
+    ('埼玉県', '埼玉県'),
+    ('千葉県', '千葉県'),
+    ('東京都', '東京都'),
+    ('神奈川県', '神奈川県'),
+    ('新潟県', '新潟県'),
+    ('富山県', '富山県'),
+    ('石川県', '石川県'),
+    ('福井県', '福井県'),
+    ('山梨県', '山梨県'),
+    ('長野県', '長野県'),
+    ('岐阜県', '岐阜県'),
+    ('静岡県', '静岡県'),
+    ('愛知県', '愛知県'),
+    ('三重県', '三重県'),
+    ('滋賀県', '滋賀県'),
+    ('京都府', '京都府'),
+    ('大阪府', '大阪府'),
+    ('兵庫県', '兵庫県'),
+    ('奈良県', '奈良県'),
+    ('和歌山県', '和歌山県'),
+    ('鳥取県', '鳥取県'),
+    ('島根県', '島根県'),
+    ('岡山県', '岡山県'),
+    ('広島県', '広島県'),
+    ('山口県', '山口県'),
+    ('徳島県', '徳島県'),
+    ('香川県', '香川県'),
+    ('愛媛県', '愛媛県'),
+    ('高知県', '高知県'),
+    ('福岡県', '福岡県'),
+    ('佐賀県', '佐賀県'),
+    ('長崎県', '長崎県'),
+    ('熊本県', '熊本県'),
+    ('大分県', '大分県'),
+    ('宮崎県', '宮崎県'),
+    ('鹿児島県', '鹿児島県'),
+    ('沖縄県', '沖縄県'),
 )
 class Company(models.Model):
     PREFIX = "C"
@@ -155,7 +199,7 @@ class Company(models.Model):
     )
     hp_url = models.CharField(
         verbose_name = _('URL'), 
-        max_length = 20,
+        max_length = 100,
         null = True,
         blank = True
     )
@@ -213,7 +257,7 @@ class Company(models.Model):
 class InvoiceEntity(models.Model):
     PREFIX = "B"
     def __str__(self):
-        return self.invoice_company_name
+        return self.company.kana_name + str(self.payment_due_to)
     def make_id(self):
         qs = InvoiceEntity.objects.all().order_by('-id')
         if len(qs) == 0:
@@ -261,140 +305,109 @@ class InvoiceEntity(models.Model):
     )
     invoice_address_city = models.CharField(
         verbose_name = "請求市区町村",
-        max_length = 30,
+        max_length = 100,
         null = False,
         blank = False
     )
     invoice_address_street = models.CharField(
         verbose_name = '請求住所番地以降',
-        max_length = 50,
+        max_length = 100,
         null = False,
         blank = False
     )
     invoice_address_bld = models.CharField(
         verbose_name = "請求住所建物名",
-        max_length = 50,
+        max_length = 100,
         null = True,
         blank = True
     )
     invoice_company_name = models.CharField(
         verbose_name = '請求会社名',
         max_length = 100,
-        null = True,
-        blank = True
     )
     invoice_dept = models.CharField(
         verbose_name = '請求部署',
         max_length = 100,
+        blank = True,
         null = True,
-        blank = True
     )
     invoice_person = models.CharField(
         verbose_name = '請求宛名',
-        max_length = 50,
-        null = True,
-        blank = True
+        max_length = 100,
     )
     invoice_project_1 = models.CharField(
         verbose_name = '請求宛名1',
-        max_length = 50,
+        max_length = 100,
         null = True,
         blank = True
     )
     invoice_project_2 = models.CharField(
         verbose_name = '請求宛名2',
-        max_length = 50,
+        max_length = 100,
         null = True,
         blank = True
     )
     
     invoice_project_3 = models.CharField(
         verbose_name = '請求宛名3',
-        max_length = 50,
+        max_length = 100,
         null = True,
         blank = True
     )
  
     payment_method = models.CharField(
         verbose_name = '支払い方法',
-        max_length = 20,
-        choices = (
-            ('クレカ', 'クレカ'),
-            ('引落', '引落'),
-            ('振込', '振込')
-        ),
-        default = '振込'
+        max_length = 100,
     )
 
     invoice_closed_at = models.CharField(
         verbose_name = '締め日',
-        max_length = 20,
+        max_length = 100,
         null = True,
         blank = True,
-        choices = (
-            ('末日', '末日'),
-            ('20日', '20日'),
-        )
     )
     
-    payment_due_to = models.CharField(
+    payment_due_to = models.DateField(
         verbose_name = '支払い期日',
-        max_length = 20,
-        null = True,
-        blank = True,
-        choices = (
-            ('末日', '末日'),
-            ('20日', '20日'),
-        )
+        default = timezone.now
     )
     
     invoice_sent_at = models.CharField(
         verbose_name = '請求書送付時期',
-        max_length = 20,
+        max_length = 100,
         null = True,
         blank = True,
-        choices =  (
-            ('末日', '末日'),
-            ('20日', '20日'),
-        )
     )
     invoice_timing = models.CharField(
         verbose_name = '請求タイミング',
-        max_length = 20,
+        max_length = 100,
         null = True,
         blank = True,
-        choices = (
-            ('売掛', '売掛'),
-            ('前入金', '前入金'),
-        )
     )
     invoice_period = models.CharField(
         verbose_name = '請求周期',
-        max_length = 20,
+        max_length = 100,
         null = True,
         blank = True,
-        choices = (
-            ('毎月', '毎月'),
-            ('6ヶ月', '6ヶ月'),
-        )
+
     )
     
     bank_name = models.CharField(
         verbose_name = '振込銀行名',
-        max_length = 20,
+        max_length = 100,
         blank = True,
         null = True
     )
     bank_branch_name = models.CharField(
         verbose_name = '振込支店名',
-        max_length = 20,
+        max_length = 100,
         blank = True,
         null = True
     )
 
     bank_account_type = models.CharField(
         verbose_name = '口座種類',
-        max_length = 20,
+        max_length = 100,
         blank = True,
         null = True,
         choices = (
@@ -411,37 +424,37 @@ class InvoiceEntity(models.Model):
     )
     credit_card_settlement_company = models.CharField(
         verbose_name = 'クレカ決済会社',
-        max_length = 20,
+        max_length = 100,
         blank = True,
         null = True
     )
     credit_card_code = models.CharField(
         verbose_name = 'クレカコード',
-        max_length = 20,
+        max_length = 100,
         blank = True,
         null = True
     )
     credit_card_id = models.CharField(
         verbose_name = 'クレカID',
-        max_length = 20,
+        max_length = 100,
         blank = True,
         null = True
     )
     settlement_company = models.CharField(
         verbose_name = '決済会社',
-        max_length = 20,
+        max_length = 100,
         blank = True,
         null = True
     )
     settlement_code = models.CharField(
         verbose_name = '決済コード',
-        max_length = 20,
+        max_length = 100,
         blank = True,
         null = True
     )
     settlement_id = models.CharField(
         verbose_name = '決済ID',
-        max_length = 20,
+        max_length = 100,
         blank = True,
         null = True
     )
@@ -508,16 +521,6 @@ class Invoice(models.Model):
         unique = True
     )
 
-    pdf = models.FileField(
-        verbose_name = '出力PDF',
-        null = True,
-        upload_to = 'invoice_pdf',
-    )
-
-    invoice_printed_at = models.DateField(
-        verbose_name = '発行日',
-        auto_now_add = True
-    )
     registered_at = models.DateTimeField(
         verbose_name = '登録日',
         auto_now_add = True
@@ -547,7 +550,7 @@ class Invoice(models.Model):
 
     @property
     def pad_range(self):
-        return range(14 - len(self.details.all()))
+        return range(14 - self.details_count)
     @property
     def total_wo_tax(self):
         details = self.details.all()
@@ -576,7 +579,7 @@ class Invoice(models.Model):
 class InvoiceDetail(models.Model):
     PREFIX = "S"
     def __str__(self):
-        return self.order_number
+        return str(self.id)
     def make_id(self):
         qs = InvoiceDetail.objects.all().order_by('-id')
         if len(qs) == 0:
@@ -755,7 +758,8 @@ class UploadedFile(models.Model):
     def error_count(self):
         return len(self.errors.all())
 class UploadedFileError(models.Model):
-    
+    def __str__(self):
+        return str(self.error)
     file = models.ForeignKey(
         to = UploadedFile,
         on_delete = models.CASCADE,

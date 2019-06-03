@@ -27,11 +27,19 @@ class CompanyForm(forms.ModelForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control input-sm'
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+    input_formats = ('%Y/%m/%d', '%Y-%m-%d %H:%M:%S')
+
+
 class InvoiceEntityForm(forms.ModelForm):
     """ 請求管理簿登録フォーム """   
     class Meta:
         model = InvoiceEntity
         exclude = ('id', 'registered_at', 'registered_by', 'updated_at', 'updated_by', 'deleted')
+        widgets = {
+            'payment_due_to': DateInput()
+        }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
@@ -42,6 +50,9 @@ class InvoiceDetailForm(forms.ModelForm):
     class Meta:
         model = InvoiceDetail
         exclude = ('id', 'registered_at', 'registered_by', 'updated_at', 'updated_by', 'deleted')
+        widgets = {
+            'service_start_date': DateInput()
+        }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
