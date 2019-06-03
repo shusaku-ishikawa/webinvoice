@@ -18,7 +18,7 @@ import re, base64
 
 alphanumeric = RegexValidator(r'^[0-9a-zA-Z_]*$', 'IDは英数字もしくはアンダースコア(_)のみとしてください')
 def validate_postcode(value):
-    reg = re.compile('^[0-9]{3}-[0-9]{4}$')
+    reg = re.compile('^[0-9]{3}-?[0-9]{4}$')
     if not reg.match(value):
         raise ValidationError(u'%s 郵便番号のフォーマットが正しくありません' % value)
 
@@ -894,14 +894,13 @@ class HandWrittenInvoice(models.Model):
 
     address_1 = models.CharField(
         verbose_name = "住所1",
-        max_length = 10,
+        max_length = 50,
         null = False,
         blank = False,
-        choices = pref_options
     )
     address_2 = models.CharField(
         verbose_name = "住所2",
-        max_length = 30,
+        max_length = 50,
         null = False,
         blank = False
     )
@@ -995,10 +994,6 @@ class HandWrittenInvoiceDetail(models.Model):
     )
     tax_type = models.CharField(
         max_length = 10,
-        choices = (
-            ('1', '課税'),
-            ('2', '非課税')
-        ),
         null = True,
         blank = True,
     )

@@ -58,6 +58,24 @@ class InvoiceDetailForm(forms.ModelForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control input-sm'
 
+class HandWrittenInvoiceForm(forms.ModelForm):
+    class Meta:
+        model = HandWrittenInvoice
+        exclude = ('registered_at', 'registered_by', 'updated_at', 'updated_by', 'deleted')
+
+class HandWrittenInvoiceUpdateForm(forms.ModelForm):
+    class Meta:
+        model = HandWrittenInvoice
+        exclude = ('id' ,'registered_at', 'registered_by', 'updated_at', 'updated_by', 'deleted')
+
+class HandWrittenInvoiceDetailForm(forms.ModelForm):
+    class Meta:
+        model = HandWrittenInvoiceDetail
+        fields = '__all__'
+
+
+
+
 class CompanyExcelForm(forms.ModelForm):
     """ ファイルアップロードフォーム """   
     class Meta:

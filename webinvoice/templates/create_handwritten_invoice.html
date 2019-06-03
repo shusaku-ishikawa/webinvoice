@@ -87,18 +87,18 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-6">
-          〒<input required value="{{ obj_to_update.zip }}" id="zip" name="zip" type="text" placeholder="請求先郵便番号"><br/>
-          <input required value="{{ obj_to_update.address_1 }}" id="address_1" type="text" name="address_1" placeholder="請求住所1"><br/>
-          <input required value="{{ obj_to_update.address_2 }}" id="address2" type="text" name="address_2" placeholder="請求住所2"><br/> 
-          <input required value="{{ obj_to_update.company_name }}" id="company" type="text" name="company" placeholder="請求会社名"> <input value="{{ obj_to_update.person }}" id="person" type="text" name="person" placeholder="請求宛名"><br/>
-          <input required value="{{ obj_to_update.dept }}" id="dept" type="text" name="dept" placeholder="請求部署"><br/>
-          <input value="{{ obj_to_update.project }}" id="project" type="text" name="project" placeholder="請求プロジェクト"><br/>
+          〒<input required value="{{ obj_to_update.zip }}" name="zip" type="text" placeholder="請求先郵便番号"><br/>
+          <input required value="{{ obj_to_update.address_1 }}" type="text" name="address_1" placeholder="請求住所1"><br/>
+          <input required value="{{ obj_to_update.address_2 }}" type="text" name="address_2" placeholder="請求住所2"><br/> 
+          <input required value="{{ obj_to_update.company_name }}"  type="text" name="company_name" placeholder="請求会社名"> <input value="{{ obj_to_update.person }}" type="text" name="person" placeholder="請求宛名"><br/>
+          <input required value="{{ obj_to_update.dept }}"  type="text" name="dept" placeholder="請求部署"><br/>
+          <input value="{{ obj_to_update.project_1| default_if_none:'' }}" type="text" name="project_1" placeholder="請求プロジェクト"><br/>
         </div>
 
         <div class="col-md-6 col-6" style="text-align: right">
           発行日：<input required value="{{ obj_to_update.date_created|date:'Y-m-d' }}" type="date" name="date_created"><br/>
-          お客様No：B<input value="{{ obj_to_update.customer_id_no_prefix }}" required name="customerNo" type="text"  ><br/>
-          請求番号：IV<input {% if obj_to_update  %}readonly{% endif  %}  value="{{ obj_to_update.invoice_id_no_prefix  }}" required name="invoiceNo" type="text" ></br></br>
+          お客様No：B<input value="{{ obj_to_update.customer_id_no_prefix }}" required name="customer_id" type="text"  ><br/>
+          請求番号：IV<input {% if obj_to_update  %}readonly{% endif  %}  value="{{ obj_to_update.invoice_id_no_prefix  }}" required name="id" type="text" ></br></br>
           <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
           <img src="{% static 'img/vision_logo.png' %}" style="width:6rem;height:6rem;"/>
           <img src="{% static 'img/vision_stamp.png' %}" style="width:4rem;height:4rem;"/><br/>
@@ -106,7 +106,7 @@
           〒{{ ourinfo.zip }}<br/>
           {{ ourinfo.address_1 }}<br/>
           {{ ourinfo.address_2 }}<br/></br>
-          連絡先電話番号： <input value="{{ obj_to_update.vision_phone_number }}" required type="text" name="phone"><br/>
+          連絡先電話番号： <input value="{{ obj_to_update.vision_phone_number }}" required type="text" name="vision_phone_number"><br/>
           受付時間　9:00-18：00（土日祝日除く）<br/>
           （平日9:00-18：00）</br>
         </div> <!-- col -->
@@ -183,14 +183,14 @@
             <tr class="row_{{ i }}">
               <td align="center">{{ forloop.counter }}</td>
               <td align="center"><input maxlength="6" name="yearmonth_{{ forloop.counter }}" type="text"></td>
-              <td align="center"><input name="category_{{ forloop.counter }}" type="text"></td>
-              <td align="center"><input name="service_name_{{ forloop.counter }}" type="text"></td>
+              <td align="center"><input name="produtct_category_{{ forloop.counter }}" type="text"></td>
+              <td align="center"><input name="product_name_{{ forloop.counter }}" type="text"></td>
               <td align="right"><input name="amount_{{ forloop.counter }}" type="number"></td>
               <td align="right"><input name="unit_price_{{ forloop.counter }}" type="number"></td>
               <td align="center"><input name="tax_type_{{ forloop.counter }}" ></td>
-              <td align="right"><input name="invoice_amount_wo_tax_{{ forloop.counter }}" type="number"></td>
-              <td align="right"><input name="tax_amount_{{ forloop.counter }}" type="number"></td>
-              <td align="right"><input name="invoice_amount_w_tax_{{ forloop.counter }}" type="number"></td>
+              <td align="right"><input name="total_wo_tax_{{ forloop.counter }}" type="number"></td>
+              <td align="right"><input name="tax_price_{{ forloop.counter }}" type="number"></td>
+              <td align="right"><input name="total_w_tax_{{ forloop.counter }}" type="number"></td>
             </tr>
             {%  endfor %}
           {% else %}
@@ -198,14 +198,14 @@
               <tr class="row_{{ d.row_no }}">
                 <td align="center">{{ forloop.counter }}</td>
                 <td align="center"><input maxlength="6" value="{{ d.yearmonth|default_if_none:'' }}" name="yearmonth_{{ forloop.counter }}" type="text"></td>
-                <td align="center"><input value="{{ d.product_category| default_if_none:''  }}" name="category_{{ forloop.counter }}" type="text"></td>
-                <td align="center"><input value="{{ d.product_name| default_if_none:''  }}" name="service_name_{{ forloop.counter }}" type="text"></td>
+                <td align="center"><input value="{{ d.product_category| default_if_none:''  }}" name="product_category_{{ forloop.counter }}" type="text"></td>
+                <td align="center"><input value="{{ d.product_name| default_if_none:''  }}" name="product_name_{{ forloop.counter }}" type="text"></td>
                 <td align="right"><input value="{{ d.amount| default_if_none:'' }}" name="amount_{{ forloop.counter }}" type="number"></td>
                 <td align="right"><input value="{{ d.unit_price| default_if_none:''  }}" name="unit_price_{{ forloop.counter }}" type="number"></td>
                 <td align="center"><input value="{{ d.tax_type| default_if_none:''  }}" name="tax_type_{{ forloop.counter }}" ></td>
-                <td align="right"><input value="{{ d.total_wo_tax| default_if_none:''  }}" name="invoice_amount_wo_tax_{{ forloop.counter }}" type="number"></td>
-                <td align="right"><input value="{{ d.tax_price| default_if_none:'' }}"  name="tax_amount_{{ forloop.counter }}" type="number"></td>
-                <td align="right"><input value="{{ d.total_w_tax| default_if_none:''  }}" name="invoice_amount_w_tax_{{ forloop.counter }}" type="number"></td>
+                <td align="right"><input value="{{ d.total_wo_tax| default_if_none:''  }}" name="total_wo_tax_{{ forloop.counter }}" type="number"></td>
+                <td align="right"><input value="{{ d.tax_price| default_if_none:'' }}"  name="tax_price_{{ forloop.counter }}" type="number"></td>
+                <td align="right"><input value="{{ d.total_w_tax| default_if_none:''  }}" name="total_w_tax_{{ forloop.counter }}" type="number"></td>
               </tr>
             {% endfor %}
           {% endif %}
@@ -255,7 +255,7 @@
               return false;
             }
           
-          var $category = $('input[name="category_' + i + '"]' );
+          var $category = $('input[name="product_category_' + i + '"]' );
           console.log($category.val());
           if ($category.val() == '') {
               alert('入力してください。');
@@ -263,7 +263,7 @@
               return false;
           }
 
-          var $service_name = $('input[name="service_name_' + i + '"]' );
+          var $service_name = $('input[name="product_name_' + i + '"]' );
           if ($service_name.val() == '') {
               alert('入力してください。');
               $service_name.focus();
@@ -290,21 +290,21 @@
               return false;
           }
 
-          var $invoice_amount_wo_tax = $('input[name="invoice_amount_wo_tax_' + i + '"]' );
+          var $invoice_amount_wo_tax = $('input[name="total_wo_tax_' + i + '"]' );
           if ($invoice_amount_wo_tax.val() == '') {
               alert('入力してください。');
               $invoice_amount_wo_tax.focus();
               return false;
           }
 
-          var $tax_amount = $('input[name="tax_amount_' + i + '"]' );
+          var $tax_amount = $('input[name="tax_price_' + i + '"]' );
           if ($tax_amount.val() == '') {
               alert('入力してください。');
               $tax_amount.focus();
               return false;
           }
 
-          var $invoice_amount_w_tax = $('input[name="invoice_amount_w_tax_' + i + '"]' );
+          var $invoice_amount_w_tax = $('input[name="total_w_tax_' + i + '"]' );
           if ($invoice_amount_w_tax.val() == '') {
               alert('入力してください。');
               $invoice_amount_w_tax.focus();

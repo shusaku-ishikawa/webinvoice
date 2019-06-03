@@ -729,104 +729,83 @@ class CreateHandwrittenInvoice(LoginRequiredMixin, generic.TemplateView):
         return reverse_lazy('web:create_handwritten_invoice')
 
     def post(self, request, *args, **kwargs):
-       
-        obj_to_update = request.POST.get('obj_to_update')
-        vision_phone = request.POST.get('phone')
-        zip = request.POST.get('zip')
-        address_1 = request.POST.get('address_1')
-        address_2 = request.POST.get('address_2')
-        company = request.POST.get('company')
-        person = request.POST.get('person')
-        dept = request.POST.get('dept')
-        project = request.POST.get('project')
-        date_created = request.POST.get('date_created')
-        customerNo = InvoiceEntity.PREFIX + request.POST.get('customerNo')
-        invoiceNo = Invoice.PREFIX + request.POST.get('invoiceNo')
-        invoice_total = request.POST.get('total')
-        
-        dueDate = request.POST.get('due_date')
+        f = HandWrittenInvoiceForm()
+        params = {}
 
-        total_wo_tax = request.POST.get('total_wo_tax')
-        total_tax = request.POST.get('total_tax')
-        total_w_tax = request.POST.get('total_w_tax')
-        
-        try:
-            if obj_to_update != None and obj_to_update != "":
-                new = HandWrittenInvoice.objects.get(pk = obj_to_update)
+        for field in f.fields:
+            if field == 'id':
+                params[field] = Invoice.PREFIX + request.POST.get(field)
+                print(params[field])
+            elif field == 'customer_id':
+                params[field] = InvoiceEntity.PREFIX + request.POST.get(field)
             else:
-                new = HandWrittenInvoice()
-            new.id = invoiceNo
-            new.customer_id = customerNo
-            new.vision_phone_number = vision_phone
-            new.zip = zip
-            new.address_1 = address_1
-            new.address_2 = address_2
-            new.company_name = company
-            new.dept = dept
-            new.person = person
-            new.project = project
-            new.date_created = date_created
-            new.total = invoice_total
-            new.total_wo_tax = total_wo_tax
-            new.total_tax = total_tax
-            new.total_w_tax = total_w_tax
-            new.due_date = dueDate
-            new.create_user = request.user
-            new.save()        
-        except Exception as e:
-            messages.error(
-                self.request, '全体項目に不備がありました。' + str(e.args))
-            if obj_to_update:
-                return HttpResponseRedirect(self.get_update_error_url(new.pk))  
+                params[field] = request.POST.get(field)
+        params['create_user'] = request.user.id
+
+        obj_id = request.POST.get('obj_to_update')
+        print(obj_id)
+
+        is_update_mode = False
+        if obj_id == None:
+            f = HandWrittenInvoiceForm(params) 
+        else:
+            is_update_mode = True
+            #del params['id']
+            obj = HandWrittenInvoice(pk = obj_id)
+            f = HandWrittenInvoiceUpdateForm(params, instance = obj)
+           
+        if f.is_valid():
+            parent = f.save()
+        else:
+            for key in f.errors.as_data():
+                print(key)
+                for error in f.errors[key].as_data():
+                    messages.error(
+                        self.request, '項目に不備がありました。' + str(error))
+            if is_update_mode:
+                return HttpResponseRedirect(self.get_update_error_url(obj_id))  
             else:  
                 return HttpResponseRedirect(self.get_create_error_url())  
         errlist = []
         for i in range(1, 15):
-            try:
-                row = i
-                yearmonth = request.POST.get("yearmonth_" + str(i))
-                category = request.POST.get("category_" + str(i))
-                service_name = request.POST.get("service_name_" + str(i))
-                amount = request.POST.get("amount_" + str(i))
-                unit_price = request.POST.get("unit_price_" + str(i))
-                tax_type = request.POST.get("tax_type_" + str(i))
-                invoice_amount_wo_tax = request.POST.get("invoice_amount_wo_tax_" + str(i))
-                tax_amount = request.POST.get("tax_amount_" + str(i))
-                invoice_amount_w_tax = request.POST.get("invoice_amount_w_tax_" + str(i))
-                
-                if obj_to_update != None and obj_to_update != "":
-                    new_detail = HandWrittenInvoiceDetail.objects.get(parent = new, row_no = row)
-                else:
-                    new_detail = HandWrittenInvoiceDetail()
-                new_detail.row_no = row
-                new_detail.parent = new
-                
-                if yearmonth != None and yearmonth != '':    
-                    new_detail.yearmonth = yearmonth
-                    new_detail.product_category = category
-                    new_detail.product_name = service_name
-                    new_detail.amount = amount
-                    new_detail.unit_price = unit_price
-                    new_detail.tax_type = tax_type
-                    new_detail.total_wo_tax = invoice_amount_wo_tax
-                    new_detail.tax_price = tax_amount
-                    new_detail.total_w_tax = invoice_amount_w_tax
-                new_detail.save()
-            except Exception as e:
-                errlist.append(str(i) + '行目の更新に失敗しました。' + str(e.args))
-        
-        
+            params = {}
+            f = HandWrittenInvoiceDetailForm()
 
+            for field in f.fields:
+                print(field)
+                print(request.POST)
+                print(request.POST.get(field + '_' + str(i)))
+                params[field] = request.POST.get(field + '_' + str(i))
+            params['row_no'] = i
+            params['parent'] = parent.pk
+            
+            print('parent id = ' + str(parent))
+
+            if is_update_mode:
+                obj = HandWrittenInvoiceDetail.objects.get(parent = parent, row_no = i)
+                f = HandWrittenInvoiceDetailForm(params, instance = obj)
+            else:
+                f = HandWrittenInvoiceDetailForm(params)
+            
+            if f.is_valid():
+                f.save()
+            else:
+                for key in f.errors.as_data():
+                    print(key)
+                    for error in f.errors[key].as_data():
+                        print(str(error))
+                        errlist.append(str(i) + '行目:' + str(error))
+        
         if len(errlist) > 0:
-            if obj_to_update:
-                for e in errlist:
-                    messages.error(self.request, e)
-                return HttpResponseRedirect(self.get_update_error_url(new.pk))  
-                
+            for e in errlist:
+                messages.error(self.request, e)
+                print(e)
+            if is_update_mode:
+                return HttpResponseRedirect(self.get_update_error_url(parent.pk))  
             else:  
                 return HttpResponseRedirect(self.get_create_error_url())  
         else:
-            if obj_to_update != None and obj_to_update != "":
+            if is_update_mode:
                 messages.success(
                     self.request, '更新が完了しました')
             else:
