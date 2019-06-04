@@ -547,10 +547,31 @@ class Invoice(models.Model):
     @property
     def details_count(self):
         return len(self.details.all())
+    @property
+    def pages(self):
+        return range(1, self.total_pages + 1)
+    
+    @property
+    def page_1_details(self):
+        return self.details.all()[0:14]
+
+    @property
+    def page_2_details(self):
+        return self.details.all()[14:28]
+    @property
+    def page_3_details(self):
+        return self.details.all()[28:42]
+
+    @property
+    def total_pages(self):
+        print(self.details_count // 14 + 1)
+        return self.details_count // 14 + 1
 
     @property
     def pad_range(self):
-        return range(14 - self.details_count)
+        import math
+        nearest_14 = int(math.ceil(self.details_count / 14)) * 14
+        return range(nearest_14 - self.details_count)
     @property
     def total_wo_tax(self):
         details = self.details.all()
@@ -601,7 +622,6 @@ class InvoiceDetail(models.Model):
         primary_key = True,
         unique = True
     )
-
     invoice = models.ForeignKey(
         to = Invoice,
         verbose_name = '請求書',

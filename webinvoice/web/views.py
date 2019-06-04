@@ -45,6 +45,7 @@ import csv
 from io import TextIOWrapper, StringIO
 from django.db.models import *
 import pandas as pd
+import re
 
 # Create your views here.
 class TopPage(LoginRequiredMixin, generic.TemplateView):
@@ -153,7 +154,7 @@ class CreateInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.Creat
 class ListInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
     model = InvoiceEntity
     template_name = 'list_invoice_entity.html'
-    paginate_by = 10  #and that's it !!
+    paginate_by = 50  #and that's it !!
     def get_queryset(self):
         data = InvoiceEntity.objects.filter(deleted = False)
         key_corporate_number = "corporate_number"
@@ -225,7 +226,7 @@ class CreateInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.Creat
 class ListInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
     model = InvoiceDetail
     template_name = 'list_invoice_detail.html'
-    paginate_by = 10  #and that's it !!
+    paginate_by = 50  #and that's it !!
     def get_queryset(self):
         data = InvoiceDetail.objects.filter(deleted = False)
 
@@ -550,9 +551,14 @@ class UploadInvoiceDetailExcel(SuccessMessageMixin, LoginRequiredMixin, generic.
             param_dict = {}
             for key, name in self.columns:
                 if key == 'tax_rate_perc':
-                    param_dict[key] = row[name].replace('%', "")
+                    param_dict[key] = float(row[name]) * 100
+                    print(row[name] * 100)
                 elif key == 'service_start_date':
-                    param_dict[key] = row[name].split(' ')[0]
+                    print(row[name])
+                    if len(row[name].split(' ')) > 1:
+                        param_dict[key] = row[name].split(' ')[0]
+                    else:
+                        param_dict[key] = row[name].replace('/', '-')
                 else:
                     param_dict[key] = row[name]
 
@@ -596,16 +602,14 @@ def pdf(request):
 
     instances = Invoice.objects.filter(id__in = selected_invoices)
     print(instances)
-    bank = BankInfo.get_bank_info()
-    ourinfo = OurInfo.get_ourinfo()
+    bank_info = BankInfo.get_bank_info()
+    our_info = OurInfo.get_ourinfo()
 
 
     context = {
         'object_list': instances,
         'bank': bank_info,
-        'ourinfo': ourinfo,
-        #'pad_range': range(14 - len(instance.details.all())),
-        #'details_count': len(instance.details.all())
+        'ourinfo': our_info,
     }
     html_template = render_to_string('pdf/invoice.html', context)
 
@@ -616,10 +620,6 @@ def pdf(request):
 
     pdf = pdfkit.from_string(html_template, False, options)
 
-    #for instance in instances:
-    # instance.pdf.save(str(instance.pk) + '.pdf', ContentFile(pdf))
-    # instance.save()
-    
     response = HttpResponse(pdf, content_type='application/pdf')
     return response
 
@@ -663,7 +663,7 @@ def pdf_handwritten(request, pk):
 class CompanyExcelUploadHistor(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
     model = UploadedFile
     template_name = 'list_upload_company.html'
-    paginate_by = 10  #and that's it !!
+    paginate_by = 50  #and that's it !!
     def get_queryset(self):
         data = UploadedFile.objects.filter(type = UploadedFile.TYPE_COMPANY)
         return data

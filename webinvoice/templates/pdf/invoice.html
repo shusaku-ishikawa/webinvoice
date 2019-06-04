@@ -5,8 +5,8 @@
   <title>invoice</title>
 
   <!-- <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css"> -->
-  <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css"> 
-  <!-- <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css">  -->
+  <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css">
  
   <style>
     .page {
@@ -21,18 +21,40 @@
     }
     #summarytable tr td {
         text-align: right;
-
+        
     }
 
 
-    #invoice_table tbody tr td,
-    #invoice_table tbody tr th,
-    #summary_table tr th,
-    #summary_table tr td {
-      height: 5px!important;
-      font-size: 15px !important;
+    #invoice_table th {
+      text-align: center;
+      font-size: 16px!important;
+      padding: 3px;
+
+    }
+    #invoice_table tr td {
+      
+      font-size: 13px!important;
       padding: 1px!important;
       margin: 1px!important;  
+    }
+
+    #summary_table tr th,
+    #summary_table tr td {
+      
+      
+      font-size: 16px !important;
+      padding: 1px!important;
+      margin: 1px!important;  
+    }
+    #summary_table th {
+      background-color: gray!important;
+      font-weight: normal;
+      vertical-align: middle;
+      text-align: center
+    }
+    
+    th {
+      color: white;
     }
 
   
@@ -40,6 +62,7 @@
 </head>
   <body>
     {% for object in object_list %}
+    {% for page in object.pages %}
     <div class="container page">
       <div class="row">
         <div class="col-md-6 col-6">
@@ -60,11 +83,11 @@
           請求番号：<span id="invoiceCode">{{ object.pk }}</span></br></br>
           <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
           <!-- <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_logo.png" style="width:6rem;height:6rem;"/> -->
-          <!-- <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/> -->
-          <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/>
+          <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:12rem;height:auto;"/>
+          <!-- <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/> -->
           <!-- <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_stamp.png" style="width:4rem;height:4rem"/></br> -->
-          <!-- <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:4rem;height:4rem;"/><br/> -->
-          <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:4rem;height:4rem"/></br>
+          <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:6rem;height: auto;"/><br/>
+          <!-- <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:4rem;height:4rem"/></br> -->
           
           〒{{ ourinfo.zip }}<br/>
           {{ ourinfo.address_1 }}<br/>
@@ -141,7 +164,8 @@
           </tr>
         </thead>
         <tbody>
-          {% for obj in object.details.all %}
+          {% if page == 1 %}
+          {% for obj in object.page_1_details %}
           <tr>
             <td align="center">{{ forloop.counter }}</td>
             <td align="center">{{ obj.yearmonth }}</td>
@@ -155,6 +179,44 @@
             <td align="right">{{ obj.invoice_amount_w_tax | intcomma }}</td>
           </tr>
           {%  endfor %}
+          {% endif %}
+        
+          {% if page == 2 %}
+          {% for obj in object.page_2_details %}
+          <tr>
+            <td align="center">{{ forloop.counter|add:14 }}</td>
+            <td align="center">{{ obj.yearmonth }}</td>
+            <td align="center">{{ obj.product_category_1 }}</td>
+            <td align="center">{{ obj.service_name }}</td>
+            <td align="right">1</td>
+            <td align="right">{{ obj.invoice_amount_wo_tax | intcomma }}</td>
+            <td align="center">{{ obj.tax_type }}</td>
+            <td align="right">{{ obj.invoice_amount_wo_tax | intcomma }}</td>
+            <td align="right">{{ obj.tax_amount | intcomma | default_if_none:"-" }}</td>
+            <td align="right">{{ obj.invoice_amount_w_tax | intcomma }}</td>
+          </tr>
+          {%  endfor %}
+          {% endif %}
+
+          {% if page == 3 %}
+          {% for obj in object.page_3_details %}
+          <tr>
+            <td align="center">{{ forloop.counter|add:14 }}</td>
+            <td align="center">{{ obj.yearmonth }}</td>
+            <td align="center">{{ obj.product_category_1 }}</td>
+            <td align="center">{{ obj.service_name }}</td>
+            <td align="right">1</td>
+            <td align="right">{{ obj.invoice_amount_wo_tax | intcomma }}</td>
+            <td align="center">{{ obj.tax_type }}</td>
+            <td align="right">{{ obj.invoice_amount_wo_tax | intcomma }}</td>
+            <td align="right">{{ obj.tax_amount | intcomma | default_if_none:"-" }}</td>
+            <td align="right">{{ obj.invoice_amount_w_tax | intcomma }}</td>
+          </tr>
+          {%  endfor %}
+          {% endif %}
+
+
+          {% if page == object.total_pages %}
           {% for i in object.pad_range %}
             <tr>
             <td align="center">{{ forloop.counter|add:object.details_count }}</td>
@@ -168,20 +230,22 @@
             <td></td>
             <td></td>
           </tr>
-          {% endfor %}
+          {% endfor %}       
+          {% endif %}
+
         </tbody>
       </table>
     <div class="row">
       <div class="col-md-7 col-7" style="border: solid 1px black; border-radius: 10px;">
       </div>
       <div class="col-md-5 col-5" style="text-align: right">
-        <table id="summary_table" class="table">
+        <table id="summary_table" class="table table-condensed">
           <tr>
             <th style="width: 40%">税抜金額合計</th>
             <td>{{ object.total_wo_tax | intcomma }}</td>
           </tr>
           <tr>
-            <th style="width: 40%">税額合計</th>
+            <th style="width: 40%;">税額合計</th>
             <td>{{ object.total_tax | intcomma }}</td>
           </tr>
           <tr>
@@ -190,10 +254,11 @@
           </tr>
           
         </table>
-        <p style="margin:0">送付枚数 1 / 1</p>
+        <p style="margin:0">送付枚数 {{ page }} / {{ object.total_pages }}</p>
       </div> <!-- col -->
     </div> <!-- row -->
     </div> <!-- container -->
+    {% endfor %}
     {% endfor %}
   </body>
 </html>
