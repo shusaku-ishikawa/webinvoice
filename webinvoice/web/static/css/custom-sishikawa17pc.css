@@ -1,0 +1,22 @@
+@page {
+    size: A4;
+    margin: 1cm;
+
+}
+.table.table {
+    font-size: 12px!important;
+}
+.header_row {
+    display: grid;
+    grid-template-columns: 500px 300px 500px;
+}
+.middle_row {
+    display: grid;
+    grid-template-columns: 700px 700px;
+}
+
+.table tbody tr td,
+.table thead tr th {
+    white-space: nowrap !important;
+}
+

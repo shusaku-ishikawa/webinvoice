@@ -113,7 +113,7 @@
           </tr>
           <tr>
               <th style="width: 30%">お支払い期限</th>
-              <td align="right">2019/4/1</td>
+              <td align="right">{{ object.payment_due_date|date:'Y/n/j' }}</td>
           </tr>
           <tr>
               <th style="width: 30%">お振込み先</th>

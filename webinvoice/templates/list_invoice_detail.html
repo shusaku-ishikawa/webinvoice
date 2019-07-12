@@ -7,6 +7,9 @@
             background-color: orange;
             color: white;
         }
+        tbody tr {
+            cursor: pointer;
+        }
         
     </style>
 {% endblock %}
@@ -57,16 +60,14 @@
                     <th class="text-nowrap">登録日</th>
                     <th class="text-nowrap">登録者</th>
                     <th class="text-nowrap">更新日</th>
-                    <th class="text-nowrap">更新者</th>
-                    <th class="text-nowrap">修正</th>
-                    
+                    <th class="text-nowrap">更新者</th>  
                     <th class="text-nowrap">請求書作成</th>
             </tr>
             </thead>
             <tbody>
                 {% for object in object_list %}
-                <tr>
-                    <td class="text-nowrap"><input value="{{ object.pk }}" name="selected_details" type="checkbox"></td>
+                <tr url="{% url 'web:update_invoice_detail' object.pk %}">
+                    <td class="text-nowrap"><input value="{{ object.pk }}" name="selected_details" type="checkbox" onclick="event.stopPropagation();" ></td>
                     <td class="text-nowrap">{{ object.pk }}</td>
                     <td class="text-nowrap">{{ object.invoice_entity }}</td>
                     <td class="text-nowrap">{{ object.product_category_1| default_if_none:"-" }}</td>
@@ -87,7 +88,6 @@
                     <td class="text-nowrap">{{ object.registered_by }}</td>
                     <td class="text-nowrap">{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
                     <td class="text-nowrap">{{ object.updated_by| default_if_none:"-" }}</td>
-                    <td class="text-nowrap"><a href="{% url 'web:update_invoice_detail' object.pk %}"><i class="far fa-edit"></i></a></td>
                     {% if not object.invoice %}
                     <td class="text-nowrap"><button type="button" class="btn btn-sm btn-primary" pk="{{ object.pk }}" name="add_button"><i class="fas fa-file-invoice-dollar"></i> 追加</button></td>
                     {% else %}
@@ -115,6 +115,7 @@
         var add_url = "{% url 'web:add_to_invoice' %}";
         var success_url = "{% url 'web:list_invoice' %}";
         var login_url = "{% url 'web:login' %}";
+                    
         function call_add_to_invoice(pk) {
             return $.ajax({
                 url:add_url,
@@ -128,7 +129,8 @@
         }
         $(function() {
             var $add_buttons = $('button[name^="add_button"]');
-            
+            var $rows = $('tbody > tr');
+
             $add_buttons.on('click', function() {
                 var pk = $(this).attr('pk');
                 call_add_to_invoice(pk)
@@ -144,6 +146,11 @@
                     }
                     alert('失敗しました。')
                 });
+            });
+            $rows.on('click', function() {
+                var url = $(this).attr('url');
+                window.location.href = url;
+
             });
         })
     </script>

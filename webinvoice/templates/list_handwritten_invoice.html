@@ -31,6 +31,10 @@
             margin:10px;
             padding: 3px;
         }
+        tbody tr {
+            cursor: pointer;
+        }
+        
     </style>
 {% endblock %}
 {% block content %}
@@ -83,14 +87,13 @@
             <th class="text-nowrap">税額合計</th>
             <th class="text-nowrap">税込合計</th>
             <th class="text-nowrap">PDF出力</th>
-            <th class="text-nowrap">更新</th>
             
        </tr>
     </thead>
     <tbody>
         
         {% for object in object_list %}
-        <tr>
+        <tr url="{% url 'web:update_handwritten_invoice' object.pk %}">
             <td class="text-nowrap">{{ object.id }}</td>
             <td class="text-nowrap">{{ object.customer_id }}</td>
             <td class="text-nowrap">{{ object.yearmonth }}</td>
@@ -109,7 +112,6 @@
             <td class="text-nowrap text-right">{{ object.total_tax|intcomma }}</td>
             <td class="text-nowrap text-right">{{ object.total_w_tax|intcomma }}</td>
             <td class="text-nowrap"><a class="my-btn-base output-btn" href="{% url 'web:pdf_handwritten_invoice' object.pk %}">PDF出力</a></td>
-            <td class="text-nowrap"><a class="my-btn-base update-btn" href="{% url 'web:update_handwritten_invoice' object.pk %}">更新</a></td>
         </tr> 
         {% endfor %}  
     </tbody>
@@ -126,6 +128,12 @@
 {% endblock %}
 {% block extra_js %}
     <script>
-       
+       var $rows = $('tbody > tr');
+        $(function() {
+            $rows.on('click', function() {
+                var url = $(this).attr('url');
+                window.location.href = url;
+            });
+        });
     </script>
 {% endblock %}

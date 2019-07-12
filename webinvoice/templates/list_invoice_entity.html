@@ -4,6 +4,15 @@
 請求管理簿一覧
 {% endblock %}
 
+{% block style %}
+    <style>
+        tbody tr {
+            cursor: pointer;
+        }
+        
+    
+    </style>
+{% endblock %}
 {% block content %}
 {% load humanize %}
 
@@ -58,14 +67,14 @@
                     <th class="text-nowrap">登録者</th>
                     <th class="text-nowrap">更新日</th>
                     <th class="text-nowrap">更新者</th>
-                    <th class="text-nowrap">修正</th>
                 
             </tr>
             </thead>
             <tbody>
                 {% for object in object_list %}
-                <tr>
-                    <td class="text-nowrap"><input value="{{ object.pk }}" name="selected_entities" type="checkbox"></td>
+                <tr url="{% url 'web:update_invoice_entity' object.pk %}">
+
+                    <td class="text-nowrap"><input value="{{ object.pk }}" name="selected_entities" type="checkbox" onclick="event.stopPropagation();"></td>
                     <td class="text-nowrap">{{ object.pk }}</td>
                     <td class="text-nowrap">{{ object.company }}</td>
                     <td class="text-nowrap">{{ object.invoice_zip|default_if_none:"-" }}</td>
@@ -100,7 +109,6 @@
                     <td class="text-nowrap">{{ object.registered_by }}</td>
                     <td class="text-nowrap">{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
                     <td class="text-nowrap">{{ object.updated_by|default_if_none:"-" }}</td>
-                    <td class="text-nowrap"><a href="{% url 'web:update_invoice_entity' object.pk %}"><i class="far fa-edit"></i></a></td>
                 
                 </tr> 
                 {% endfor %}  
@@ -119,6 +127,13 @@
 {% endblock %}
 {% block extra_js %}
     <script>
+        var $rows = $('tbody > tr');
+        $(function() {
+            $rows.on('click', function() {
+                var url = $(this).attr('url');
+                window.location.href = url;
+            });
+        });
        
     </script>
 {% endblock %}

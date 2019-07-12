@@ -273,6 +273,7 @@ class InvoiceEntity(models.Model):
         verbose_name = '請求管理簿'
         verbose_name_plural = '請求管理簿'
         ordering = ['pk']
+
     id = models.CharField(
         verbose_name = '会社ID',
         max_length = 50,
@@ -518,7 +519,10 @@ class Invoice(models.Model):
         verbose_name = '請求書ID',
         max_length = 50,
         primary_key = True,
-        unique = True
+        unique = True,
+        validators = [
+            alphanumeric
+        ]
     )
 
     registered_at = models.DateTimeField(
@@ -543,6 +547,12 @@ class Invoice(models.Model):
         on_delete = models.SET_NULL,
         related_name = 'invoice_updated'
     )
+    @property
+    def payment_due_date(self):
+        if len(self.details.all()) > 0:
+            return self.details.all()[0].invoice_entity.payment_due_to
+        else:
+            return None
 
     @property
     def details_count(self):
@@ -658,7 +668,10 @@ class InvoiceDetail(models.Model):
     )
     invoice_code = models.CharField(
         verbose_name = '請求書ID',
-        max_length = 50
+        max_length = 50,
+        validators = [
+            alphanumeric
+        ]
     )
     service_start_date = models.DateField(
         verbose_name = 'サービス開始日'
@@ -944,7 +957,7 @@ class HandWrittenInvoice(models.Model):
     )
     date_created = models.DateField(
         verbose_name = '作成日',
-        default = timezone.now()
+        default = timezone.now
     )
     total = models.IntegerField(
         verbose_name = '請求金額'

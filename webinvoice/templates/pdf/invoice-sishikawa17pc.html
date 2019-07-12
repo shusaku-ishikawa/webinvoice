@@ -1,0 +1,162 @@
+<!DOCTYPE html>{% load static %}{% load humanize %}{% load extra %}
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>invoice</title>
+
+  <!-- <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css">  -->
+  <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css">
+  
+  <style>
+    #summarytable tr th {
+    background-color: gray;
+    }
+    #summarytable tr td {
+        text-align: right;
+
+    }
+  
+  </style>
+</head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-6">
+          〒<span id="zip">{{ customer.zip }}</span><br/>
+          <span id="address1">{{ customer.address }}</span><br/>
+          <span id="address2">***町00-00-00 **ビル0F</span><br/> 
+          <span id="company">{{ customer.company_name }}　御中</span><br/>
+          <span id="department">{{ customer.dept_name }}</span>　<span id="person">{{ customer.representative }}　様</span>
+        </div>
+
+        <div class="col-md-6 col-6" style="text-align: right">
+          発行日：<span id="date">{% now 'Y/n/j' %}</span><br/>
+          お客様No：<span id="customerNo">{{ customer.code }}</span><br/>
+          請求番号：<span id="invoiceCode">***xxx*****</span></br></br>
+          <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
+          <!-- <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_logo.png" style="width:6rem;height:6rem;"/> -->
+          <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/>
+          <!-- <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/> -->
+          <!-- <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_stamp.png" style="width:4rem;height:4rem"/></br> -->
+          <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:4rem;height:4rem;"/><br/>
+          <!-- <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:4rem;height:4rem"/></br> -->
+          
+          〒{{ ourinfo.zip }}<br/>
+          {{ ourinfo.address_1 }}<br/>
+          {{ ourinfo.address_2 }}<br/></br>
+          連絡先電話番号： {{ ourinfo.phone }}<br/>
+          受付時間　9:00-18：00（土日祝日除く）<br/>
+          （平日9:00-18：00）</br>
+        </div> <!-- col -->
+      </div> <!-- row -->
+      <hr style="border-color:black">
+      <div class="row">
+      <div style="margin-top:2em;"></div>
+      
+      <div class="col-md-6 col-6">
+        <h2 style="margin-top:0;padding-left:5rem;padding-top:2rem;padding-bottom:2rem;background-color:lightblue">請求書</h2>
+        <p>平素は格別のお引き立てを賜り厚くお礼申し上げます。</br>下記の通りご請求申し上げます。</p>
+      </div>
+      <div class="col-md-6 col-6">
+        <table id="summarytable" class="table">
+          <tr>
+              <th style="width: 30%">ご請求金額</th>
+              <td align="right">{{ total | intcomma }}</td>
+          </tr>
+          <tr>
+              <th style="width: 30%">お支払い期限</th>
+              <td align="right">2019/4/1</td>
+          </tr>
+          <tr>
+              <th style="width: 30%">お振込み先</th>
+              <td style="padding-bottom: 0; padding-top: 0">
+                <div class="row" style="border-bottom: solid 1px lightgray">
+                  <div class="col-md-5 col-5" style="text-align: left">
+                    金融機関名
+                  </div>
+                  <div class="col-md-7 col-7">
+                    {{ bank.bank }} {{ bank.branch }}
+                  </div>
+                </div>
+                <div class="row" style="border-bottom: solid 1px lightgray">
+                  <div class="col-md-4 col-4" style="text-align: left">
+                    口座番号
+                  </div>
+                  <div class="col-md-8 col-8">
+                    {{ bank.type }}　{{ bank.number }}
+                  </div>
+                </div>
+                <div class="row" style="border-bottom: solid 1px lightgray;">
+                  <div class="col-md-4 col-4" style="text-align: left">
+                    口座名義
+                  </div>
+                  <div class="col-md-8 col-8">
+                    {{ bank.meigi }}
+                  </div>
+                </div>
+              </td>
+          </tr>
+        </table>
+      </div> <!-- col -->
+    </div> <!-- row -->
+    <hr>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>ご利用月</th>
+            <th>商材</th>
+            <th>商品名またはサービス</th>
+            <th>数量</th>
+            <th>単価</th>
+            <th>税区分</th>
+            <th>税抜金額</th>
+            <th>税額</th>
+            <th>税込金額</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for obj in data %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ obj.month_used }}</td>
+            <td>{{ obj.product_info.code }}</td>
+            <td>{{ obj.product_info.name }}</td>
+            <td align="right">{{ obj.count_per_product.amount }}</td>
+            <td align="right">{{ obj.product_info.price | intcomma }}</td>
+            <td>{{ obj.product_info.tax_type }}</td>
+            <td align="right">{{ obj.total_per_product | intcomma }}</td>
+            <td align="right">{{ obj.tax | intcomma | default_if_none:"-" }}</td>
+            <td align="right">{{ obj.total_per_product|add:obj.tax | intcomma }}</td>
+          </tr>
+          {%  endfor %}
+        </tbody>
+      </table>
+    </div> <!-- table responsive -->
+    <div class="row">
+      <div class="col-md-7 col-7" style="border: solid 1px black; border-radius: 10px;">
+      </div>
+      <div class="col-md-5 col-5" style="text-align: right">
+        <table class="table">
+          <tr>
+            <th style="width: 40%">税抜金額合計</th>
+            <td>{{ total_wo_tax | intcomma }}</td>
+          </tr>
+          <tr>
+            <th style="width: 40%">税額合計</th>
+            <td>{{ total_tax | intcomma }}</td>
+          </tr>
+          <tr>
+            <th  style="width:40%">税込金額合計</th>
+            <td>{{ total | intcomma }}</td>
+          </tr>
+          
+        </table>
+        <p style="margin:0">送付枚数 1 / 1</p>
+      </div> <!-- col -->
+    </div> <!-- row -->
+    </div> <!-- container -->
+  </body>
+</html>
