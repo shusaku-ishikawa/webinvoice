@@ -369,22 +369,23 @@ class Search(LoginRequiredMixin, generic.TemplateView):
 class UploadCompanyExcel(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
     
     columns = [
-        ('corporate_number', '法人番号'),
-        ('kana_name', '契約者名カナ'),
-        ('kanji_name', '契約者名'),
-        ('zip', '契約者郵便番号'),
-        ('address_pref', '契約者都道府県'),
-        ('address_city', '契約者市区町村'),
-        ('address_street', '契約者住所番地以降'),
-        ('address_bld', '契約者住所建物名'),
-        ('telephone_1', '連絡先電話番号1'),
-        ('telephone_2', '連絡先電話番号2'),
-        ('fax', 'FAX番号'),
-        ('hp_url', 'URL'),
-        ('owner_name', '代表者名'),
-        ('representative_name', '担当者名'),
-        ('email', 'メールアドレス'),
-        ('note', '備考')
+        'id',
+        'corporate_number',
+        'kana_name',
+        'kanji_name',
+        'zip',
+        'address_pref',
+        'address_city',
+        'address_street',
+        'address_bld',
+        'telephone_1',
+        'telephone_2',
+        'fax', 
+        'hp_url',
+        'owner_name',
+        'representative_name',
+        'email',
+        # 'note', '備考')
     ]
     form_class = CompanyExcelForm
     template_name = 'import_company_excel.html'
@@ -397,24 +398,32 @@ class UploadCompanyExcel(SuccessMessageMixin, LoginRequiredMixin, generic.FormVi
         df = d.fillna('')
         obj.record_count = len(df)
         obj.save()
+
         for index, row in df.iterrows():
+            # 項目数チェック
+            if len(row) != len(self.columns):
+                err = UploadedFileError()
+                err.file = obj
+                err.row_index = index + 1
+                err.error = '項目数が不正です'
+                err.save()
+                continue
             param_dict = {}
-            for key, name in self.columns:
-                param_dict[key] = row[name]
+            for col_index in range(len(self.columns)):
+                param_dict[self.columns[col_index]] = row[col_index]
 
-            id = row['企業ID']
-            if id == '':
-                param_dict['registered_by'] = self.request.user
-                param_dict['updated_by'] = self.request.user
-
-                f = CompanyForm(param_dict)
-                #c = Company(registered_by = self.request.user, updated_by = self.request.user)
-            else:
-                param_dict['updated_by'] = self.request.user
+            id = row[0]
+            try:
                 c = Company.objects.get(pk = id)
-                f = CompanyForm(param_dict, instance = c)
+            except Company.DoesNotExist:
+                f  = CompanyForm(param_dict)
+            else:
+                    f = CompanyForm(param_dict, instance = c)
             if f.is_valid():
-                f.save()
+                c = f.save()
+                c.registered_by = self.request.user
+                c.updated_by = self.request.user
+                c.save()
             else:
                 for key in f.errors.as_data():
                     print(key)
@@ -435,35 +444,42 @@ class UploadCompanyExcel(SuccessMessageMixin, LoginRequiredMixin, generic.FormVi
         return self.render_to_response(context)
 class UploadInvoiceEntityExcel(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
     columns = [
-        ('company', '企業ID'),
-        ('invoice_zip', '請求郵便番号'),
-        ('invoice_address_pref', '請求都道府県'),
-        ('invoice_address_city', '請求市区町村'),
-        ('invoice_address_street', '請求住所番地以降'),
-        ('invoice_address_bld', '請求住所建物名'),
-        ('invoice_company_name', '請求会社名'),
-        ('invoice_dept', '請求所属部署'),
-        ('invoice_person', '請求宛名'),
-        ('invoice_project_1', '請求宛名1'),
-        ('invoice_project_2', '請求宛名2'),
-        ('invoice_project_3', '請求宛名3'),
-        ('payment_method', '支払方法'),
-        ('invoice_closed_at', '締日'),
-        ('payment_due_to', '支払期日'),
-        ('invoice_sent_at', '送付タイミング'),
-        ('invoice_timing', '請求タイミング'),
-        ('invoice_period', '請求周期'),
-        ('bank_name', '振込銀行名'),
-        ('bank_banch_name', '振込支店名'),
-        ('bank_account_type', '振込普通/当座'),
-        ('bank_account_number', '振込銀行口座番号'),
-        ('credit_card_settlement_company', 'クレカ決済会社'),
-        ('credit_card_code', 'クレカコード'),
-        ('credit_card_id', 'クレカID'),
-        ('settlement_company', '決済会社'),
-        ('settlement_code', '決済コード'),
-        ('settlement_id', '決済ID'),
-        ('note', '備考'),
+        'id',
+        'company',
+        'dammy',
+        'dammy',
+        'dammy',
+        'dammy',
+        'dammy',
+        'dammy',
+        'dammy',
+        'invoice_zip',
+        'invoice_address_pref',
+        'invoice_address_city',
+        'invoice_address_street',
+        'invoice_address_bld',
+        'invoice_company_name',
+        'invoice_dept',
+        'invoice_person',
+        'invoice_project_1',
+        'invoice_project_2',
+        'invoice_project_3',
+        'payment_method',
+        'invoice_closed_at',
+        'payment_due_to',
+        'invoice_sent_at',
+        'invoice_timing',
+        'invoice_period',
+        'bank_name',
+        'bank_banch_name',
+        'bank_account_type',
+        'bank_account_number',
+        'credit_card_settlement_company',
+        'credit_card_code',
+        'credit_card_id',
+        'settlement_company',
+        'settlement_code',
+        'settlement_id',
     ]
     
     form_class = InvoiceEntityExcelForm
@@ -477,32 +493,41 @@ class UploadInvoiceEntityExcel(SuccessMessageMixin, LoginRequiredMixin, generic.
         df = d.fillna('')
         obj.record_count = len(df)
         obj.save()
+        print(len(df))
         for index, row in df.iterrows():
+            # 項目数チェック
+            if len(row) != len(self.columns):
+                err = UploadedFileError()
+                err.file = obj
+                err.row_index = index + 1
+                err.error = '項目数が不正です'
+                err.save()
+                continue
             param_dict = {}
-            for key, name in self.columns:
+            for col_index in range(len(self.columns)):
+                key = self.columns[col_index]
                 if key == 'payment_due_to':
-                    param_dict[key] = row[name].split(' ')[0]
+                    param_dict[key] = row[col_index].split(' ')[0]
                     print(param_dict[key])
                 else:
-                    param_dict[key] = row[name]
+                    param_dict[key] = row[col_index]
 
-            id = row['請求管理簿ID']
-            if id == '':
-                param_dict['registered_by'] = self.request.user
-                param_dict['updated_by'] = self.request.user
-                
-                f = InvoiceEntityForm(param_dict)
-               
-            else:
-                param_dict['updated_by'] = self.request.user
+            id = row[0]
+           
+            try:
                 ie = InvoiceEntity.objects.get(pk = id)
+            except InvoiceEntity.DoesNotExist:
+                f = InvoiceEntityForm(param_dict)
+            else:
                 f = InvoiceEntityForm(param_dict, instance = ie)
+
             if f.is_valid():
-                f.save()
+                ie = f.save()
+                ie.registered_by = self.request.user
+                ie.updated_by = self.request.user
+                ie.save()
             else:
                 for key in f.errors.as_data():
-                    print(key)
-                    #print(f.errors[key].as_data())
                     for error in f.errors[key].as_data():
                         print(str(error))
                         err = UploadedFileError()
@@ -520,20 +545,20 @@ class UploadInvoiceEntityExcel(SuccessMessageMixin, LoginRequiredMixin, generic.
 class UploadInvoiceDetailExcel(SuccessMessageMixin, LoginRequiredMixin, generic.FormView):
     
     columns = [
-        ('invoice_entity', '請求管理簿ID'),
-        ('product_category_1', '商材大区分'),
-        ('product_category_2', '商材小区分'),
-        ('yearmonth', '請求月'),
-        ('seq_number', 'SEQNO'),
-        ('order_number', '申込管理番号'),
-        ('invoice_code', '請求書ID'),
-        ('service_start_date', 'サービス開始日'),
-        ('service_name', '請求明細内容'),
-        ('invoice_amount_wo_tax', '請求金額（税抜）'),
-        ('tax_type', '税区分'),
-        ('tax_rate_perc', '税率'),
-        ('tax_amount', '請求金額（税額）'),
-        ('note', '備考'),
+        'id',
+        'invoice_entity',
+        'product_category_1',
+        'product_category_2',
+        'yearmonth',
+        'seq_number',
+        'order_number',
+        'invoice_code',
+        'service_start_date',
+        'service_name',
+        'invoice_amount_wo_tax',
+        'tax_type',
+        'tax_rate_perc',
+        'tax_amount',
     ]
 
     form_class = InvoiceDetailExcelForm
@@ -548,38 +573,44 @@ class UploadInvoiceDetailExcel(SuccessMessageMixin, LoginRequiredMixin, generic.
         obj.record_count = len(df)
         obj.save()
         for index, row in df.iterrows():
+            # 項目数チェック
+            if len(row) != len(self.columns):
+                err = UploadedFileError()
+                err.file = obj
+                err.row_index = index + 1
+                err.error = '項目数が不正です'
+                err.save()
+                continue
             param_dict = {}
-            for key, name in self.columns:
+            for col_index in range(len(self.columns)):
+                key = self.columns[col_index]
                 if key == 'tax_rate_perc':
-                    param_dict[key] = float(row[name]) * 100
-                    print(row[name] * 100)
+                    param_dict[key] = float(row[col_index]) * 100
+                    print(row[col_index] * 100)
                 elif key == 'service_start_date':
-                    print(row[name])
-                    if len(row[name].split(' ')) > 1:
-                        param_dict[key] = row[name].split(' ')[0]
+                    
+                    if len(row[col_index].split(' ')) > 1:
+                        param_dict[key] = row[col_index].split(' ')[0]
                     else:
-                        param_dict[key] = row[name].replace('/', '-')
+                        param_dict[key] = row[col_index].replace('/', '-')
                 else:
-                    param_dict[key] = row[name]
+                    param_dict[key] = row[col_index]
 
-            id = row['請求明細ID']
-            if id == '':
-                param_dict['registered_by'] = self.request.user
-                
+            try:
+                ide = InvoiceDetail.objects.get(pk = id)
+            except InvoiceDetail.DoesNotExist:
                 f = InvoiceDetailForm(param_dict)
-               
             else:
-                param_dict['updated_by'] = self.request.user
-                ie = InvoiceDetail.objects.get(pk = id)
-                f = InvoiceDetailForm(param_dict, instance = ie)
+                f = InvoiceDetailForm(param_dict, instance = ide)
             if f.is_valid():
-                f.save()
-                print('saved')
+                ide = f.save()
+                ide.registered_by = self.request.user
+                ide.updated_by = self.request.user
+                ide.save()
+              
             else:
                 
                 for key in f.errors.as_data():
-                    print(key)
-                    #print(f.errors[key].as_data())
                     for error in f.errors[key].as_data():
                         print(str(error))
                         err = UploadedFileError()

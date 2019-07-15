@@ -368,9 +368,9 @@ class InvoiceEntity(models.Model):
         blank = True,
     )
     
-    payment_due_to = models.DateField(
+    payment_due_to = models.CharField(
         verbose_name = '支払い期日',
-        default = timezone.now
+        max_length = 100,
     )
     
     invoice_sent_at = models.CharField(
