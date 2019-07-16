@@ -360,17 +360,23 @@ class InvoiceEntity(models.Model):
         verbose_name = '支払い方法',
         max_length = 100,
     )
-
+    shime_choices = (
+        ('末日', '末日'),
+        ('20日', '20日')
+    )
     invoice_closed_at = models.CharField(
         verbose_name = '締め日',
         max_length = 100,
-        null = True,
-        blank = True,
+        choices = shime_choices
     )
-    
+    kijitsu_choices = (
+        ('翌月末', '翌月末'),
+        ('翌々月末', '翌々月末')
+    )
     payment_due_to = models.CharField(
         verbose_name = '支払い期日',
         max_length = 100,
+        choices = kijitsu_choices
     )
     
     invoice_sent_at = models.CharField(

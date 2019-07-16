@@ -166,6 +166,8 @@ class ListInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.ListVie
             q = self.request.GET.get(key_corporate_number)
             data = data.filter(company__corporate_number__icontains = q)
         
+        
+        
         if key_company_name in self.request.GET and self.request.GET.get(key_company_name) != None:
             q = self.request.GET.get(key_company_name)
             data = data.filter(Q(invoice_company_name__icontains = q) | Q(company__kanji_name__icontains = q))
@@ -173,7 +175,6 @@ class ListInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.ListVie
         if key_phone_number in self.request.GET and self.request.GET.get(key_phone_number) != None:
             q = self.request.GET.get(key_phone_number)
             data = data.filter(Q(company__telephone_1__icontains = q) | Q(company__telephone_2__icontains = q))
-    
         return data
 
 class UpdateInvoiceEntity(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
@@ -231,6 +232,7 @@ class ListInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.ListVie
         data = InvoiceDetail.objects.filter(deleted = False)
 
         key_corporate_number = "corporate_number"
+        key_yearmonth = "yearmonth"
         key_company_name = "company_name"
         key_phone_number = "phone_number"
         key_invoice_code = "invoice_code"
@@ -239,6 +241,10 @@ class ListInvoiceDetail(SuccessMessageMixin, LoginRequiredMixin, generic.ListVie
         if key_corporate_number in self.request.GET and self.request.GET.get(key_corporate_number) != "":
             q = self.request.GET.get(key_corporate_number)
             data = data.filter(invoice_entity__company__corporate_number__icontains = q)
+
+        if key_yearmonth in self.request.GET and self.request.GET.get(key_yearmonth) != "":
+            q = self.request.GET.get(key_yearmonth)
+            data = data.filter(yearmonth = q)
         
         if key_company_name in self.request.GET and self.request.GET.get(key_company_name) != "":
             q = self.request.GET.get(key_company_name)
@@ -298,6 +304,7 @@ class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         data = Invoice.objects.all()
         key_corporate_number = "corporate_number"
+        key_yearmonth = 'yearmonth'
         key_company_name = "company_name"
         key_phone_number = "phone_number"
         key_invoice_code = "invoice_code"
@@ -307,6 +314,10 @@ class ListInvoice(SuccessMessageMixin, LoginRequiredMixin, generic.ListView):
             q = self.request.GET.get(key_corporate_number)
             data = data.filter(invoice_entity__company__corporate_number__icontains = q)
         
+        if key_yearmonth in self.request.GET and self.request.GET.get(key_yearmonth) != None:
+            q = self.request.GET.get(key_yearmonth)
+            data = [inv for inv in data if inv.yearmonth == q]
+
         if key_company_name in self.request.GET and self.request.GET.get(key_company_name) != "":
             q = self.request.GET.get(key_company_name)
             data = data.filter(Q(invoice_entity__invoice_company_name__icontains = q) | Q(invoice_entity__company__kanji_name__icontains = q))
@@ -351,9 +362,9 @@ def add_to_invoice(request):
             
             detail = InvoiceDetail.objects.get(pk = request.POST.get('pk'))
             
-            exist = Invoice.objects.filter(invoice_code = detail.invoice_code)
+            exist = Invoice.objects.filter(id = detail.invoice_code)
             if len(exist) == 0:
-                new = Invoice(invoice_code = detail.invoice_code)
+                new = Invoice(id = detail.invoice_code)
                 new.registered_by = request.user
                 new.updated_by = request.user
                 new.save()
@@ -559,6 +570,7 @@ class UploadInvoiceDetailExcel(SuccessMessageMixin, LoginRequiredMixin, generic.
         'tax_type',
         'tax_rate_perc',
         'tax_amount',
+        'dummy'
     ]
 
     form_class = InvoiceDetailExcelForm
