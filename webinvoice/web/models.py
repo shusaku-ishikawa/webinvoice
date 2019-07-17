@@ -10,7 +10,7 @@ from django.conf import settings
 from datetime import datetime, date, timedelta
 from django.db.models import Q, Sum
 from django.core.validators import FileExtensionValidator
-from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 import re, base64
 
@@ -555,13 +555,24 @@ class Invoice(models.Model):
         on_delete = models.SET_NULL,
         related_name = 'invoice_updated'
     )
+
     @property
     def payment_due_date(self):
-        if len(self.details.all()) > 0:
-            return self.details.all()[0].invoice_entity.payment_due_to
-        else:
+        if len(self.details.all()) == 0:
             return None
+        detail = self.details.all().first()
+        print(detail.yearmonth[4:6])
+        firstdateofthemonth = datetime(int(detail.yearmonth[0:4]), int(detail.yearmonth[4:]), 1)
+        lastdayofthelastmonth = firstdateofthemonth - timedelta(days = 1)
 
+        if detail.invoice_entity.payment_due_to == '翌月末':
+            due_date = lastdayofthelastmonth + relativedelta(months = 2)
+        elif detail.invoice_entity.payment_due_to == '翌々月末':
+            due_date = lastdayofthelastmonth + relativedelta(months = 3)
+        else:
+            due_date = date.today()
+        return due_date
+    
     @property
     def details_count(self):
         return len(self.details.all())

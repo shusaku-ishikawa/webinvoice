@@ -105,9 +105,9 @@
                     <td class="text-nowrap">{{ object.settlement_code|default_if_none:"-" }}</td>
                     <td class="text-nowrap">{{ object.settlement_id|default_if_none:"-" }}</td>
                     <td class="text-nowrap">{{ object.note|default_if_none:"-" }}</td>
-                    <td class="text-nowrap">{{ object.registered_at|date:"Y/m/d f" }}</td>
+                    <td class="text-nowrap">{{ object.registered_at|date:"Y/n/j f" }}</td>
                     <td class="text-nowrap">{{ object.registered_by }}</td>
-                    <td class="text-nowrap">{{ object.updated_at|date:"Y/m/d f"|default_if_none:"-" }}</td>
+                    <td class="text-nowrap">{{ object.updated_at|date:"Y/n/j f"|default_if_none:"-" }}</td>
                     <td class="text-nowrap">{{ object.updated_by|default_if_none:"-" }}</td>
                 
                 </tr> 
