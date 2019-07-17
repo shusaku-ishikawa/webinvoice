@@ -503,6 +503,8 @@ class InvoiceEntity(models.Model):
 
 class Invoice(models.Model):
     PREFIX = "IV"
+    FIRST_PAGE_ROWS = 14
+    PAGE_ROWS = 30
     def __str__(self):
         return str(self.pk)
     def make_id(self):
@@ -569,25 +571,34 @@ class Invoice(models.Model):
     
     @property
     def page_1_details(self):
-        return self.details.all()[0:14]
+        return self.details.all()[0 : self.FIRST_PAGE_ROWS]
 
     @property
     def page_2_details(self):
-        return self.details.all()[14:28]
+        return self.details.all()[self.FIRST_PAGE_ROWS : self.FIRST_PAGE_ROWS + self.PAGE_ROWS]
     @property
     def page_3_details(self):
-        return self.details.all()[28:42]
+        return self.details.all()[self.FIRST_PAGE_ROWS + self.PAGE_ROWS : self.FIRST_PAGE_ROWS + 2 * self.PAGE_ROWS]
 
     @property
     def total_pages(self):
-        print(self.details_count // 14 + 1)
-        return self.details_count // 14 + 1
-
+        if self.details_count <= self.FIRST_PAGE_ROWS:
+            return 1
+        elif self.details_count <= self.FIRST_PAGE_ROWS + self.PAGE_ROWS:
+            return 2
+        else:
+            return 3
+        
     @property
     def pad_range(self):
         import math
-        nearest_14 = int(math.ceil(self.details_count / 14)) * 14
-        return range(nearest_14 - self.details_count)
+        if self.total_pages == 1:
+            return range(self.FIRST_PAGE_ROWS - self.details_count)
+        elif self.total_pages == 2:
+            return range(self.FIRST_PAGE_ROWS + self.PAGE_ROWS - self.details_count )
+        else:
+            return range(self.FIRST_PAGE_ROWS + 2 * self.PAGE_ROWS - self.details_count )
+
     @property
     def total_wo_tax(self):
         details = self.details.all()

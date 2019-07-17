@@ -4,8 +4,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>invoice</title>
 
-  <!-- <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css"> -->
-  <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css"> 
+  <link rel="stylesheet" type="text/css" href="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\css\bootstrap.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/var/www/python_projects/webinvoice.git/webinvoice/web/static/css/bootstrap.css">  -->
   <!-- <link rel="stylesheet" type="text/css" href="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/web/static/css/bootstrap.css"> -->
  
   <style>
@@ -57,97 +57,116 @@
       color: white;
     }
 
+    p.page-count-footer {
+      margin:0;
+      text-align: right
+    }
+  
+    div.only-second-or-after {
+      text-align: right;
+    }
+  
+
   
   </style>
 </head>
   <body>
     {% for object in object_list %}
     {% for page in object.pages %}
+   
     <div class="container page">
-      <div class="row">
-        <div class="col-md-6 col-6">
-          〒<span id="zip">{{ object.invoice_entity.invoice_zip }}</span><br/>
-          <span id="address1">{{ object.invoice_entity.invoice_address_pref }}{{ object.invoice_entity.invoice_address_city }}</span><br/>
-          <span id="address2">{{ object.invoice_entity.invoice_address_street }}{{ object.invoice_entity.invoice_address_bld|default_if_none:'' }}</span><br/> 
-          <span id="company">{{ object.invoice_entity.invoice_company_name }}　御中</span><br/>
-          <span id="department">{{ object.invoice_entity.invoice_dept }}</span><span id="person">{{ object.invoice_entity.invoice_person }}　様</span><br/>
-          <span id="project1">{{ object.invoice_entity.invoice_project_1| default_if_none:'' }}</span><br/>
-          <span id="project2">{{ object.invoice_entity.invoice_project_2| default_if_none:'' }}</span><br/>
-          <span id="project3">{{ object.invoice_entity.invoice_project_3| default_if_none:'' }}</span>
-          
-        </div>
-
-        <div class="col-md-6 col-6" style="text-align: right">
+      <div style="text-align:right; {% if page == 1 %} display:none {% endif %}">
           発行日：<span id="date">{% now 'Y/n/j' %}</span><br/>
           お客様No：<span id="customerNo">{{ object.invoice_entity.pk }}</span><br/>
-          請求番号：<span id="invoiceCode">{{ object.pk }}</span></br></br>
-          <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
-          <!-- <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_logo.png" style="width:6rem;height:6rem;"/> -->
-          <!-- <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:12rem;height:auto;"/> -->
-          <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/>
-          <!-- <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_stamp.png" style="width:4rem;height:4rem"/></br> -->
-          <!-- <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:6rem;height: auto;"/><br/> -->
-          <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:4rem;height:4rem"/></br>
+          請求番号：<span id="invoiceCode">{{ object.pk }}</span></br>
+      </div> 
+      <div style="{% if page != 1 %} display:none {% endif %}">
+        <div class="row">
+          <div class="col-md-6 col-6">
+            〒<span id="zip">{{ object.invoice_entity.invoice_zip }}</span><br/>
+            <span id="address1">{{ object.invoice_entity.invoice_address_pref }}{{ object.invoice_entity.invoice_address_city }}</span><br/>
+            <span id="address2">{{ object.invoice_entity.invoice_address_street }}{{ object.invoice_entity.invoice_address_bld|default_if_none:'' }}</span><br/> 
+            <span id="company">{{ object.invoice_entity.invoice_company_name }}　御中</span><br/>
+            <span id="department">{{ object.invoice_entity.invoice_dept }}</span><span id="person">{{ object.invoice_entity.invoice_person }}　様</span><br/>
+            <span id="project1">{{ object.invoice_entity.invoice_project_1| default_if_none:'' }}</span><br/>
+            <span id="project2">{{ object.invoice_entity.invoice_project_2| default_if_none:'' }}</span><br/>
+            <span id="project3">{{ object.invoice_entity.invoice_project_3| default_if_none:'' }}</span>
+            
+          </div>
+
+          <div class="col-md-6 col-6" style="text-align: right">
+            発行日：<span id="date">{% now 'Y/n/j' %}</span><br/>
+            お客様No：<span id="customerNo">{{ object.invoice_entity.pk }}</span><br/>
+            請求番号：<span id="invoiceCode">{{ object.pk }}</span></br></br>
+            <div style="margin-right: 4rem; font-weight: bold">株式会社ビジョン</div></br>
+            <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_logo.png" style="width:6rem;height:6rem;"/>
+            <!-- <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:12rem;height:auto;"/> -->
+            <!-- <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_logo.png" style="width:6rem;height:6rem;"/> -->
+            <img src="C:\Users\sishikawa17\OneDrive - Nihon Unisys, Ltd\python\webinvoice.git\webinvoice\web\static\img\vision_stamp.png" style="width:4rem;height:4rem"/></br>
+            <!-- <img src="/Users/ishikawashuusaku/Desktop/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:6rem;height: auto;"/><br/> -->
+            <!-- <img src="/var/www/python_projects/webinvoice.git/webinvoice/static/img/vision_stamp.png" style="width:4rem;height:4rem"/></br> -->
+            
+            〒{{ ourinfo.zip }}<br/>
+            {{ ourinfo.address_1 }}<br/>
+            {{ ourinfo.address_2 }}<br/></br>
+            連絡先電話番号： {{ ourinfo.phone }}<br/>
+            受付時間　9:00-18：00（土日祝日除く）<br/>
+            （平日9:00-18：00）</br>
+          </div> <!-- col -->
+        </div> <!-- row -->
+        <hr style="border-color:black">
+        <div class="row">
+          <div style="margin-top:2em;"></div>
           
-          〒{{ ourinfo.zip }}<br/>
-          {{ ourinfo.address_1 }}<br/>
-          {{ ourinfo.address_2 }}<br/></br>
-          連絡先電話番号： {{ ourinfo.phone }}<br/>
-          受付時間　9:00-18：00（土日祝日除く）<br/>
-          （平日9:00-18：00）</br>
-        </div> <!-- col -->
-      </div> <!-- row -->
-      <hr style="border-color:black">
-      <div class="row">
-      <div style="margin-top:2em;"></div>
-      
-      <div class="col-md-6 col-6">
-        <h2 style="margin-top:0;padding-left:5rem;padding-top:2rem;padding-bottom:2rem;background-color:lightblue">請求書</h2>
-        <p>平素は格別のお引き立てを賜り厚くお礼申し上げます。</br>下記の通りご請求申し上げます。</p>
+          <div class="col-md-6 col-6">
+            <h2 style="margin-top:0;padding-left:5rem;padding-top:2rem;padding-bottom:2rem;background-color:lightblue">請求書</h2>
+            <p>平素は格別のお引き立てを賜り厚くお礼申し上げます。</br>下記の通りご請求申し上げます。</p>
+          </div>
+          <div class="col-md-6 col-6">
+            <table id="summarytable" class="table">
+              <tr>
+                  <th style="width: 30%">ご請求金額</th>
+                  <td align="right">{{ object.total_w_tax | intcomma }}</td>
+              </tr>
+              <tr>
+                  <th style="width: 30%">お支払い期限</th>
+                  <td align="right">{{ object.payment_due_date|date:'Y/n/j' }}</td>
+              </tr>
+              <tr>
+                  <th style="width: 30%">お振込み先</th>
+                  <td style="padding-bottom: 0; padding-top: 0">
+                    <div class="row" style="border-bottom: solid 1px lightgray">
+                      <div class="col-md-5 col-5" style="text-align: left">
+                        金融機関名
+                      </div>
+                      <div class="col-md-7 col-7">
+                        {{ bank.bank }} {{ bank.branch }}
+                      </div>
+                    </div>
+                    <div class="row" style="border-bottom: solid 1px lightgray">
+                      <div class="col-md-4 col-4" style="text-align: left">
+                        口座番号
+                      </div>
+                      <div class="col-md-8 col-8">
+                        {{ bank.type }}　{{ bank.number }}
+                      </div>
+                    </div>
+                    <div class="row" style="border-bottom: solid 1px lightgray;">
+                      <div class="col-md-4 col-4" style="text-align: left">
+                        口座名義
+                      </div>
+                      <div class="col-md-8 col-8">
+                        {{ bank.meigi }}
+                      </div>
+                    </div>
+                  </td>
+              </tr>
+            </table>
+          </div> <!-- col -->
+        </div> <!-- row -->
       </div>
-      <div class="col-md-6 col-6">
-        <table id="summarytable" class="table">
-          <tr>
-              <th style="width: 30%">ご請求金額</th>
-              <td align="right">{{ object.total_w_tax | intcomma }}</td>
-          </tr>
-          <tr>
-              <th style="width: 30%">お支払い期限</th>
-              <td align="right">{{ object.payment_due_date|date:'Y/n/j' }}</td>
-          </tr>
-          <tr>
-              <th style="width: 30%">お振込み先</th>
-              <td style="padding-bottom: 0; padding-top: 0">
-                <div class="row" style="border-bottom: solid 1px lightgray">
-                  <div class="col-md-5 col-5" style="text-align: left">
-                    金融機関名
-                  </div>
-                  <div class="col-md-7 col-7">
-                    {{ bank.bank }} {{ bank.branch }}
-                  </div>
-                </div>
-                <div class="row" style="border-bottom: solid 1px lightgray">
-                  <div class="col-md-4 col-4" style="text-align: left">
-                    口座番号
-                  </div>
-                  <div class="col-md-8 col-8">
-                    {{ bank.type }}　{{ bank.number }}
-                  </div>
-                </div>
-                <div class="row" style="border-bottom: solid 1px lightgray;">
-                  <div class="col-md-4 col-4" style="text-align: left">
-                    口座名義
-                  </div>
-                  <div class="col-md-8 col-8">
-                    {{ bank.meigi }}
-                  </div>
-                </div>
-              </td>
-          </tr>
-        </table>
-      </div> <!-- col -->
-    </div> <!-- row -->
-    <hr>
+      <hr>
+    
       <table id="invoice_table" class="table table-bordered table-striped table-condensed">
         <thead>
           <tr>
@@ -201,7 +220,7 @@
           {% if page == 3 %}
           {% for obj in object.page_3_details %}
           <tr>
-            <td align="center">{{ forloop.counter|add:14 }}</td>
+            <td align="center">{{ forloop.counter|add:44 }}</td>
             <td align="center">{{ obj.yearmonth }}</td>
             <td align="center">{{ obj.product_category_1 }}</td>
             <td align="center">{{ obj.service_name }}</td>
@@ -235,7 +254,7 @@
 
         </tbody>
       </table>
-    <div class="row">
+    <div class="row" style="{% if page != 1 %}display:none{% endif %}" >
       <div class="col-md-7 col-7" style="border: solid 1px black; border-radius: 10px;">
       </div>
       <div class="col-md-5 col-5" style="text-align: right">
@@ -254,9 +273,9 @@
           </tr>
           
         </table>
-        <p style="margin:0">送付枚数 {{ page }} / {{ object.total_pages }}</p>
       </div> <!-- col -->
     </div> <!-- row -->
+    <p class="page-count-footer">送付枚数 {{ page }} / {{ object.total_pages }}</p>
     </div> <!-- container -->
     {% endfor %}
     {% endfor %}
