@@ -364,10 +364,12 @@ def add_to_invoice(request):
             
             exist = Invoice.objects.filter(id = detail.invoice_code)
             if len(exist) == 0:
-                new = Invoice(id = detail.invoice_code)
-                new.registered_by = request.user
-                new.updated_by = request.user
-                new.save()
+                exist = Invoice(id = detail.invoice_code)
+                exist.registered_by = request.user
+                exist.updated_by = request.user
+                exist.save()
+            detail.invoice = exist
+            detail.save()
             return JsonResponse({'success': True})
 
             

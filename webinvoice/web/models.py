@@ -622,6 +622,8 @@ class Invoice(models.Model):
 
     @property
     def total_w_tax(self):
+        if self.total_wo_tax == None or self.total_tax == None:
+            return 0
         return self.total_wo_tax + self.total_tax
         
     @property
